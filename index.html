@@ -3,455 +3,621 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>CraftRadar — رادار سرورهای ماینکرفت</title>
+<title>CraftRadar</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
-  :root {
-    --bg: #060609;
-    --glass: rgba(255,255,255,0.045);
-    --glass-hi: rgba(255,255,255,0.09);
-    --border: rgba(255,255,255,0.09);
-    --border-hi: rgba(255,255,255,0.16);
-    --text: #f4f4f8;
-    --muted: #8c8c9c;
-    --muted-2: #5f5f70;
-    --violet: #8b6bff;
-    --cyan: #38e0d8;
-    --pink: #ff6bc4;
-    --amber: #ffc266;
-    --green: #3ee89a;
-    --red: #ff6b6b;
-    --grad: linear-gradient(135deg, var(--violet), var(--cyan));
-    --grad-2: linear-gradient(135deg, var(--pink), var(--violet));
-  }
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body {
-    margin: 0;
-    min-height: 100vh;
-    font-family: 'Vazirmatn', -apple-system, 'Segoe UI', Tahoma, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    overflow-x: hidden;
-    padding-bottom: 60px;
-  }
-  ::selection { background: var(--violet); color: #fff; }
-  .mono { font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace; }
-
-  /* ---------- ambient mesh background ---------- */
-  .mesh { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-  .blob { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.35; }
-  .blob-1 { width: 380px; height: 380px; background: var(--violet); top: -120px; right: -100px; animation: float1 22s ease-in-out infinite; }
-  .blob-2 { width: 320px; height: 320px; background: var(--cyan); bottom: 60px; left: -110px; animation: float2 26s ease-in-out infinite; }
-  .blob-3 { width: 260px; height: 260px; background: var(--pink); top: 40%; right: 20%; opacity: 0.18; animation: float1 30s ease-in-out infinite reverse; }
-  @keyframes float1 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-30px, 40px); } }
-  @keyframes float2 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(40px, -30px); } }
-  @media (prefers-reduced-motion: reduce) { .blob { animation: none !important; } }
-
-  .content { position: relative; z-index: 1; }
-
-  /* ---------- glass primitive ---------- */
-  .glass {
-    background: var(--glass);
-    border: 1px solid var(--border);
-    backdrop-filter: blur(22px) saturate(140%);
-    -webkit-backdrop-filter: blur(22px) saturate(140%);
-    border-radius: 20px;
-  }
-
-  /* ---------- header ---------- */
-  .top { padding: 30px 18px 14px; max-width: 720px; margin: 0 auto; }
-  .brand-row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-  .brand-mark {
-    width: 42px; height: 42px;
-    border-radius: 13px;
-    background: var(--grad);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    box-shadow: 0 6px 22px rgba(139,107,255,0.4);
-  }
-  .brand-mark svg { width: 22px; height: 22px; }
-  .brand-text h1 { margin: 0; font-size: 21px; font-weight: 800; letter-spacing: -0.3px; }
-  .brand-text .sub { font-size: 11px; color: var(--muted-2); font-weight: 600; letter-spacing: 0.3px; }
-
-  .top p.tag { margin: 0 0 20px; font-size: 13.5px; color: var(--muted); line-height: 1.8; max-width: 48ch; }
-
-  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-  .stat-card {
-    padding: 14px 10px;
-    text-align: center;
-  }
-  .stat-card .num { font-size: 19px; font-weight: 800; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .stat-card .lbl { font-size: 9.5px; color: var(--muted-2); margin-top: 3px; font-weight: 600; }
-
-  /* ---------- segmented tabs ---------- */
-  .tabbar-wrap { max-width: 720px; margin: 18px auto 0; padding: 0 18px; position: sticky; top: 12px; z-index: 6; }
-  .tabbar {
-    display: flex;
-    gap: 4px;
-    padding: 5px;
-  }
-  .tab {
-    flex: 1;
-    padding: 10px 8px;
-    font-size: 12.5px;
-    font-weight: 700;
-    color: var(--muted);
-    background: transparent;
-    border-radius: 14px;
-    cursor: pointer;
-    text-align: center;
-    transition: color 0.2s, background 0.2s;
-    display: flex; align-items: center; justify-content: center; gap: 6px;
-  }
-  .tab svg { width: 15px; height: 15px; opacity: 0.8; }
-  .tab.active {
-    background: var(--grad);
-    color: #0a0a0f;
-    box-shadow: 0 4px 18px rgba(139,107,255,0.35);
-  }
-  .tab.active svg { opacity: 1; }
-
-  .wrap { padding: 16px 18px 0; max-width: 720px; margin: 0 auto; }
-  .section { display: none; }
-  .section.active { display: block; animation: fadein 0.25s ease; }
-  @keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
-
-  /* ---------- toolbar ---------- */
-  .toolbar { margin-bottom: 14px; }
-  .search-wrap { position: relative; margin-bottom: 10px; }
-  .search-wrap svg { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--muted-2); }
-  .search-box {
-    width: 100%;
-    padding: 13px 44px 13px 16px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    color: var(--text);
-    font-family: inherit;
-    font-size: 13.5px;
-    transition: border-color 0.2s, background 0.2s;
-  }
-  .search-box::placeholder { color: var(--muted-2); }
-  .search-box:focus { outline: none; border-color: var(--border-hi); background: rgba(255,255,255,0.05); }
-  .chip-row { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 10px; }
-  .chip {
-    padding: 7px 14px;
-    font-size: 11.5px;
-    font-weight: 700;
-    border-radius: 100px;
-    border: 1px solid var(--border);
-    background: rgba(255,255,255,0.03);
-    color: var(--muted);
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .chip:hover { border-color: var(--border-hi); }
-  .chip.active { background: var(--grad); color: #0a0a0f; border-color: transparent; }
-  .toolbar-actions { display: flex; gap: 8px; justify-content: space-between; align-items: center; }
-  .checkall-btn {
-    display: flex; align-items: center; gap: 7px;
-    padding: 9px 16px;
-    font-size: 12px;
-    font-weight: 700;
-    border-radius: 100px;
-    border: 1px solid var(--border);
-    background: rgba(255,255,255,0.03);
-    color: var(--text);
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .checkall-btn svg { width: 14px; height: 14px; }
-  .checkall-btn:hover:not(:disabled) { border-color: var(--cyan); color: var(--cyan); }
-  .checkall-btn:disabled { opacity: 0.5; }
-  .result-count { font-size: 11px; color: var(--muted-2); font-weight: 600; }
-
-  /* ---------- server card ---------- */
-  .card {
-    padding: 16px 17px;
-    margin-bottom: 12px;
-    transition: border-color 0.2s, transform 0.15s;
-  }
-  .card:hover { border-color: var(--border-hi); }
-  .card-head { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
-  .avatar {
-    width: 44px; height: 44px;
-    border-radius: 14px;
-    flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 800;
-    font-size: 13.5px;
-    color: #0a0a0f;
-    background-size: cover;
-    background-position: center;
-    transition: background-color 0.2s;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar.has-icon { color: transparent; }
-  .card-titles { flex: 1; min-width: 0; }
-  .card-titles .name { font-weight: 700; font-size: 15px; }
-  .badge-row { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
-  .badge {
-    font-size: 9.5px;
-    font-weight: 700;
-    padding: 4px 9px;
-    border-radius: 100px;
-    display: inline-flex; align-items: center; gap: 3px;
-  }
-  .badge svg { width: 10px; height: 10px; }
-  .badge.type { background: rgba(56,224,216,0.12); color: var(--cyan); }
-  .badge.cracked { background: rgba(255,107,107,0.12); color: var(--red); }
-  .badge.premium { background: rgba(255,194,102,0.14); color: var(--amber); }
-  .badge.votes { background: rgba(139,107,255,0.14); color: var(--violet); }
-
-  .ip-line {
-    direction: ltr;
-    text-align: left;
-    font-size: 12.5px;
-    color: var(--text);
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 10px 13px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: border-color 0.15s, background 0.15s;
-  }
-  .ip-line:hover { border-color: var(--border-hi); background: rgba(255,255,255,0.05); }
-  .ip-line .copy-icon { width: 14px; height: 14px; color: var(--muted-2); flex-shrink: 0; }
-
-  .modes { font-size: 12px; color: var(--muted); line-height: 1.8; margin-bottom: 13px; }
-
-  .btn-row { display: flex; gap: 8px; }
-  .btn {
-    flex: 1;
-    display: flex; align-items: center; justify-content: center; gap: 6px;
-    padding: 10px 6px;
-    font-size: 12px;
-    font-weight: 700;
-    border-radius: 12px;
-    cursor: pointer;
-    border: 1px solid var(--border);
-    background: rgba(255,255,255,0.03);
-    color: var(--text);
-    transition: all 0.15s;
-    font-family: inherit;
-  }
-  .btn svg { width: 14px; height: 14px; }
-  .btn:active { transform: scale(0.97); }
-  .btn:disabled { opacity: 0.45; cursor: default; }
-  .btn.status-btn:hover:not(:disabled) { border-color: var(--cyan); color: var(--cyan); }
-  .btn.vote-btn { background: var(--grad); border-color: transparent; color: #0a0a0f; }
-  .btn.vote-btn:disabled { background: rgba(62,232,154,0.14); color: var(--green); opacity: 1; }
-
-  .status-box {
-    margin-top: 10px;
-    background: rgba(0,0,0,0.25);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 0 13px;
-    font-size: 12px;
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: max-height 0.28s ease, opacity 0.2s ease, padding 0.28s ease;
-  }
-  .status-box.show { max-height: 200px; opacity: 1; padding: 11px 13px; }
-  .status-row { display: flex; justify-content: space-between; padding: 4px 0; }
-  .status-row .k { color: var(--muted); }
-  .status-row .v { direction: ltr; }
-  .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-left: 7px; }
-  .dot.on { background: var(--green); box-shadow: 0 0 8px var(--green); }
-  .dot.off { background: var(--red); }
-  .dot.pending { background: var(--amber); animation: pulse 1s ease-in-out infinite; }
-  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
-
-  /* ---------- ranking ---------- */
-  .rank-row {
-    display: flex; align-items: center; gap: 13px;
-    padding: 13px 16px;
-    margin-bottom: 9px;
-  }
-  .rank-num {
-    width: 30px; height: 30px;
-    border-radius: 10px;
-    background: rgba(255,255,255,0.04);
-    color: var(--violet);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 800;
-    flex-shrink: 0;
-  }
-  .rank-row:nth-child(1) .rank-num { background: linear-gradient(135deg,#ffd76b,#ff9d3d); color: #0a0a0f; }
-  .rank-row:nth-child(2) .rank-num { background: linear-gradient(135deg,#dfe4ea,#a9b1bb); color: #0a0a0f; }
-  .rank-row:nth-child(3) .rank-num { background: linear-gradient(135deg,#e0a370,#b0713f); color: #0a0a0f; }
-  .rank-row .name { flex: 1; font-size: 13.5px; font-weight: 700; }
-  .rank-row .count { font-size: 12px; color: var(--cyan); font-weight: 600; }
-
-  .empty-note {
-    padding: 40px 20px;
-    text-align: center;
-    color: var(--muted);
-    font-size: 13px;
-    line-height: 1.9;
-  }
-  .empty-note svg { width: 30px; height: 30px; color: var(--muted-2); margin-bottom: 10px; }
-
-  .toast {
-    position: fixed;
-    bottom: 20px; left: 50%; transform: translateX(-50%) translateY(0);
-    background: var(--text);
-    color: #0a0a0f;
-    padding: 12px 20px;
-    border-radius: 100px;
-    font-size: 12.5px;
-    font-weight: 700;
-    display: none;
-    z-index: 50;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  }
-
-  .foot-note { text-align: center; font-size: 11px; color: var(--muted-2); margin-top: 24px; line-height: 2; max-width: 720px; margin-inline: auto; padding: 0 18px; }
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap');
+:root {
+  --bg: #050805;
+  --card: #0f140f;
+  --card2: #161d16;
+  --accent: #00e5c8;
+  --green: #7dff6a;
+  --text: #e8f0e4;
+  --muted: #8a9a82;
+  --border: rgba(0,229,200,0.15);
+  --red: #ff5c5c;
+  --gold: #ffd166;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Vazirmatn', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  background-image: radial-gradient(ellipse 90% 60% at 50% -30%, rgba(0,229,200,0.08), transparent);
+}
+.header {
+  padding: 28px 16px 20px;
+  text-align: center;
+}
+.logo {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  border: 3px solid var(--accent);
+  box-shadow: 0 0 0 5px rgba(0,229,200,0.12), 0 0 32px rgba(0,229,200,0.25);
+  margin: 0 auto 14px;
+  display: block;
+  object-fit: cover;
+  background: #0a0e0a;
+}
+h1 {
+  font-size: 26px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #fff, var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 4px;
+}
+.sub {
+  font-size: 11px;
+  color: var(--green);
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+.desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.8;
+  max-width: 460px;
+  margin: 0 auto 20px;
+}
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.stat {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 11px 16px;
+  min-width: 78px;
+  text-align: center;
+}
+.stat b {
+  display: block;
+  font-size: 18px;
+  color: var(--green);
+  font-weight: 800;
+}
+.stat span {
+  font-size: 11px;
+  color: var(--muted);
+}
+.nav {
+  display: flex;
+  gap: 8px;
+  padding: 12px 14px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(5,8,5,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+}
+.nav button {
+  flex-shrink: 0;
+  padding: 9px 16px;
+  border-radius: 40px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.nav button.active {
+  background: rgba(0,229,200,0.15);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 16px 14px 40px;
+}
+.panel { display: none; }
+.panel.active { display: block; }
+.toolbar { margin-bottom: 14px; }
+.search {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+.search:focus { outline: none; border-color: var(--accent); }
+.filters {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.filters button {
+  padding: 7px 13px;
+  border-radius: 30px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.filters button.on {
+  background: rgba(0,229,200,0.12);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.actions button {
+  padding: 9px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--card2);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.actions button:disabled { opacity: 0.5; }
+.count { font-size: 12px; color: var(--muted); }
+.list { display: flex; flex-direction: column; gap: 11px; }
+.server {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 14px;
+}
+.server:hover { border-color: rgba(0,229,200,0.4); }
+.s-top {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 10px;
+}
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  color: #050805;
+  flex-shrink: 0;
+}
+.info { flex: 1; min-width: 0; }
+.info h3 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.tags {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.tag {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px solid;
+}
+.tag.t { background: rgba(0,229,200,0.1); color: var(--accent); border-color: rgba(0,229,200,0.3); }
+.tag.c { background: rgba(255,92,92,0.1); color: #ff8a8a; border-color: rgba(255,92,92,0.3); }
+.tag.p { background: rgba(255,209,102,0.1); color: var(--gold); border-color: rgba(255,209,102,0.3); }
+.tag.v { background: rgba(125,255,106,0.1); color: var(--green); border-color: rgba(125,255,106,0.3); }
+.ip {
+  direction: ltr;
+  text-align: left;
+  background: #0a0e0a;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-family: monospace;
+  font-size: 13px;
+  color: var(--accent);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+.ip:hover { border-color: var(--accent); }
+.ip span {
+  font-family: 'Vazirmatn';
+  font-size: 11px;
+  color: var(--muted);
+}
+.modes {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+.btns {
+  display: flex;
+  gap: 8px;
+}
+.btns button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--card2);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btns button:disabled { opacity: 0.45; }
+.btns .st { border-color: rgba(0,229,200,0.4); color: var(--accent); }
+.btns .vt { border-color: rgba(125,255,106,0.4); color: var(--green); background: rgba(125,255,106,0.06); }
+.status {
+  background: #0a0e0a;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 12.5px;
+  display: none;
+  margin-top: 10px;
+}
+.status.open { display: block; }
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 0;
+}
+.row .k { color: var(--muted); }
+.row .v { font-family: monospace; direction: ltr; }
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 5px;
+}
+.dot.g { background: var(--green); box-shadow: 0 0 6px var(--green); }
+.dot.r { background: var(--red); }
+.dot.y { background: var(--gold); animation: pulse 1s infinite; }
+@keyframes pulse { 50% { opacity: 0.3; } }
+.rank {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+.rank:hover { border-color: var(--accent); }
+.num {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: rgba(0,229,200,0.15);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.rank .n { flex: 1; font-weight: 700; font-size: 14px; }
+.rank .c { color: var(--accent); font-size: 12.5px; }
+.empty {
+  text-align: center;
+  padding: 36px 16px;
+  background: var(--card);
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+  color: var(--muted);
+  line-height: 1.9;
+}
+.toast {
+  position: fixed;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%) translateY(16px);
+  background: var(--green);
+  color: #050805;
+  padding: 11px 22px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 13.5px;
+  opacity: 0;
+  transition: 0.25s;
+  z-index: 50;
+  pointer-events: none;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.footer {
+  text-align: center;
+  padding: 28px 14px;
+  font-size: 12px;
+  color: var(--muted);
+  opacity: 0.75;
+}
 </style>
 </head>
 <body>
-
-<div class="mesh">
-  <div class="blob blob-1"></div>
-  <div class="blob blob-2"></div>
-  <div class="blob blob-3"></div>
-</div>
-
-<div class="content">
-
-<div class="top">
-  <div class="brand-row">
-    <div class="brand-mark">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6a6 6 0 1 0 6 6"/><circle cx="12" cy="12" r="1.6" fill="#0a0a0f"/></svg>
-    </div>
-    <div class="brand-text">
-      <h1>CraftRadar</h1>
-      <div class="sub">MINECRAFT SERVER RADAR</div>
-    </div>
-  </div>
-  <p class="tag">رادار سرورهای ماینکرفت — ایرانی و خارجی، وضعیت زنده، تعداد پلیر، آی‌پی عددی، نسخه، نوع جاوا/بدراک و رأی‌گیری برای بهترین‌ها.</p>
-  <div class="stat-grid">
-    <div class="stat-card glass"><div class="num" id="stat-total">۰</div><div class="lbl">کل سرورها</div></div>
-    <div class="stat-card glass"><div class="num" id="stat-iran">۰</div><div class="lbl">ایرانی</div></div>
-    <div class="stat-card glass"><div class="num" id="stat-foreign">۰</div><div class="lbl">خارجی</div></div>
-    <div class="stat-card glass"><div class="num" id="stat-online">؟</div><div class="lbl">بررسی‌شده</div></div>
+<div class="header">
+  <img class="logo" src="logo.png" alt="CraftRadar" onerror="this.style.display='none'">
+  <h1>CraftRadar</h1>
+  <div class="sub">SINCE 2026</div>
+  <p class="desc">رادار سرورهای ماینکرفت ایرانی و خارجی با وضعیت زنده، تعداد بازیکن، آی‌پی و رأی‌گیری</p>
+  <div class="stats">
+    <div class="stat"><b id="stat-total">۰</b><span>کل</span></div>
+    <div class="stat"><b id="stat-iran">۰</b><span>ایرانی</span></div>
+    <div class="stat"><b id="stat-foreign">۰</b><span>خارجی</span></div>
+    <div class="stat"><b id="stat-online">؟</b><span>آنلاین</span></div>
   </div>
 </div>
 
-<div class="tabbar-wrap">
-  <div class="tabbar glass" id="tabbar">
-    <div class="tab active" data-tab="iran">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg>
-      ایرانی
-    </div>
-    <div class="tab" data-tab="foreign">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
-      خارجی
-    </div>
-    <div class="tab" data-tab="top">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0V4Z"/><path d="M7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"/></svg>
-      برترین‌ها
-    </div>
-  </div>
+<div class="nav" id="nav">
+  <button class="active" data-panel="iran">🇮🇷 ایرانی</button>
+  <button data-panel="foreign">🌍 خارجی</button>
+  <button data-panel="top">🏆 برترین‌ها</button>
 </div>
 
-<div class="wrap">
-
-  <div class="section active" id="sec-iran">
+<div class="container">
+  <div class="panel active" id="panel-iran">
     <div class="toolbar">
-      <div class="search-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-        <input class="search-box" id="search-iran" placeholder="جستجوی نام سرور ایرانی...">
+      <input class="search" id="search-iran" placeholder="جستجوی سرور ایرانی...">
+      <div class="filters" id="filter-iran">
+        <button class="on" data-val="all">همه</button>
+        <button data-val="java">جاوا</button>
+        <button data-val="bedrock">بدراک</button>
       </div>
-      <div class="chip-row" id="filter-iran">
-        <div class="chip active" data-val="all">همه</div>
-        <div class="chip" data-val="java">جاوا</div>
-        <div class="chip" data-val="bedrock">بدراک</div>
-      </div>
-      <div class="toolbar-actions">
-        <button class="checkall-btn" id="checkall-iran">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12a5 5 0 0 1 5-5M2 12a10 10 0 0 1 10-10M2 12h2M12 2v2"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg>
-          بررسی وضعیت همه
-        </button>
-        <span class="result-count" id="count-iran"></span>
+      <div class="actions">
+        <button id="check-iran">📡 بررسی همه</button>
+        <span class="count" id="count-iran"></span>
       </div>
     </div>
-    <div id="list-iran"></div>
+    <div class="list" id="list-iran"></div>
   </div>
 
-  <div class="section" id="sec-foreign">
+  <div class="panel" id="panel-foreign">
     <div class="toolbar">
-      <div class="search-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-        <input class="search-box" id="search-foreign" placeholder="جستجوی نام سرور خارجی...">
+      <input class="search" id="search-foreign" placeholder="جستجوی سرور خارجی...">
+      <div class="filters" id="filter-foreign">
+        <button class="on" data-val="all">همه</button>
+        <button data-val="cracked">کرک</button>
+        <button data-val="premium">پرمیوم</button>
       </div>
-      <div class="chip-row" id="filter-foreign">
-        <div class="chip active" data-val="all">همه</div>
-        <div class="chip" data-val="cracked">کرک</div>
-        <div class="chip" data-val="premium">پرمیوم</div>
-      </div>
-      <div class="toolbar-actions">
-        <button class="checkall-btn" id="checkall-foreign">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12a5 5 0 0 1 5-5M2 12a10 10 0 0 1 10-10M2 12h2M12 2v2"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg>
-          بررسی وضعیت همه
-        </button>
-        <span class="result-count" id="count-foreign"></span>
+      <div class="actions">
+        <button id="check-foreign">📡 بررسی همه</button>
+        <span class="count" id="count-foreign"></span>
       </div>
     </div>
-    <div id="list-foreign"></div>
+    <div class="list" id="list-foreign"></div>
   </div>
 
-  <div class="section" id="sec-top">
-    <div id="list-top"></div>
+  <div class="panel" id="panel-top">
+    <div class="list" id="list-top"></div>
   </div>
 
-  <div class="foot-note">
-    این فهرست به‌صورت دستی گردآوری و به‌روزرسانی می‌شه.<br>
-    برای وضعیت لحظه‌ای هر سرور از دکمه «وضعیت» استفاده کن.
-  </div>
-</div>
-
+  <div class="footer">ساخته‌شده در ۲۰۲۶ • اطلاعات محفوظ است</div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
 (function () {
+  var DATA = {
+    iran: [
+      { n: "GunMax", ip: "play.gunmax.org", t: "java", m: "Survival, Roleplay, SkyMine, BedWars" },
+      { n: "GameUp", ip: "mc.gameup.ir", t: "java", m: "Survival, SkyBlock, BedWars, Creative, Economy" },
+      { n: "TrexMine", ip: "play.trexmine.com", t: "java", m: "Survival, SkyBlock, BedWars, PvP, Minigames" },
+      { n: "Xcraft", ip: "play.xcraft.ir", t: "java", m: "Survival, SMP, SkyBlock, Practice, Parkour, Creative" },
+      { n: "IranMinecraft", ip: "play.iranminecraft.com", t: "java", m: "Survival, SkyBlock, Economy, Minigames" },
+      { n: "RexoCraft", ip: "play.rexocraft.com", t: "java", m: "BedWars, Survival, SkyMine, SkyBlock, Arcade" },
+      { n: "MagicPixel", ip: "play.magicpixel.ir", t: "java", m: "Roleplay, RPG, SkyMine, SMP" },
+      { n: "InfinityStar", ip: "play.infinitystar.ir", t: "java", m: "Roleplay, Survival, SMP" },
+      { n: "HorizonNetwork", ip: "play.horizonnetwork.ir", t: "java", m: "SkyMine, SMP, ThePit, Survival" },
+      { n: "LunarProCraft", ip: "play.lunarprocraft.ir", t: "java", m: "OneBlock, Minigames, BedWars" },
+      { n: "ArianCraft", ip: "play.svariancraft.ir", t: "java", m: "BedWars, OneBlock, SkyBlock, Survival, Parkour" },
+      { n: "SUSIS MC", ip: "play.susismc.ir", t: "java", m: "Survival, SMP, Anarchy, Zombie" },
+      { n: "VoidShot", ip: "play.voidshot.ir", t: "java", m: "Roleplay, BedWars, SkyBlock, Survival" },
+      { n: "PaladinGuard", ip: "java.paladinguard.ir", t: "both", m: "Survival, Roleplay, SMP + Bedrock" },
+      { n: "PandaSMP", ip: "play.pandasmp.ir", t: "java", m: "Lifesteal, SMP, Anarchy" },
+      { n: "ColdGame", ip: "play.coldgame.ir", t: "java", m: "Survival, SlimeFun, SkyMine, Practice" },
+      { n: "RubyLand", ip: "play.mcbe.ir", t: "bedrock", m: "Bedrock Survival, Economy, Roleplay" },
+      { n: "LegendCraft", ip: "play.legendcraft.ir", t: "java", m: "Earth SMP, Fun, Ranks" },
+      { n: "NeoCraft", ip: "play.neocraft.ir", t: "java", m: "BedWars, Economy, McMMO" },
+      { n: "PeakCraft", ip: "play.peakcraft.ir", t: "java", m: "Roleplay, Survival" },
+      { n: "LightMC", ip: "play.lightmc.ir", t: "java", m: "Survival, SkyBlock, Minigames" },
+      { n: "MineHeaven", ip: "mc.mineheaven.ir", t: "both", m: "Survival, SkyBlock, BedWars" },
+      { n: "HelixGame", ip: "play.helixgame.ir", t: "java", m: "Custom Modes, Low Ping" },
+      { n: "ASTO MC", ip: "play.astomc.ir", t: "java", m: "Anarchy, Free Build" },
+      { n: "BitCraft", ip: "play.bitcraft.ir", t: "java", m: "BedWars, Minigames" }
+    ],
+    foreign: [
+      { n: "Hypixel", ip: "mc.hypixel.net", t: "java", a: "premium", m: "BedWars, SkyBlock, SkyWars, Murder Mystery" },
+      { n: "Wynncraft", ip: "play.wynncraft.com", t: "java", a: "premium", m: "MMORPG, Quests, Leveling" },
+      { n: "CubeCraft", ip: "play.cubecraft.net", t: "both", a: "premium", m: "SkyWars, EggWars, Lucky Islands" },
+      { n: "Pika Network", ip: "play.pika-network.net", t: "both", a: "cracked", m: "BedWars, SkyBlock, Factions, Lifesteal" },
+      { n: "JartexNetwork", ip: "play.jartexnetwork.com", t: "java", a: "cracked", m: "BedWars, SkyWars, Prison, SkyBlock" },
+      { n: "6b6t", ip: "play.6b6t.org", t: "java", a: "cracked", m: "Anarchy, Survival, PvP" },
+      { n: "MineBerry", ip: "mc.mineberry.org", t: "java", a: "cracked", m: "Survival, Anarchy, Economy, KitPvP" },
+      { n: "HylexMC", ip: "play.hylexmc.net", t: "java", a: "cracked", m: "BedWars, Lifesteal, OneBlock, Parkour" },
+      { n: "AppleMC", ip: "play.applemc.fun", t: "java", a: "cracked", m: "Survival, BedWars, Earth, Lifesteal" },
+      { n: "UltimisMC", ip: "play.ultimismc.com", t: "java", a: "cracked", m: "Survival, BedWars, Lifesteal, OneBlock" },
+      { n: "LifestealSMP", ip: "play.lifestealsmp.com", t: "java", a: "cracked", m: "Survival, Lifesteal, Earth, Factions" },
+      { n: "OneBlocky", ip: "play.oneblocky.com", t: "java", a: "cracked", m: "OneBlock, SkyBlock, Survival" },
+      { n: "Purple Prison", ip: "play.purpleprison.org", t: "java", a: "cracked", m: "Prison, Economy, Mining" },
+      { n: "Twerion", ip: "twerion.net", t: "java", a: "cracked", m: "BedWars, SkyBlock, PvP, CityBuild" },
+      { n: "MineMatrix", ip: "minematrix.lol", t: "java", a: "cracked", m: "Survival, Skyblock, KitPvP, Lifesteal" },
+      { n: "DonutSMP", ip: "play.donutsmp.net", t: "java", a: "cracked", m: "Survival, Economy, Claims" },
+      { n: "ZenPvP", ip: "play.zenpvp.net", t: "java", a: "cracked", m: "Gens, Skyblock, Dungeons, Prison" },
+      { n: "Minecadia", ip: "play.minecadia.com", t: "java", a: "cracked", m: "Factions, Kitmap, McMMO" },
+      { n: "Rtrix", ip: "play.rtrix.gg", t: "java", a: "cracked", m: "Practice, Lifesteal SMP" },
+      { n: "Aeon Network", ip: "aeon-network.net", t: "java", a: "cracked", m: "Survival, Realms, Pitfall" }
+    ]
+  };
 
-var SERVERS = {
-  iran: [
-    { name: "GunMax", ip: "play.gunmax.org", type: "java", modes: "Survival, Roleplay, SkyMine, BedWars" },
-    { name: "GameUp", ip: "mc.gameup.ir", type: "java", modes: "Survival, SkyBlock, BedWars, Creative, Economy, Factions" },
-    { name: "Xcraft", ip: "play.xcraft.ir", type: "java", modes: "Survival, SMP, SkyBlock, Practice, Parkour, SkyMine, Creative, BedWars" },
-    { name: "RexoCraft", ip: "play.rexocraft.com", type: "java", modes: "BedWars, Survival, SkyMine, SkyBlock, ThePit, Arcade" },
-    { name: "TrexMine", ip: "play.trexmine.com", type: "java", modes: "Survival, SkyBlock, BedWars, PvP, Minigames" },
-    { name: "MagicPixel", ip: "play.magicpixel.ir", type: "java", modes: "Roleplay, RPG, SkyMine, SMP" },
-    { name: "InfinityStar", ip: "play.infinitystar.ir", type: "java", modes: "Roleplay, Survival, SMP" },
-    { name: "HorizonNetwork", ip: "play.horizonnetwork.ir", type: "java", modes: "SkyMine, SMP, ThePit, Survival" },
-    { name: "LunarProCraft", ip: "play.lunarprocraft.ir", type: "java", modes: "OneBlock, Minigames, BedWars" },
-    { name: "ArianCraft", ip: "play.svariancraft.ir", type: "java", modes: "BedWars, OneBlock, SkyBlock, Survival, Practice, Parkour" },
-    { name: "SUSIS MC", ip: "play.susismc.ir", type: "java", modes: "Survival, SMP, Anarchy, Zombie" },
-    { name: "VoidShot", ip: "play.voidshot.ir", type: "java", modes: "Roleplay, BedWars, SkyBlock, Survival" },
-    { name: "PaladinGuard", ip: "java.paladinguard.ir", type: "both", modes: "Survival, Roleplay, SMP, پشتیبانی از بدراک" },
-    { name: "PandaSMP", ip: "play.pandasmp.ir", type: "java", modes: "Lifesteal, SMP, Anarchy" },
-    { name: "ColdGame", ip: "play.coldgame.ir", type: "java", modes: "Survival, SlimeFun, SkyMine, Practice" },
-    { name: "RubyLand", ip: "play.mcbe.ir", type: "bedrock", modes: "Bedrock Survival, Economy, Roleplay" }
-  ],
-  foreign: [
-    { name: "Hypixel", ip: "mc.hypixel.net", type: "java", access: "premium", modes: "BedWars, SkyBlock, SkyWars, Murder Mystery, ده‌ها مینی‌گیم" },
-    { name: "Wynncraft", ip: "play.wynncraft.com", type: "java", access: "premium", modes: "MMORPG سفارشی، کوئست، لول‌آپ" },
-    { name: "CubeCraft Games", ip: "play.cubecraft.net", type: "both", access: "premium", modes: "SkyWars, EggWars, Lucky Islands" },
-    { name: "Purple Prison", ip: "play.purpleprison.org", type: "java", access: "cracked", modes: "Prison, Economy, Mining" },
-    { name: "6b6t", ip: "play.6b6t.org", type: "java", access: "cracked", modes: "Anarchy, Survival, PvP" },
-    { name: "Pika Network", ip: "play.pika-network.net", type: "both", access: "cracked", modes: "BedWars, SkyBlock, Factions, Lifesteal, Prison, Survival" },
-    { name: "JartexNetwork", ip: "play.jartexnetwork.com", type: "java", access: "cracked", modes: "BedWars, SkyWars, Survival, Prison, SkyBlock, Factions" },
-    { name: "MineBerry", ip: "mc.mineberry.org", type: "java", access: "cracked", modes: "Surviva
+  var COLORS = ["#00e5c8", "#7dff6a", "#ffd166", "#ff5c5c", "#b388ff", "#4fc3f7"];
+
+  function avatar(name) {
+    var sum = 0;
+    for (var i = 0; i < name.length; i++) sum += name.charCodeAt(i);
+    var letters = name.replace(/[^A-Za-z]/g, "").slice(0, 2).toUpperCase();
+    if (!letters) letters = "MC";
+    return { color: COLORS[sum % COLORS.length], letters: letters };
+  }
+
+  function toFa(n) {
+    return String(n).replace(/[0-9]/g, function (d) {
+      return "۰۱۲۳۴۵۶۷۸۹"[d];
+    });
+  }
+
+  function typeLabel(t) {
+    if (t === "java") return "Java";
+    if (t === "bedrock") return "Bedrock";
+    return "Java+Bedrock";
+  }
+
+  var votes = {};
+  var voted = [];
+
+  async function loadVotes() {
+    try {
+      var v = await window.storage.get("cr-votes", true);
+      votes = (v && v.value) ? JSON.parse(v.value) : {};
+    } catch (e) { votes = {}; }
+    try {
+      var m = await window.storage.get("cr-voted", false);
+      voted = (m && m.value) ? JSON.parse(m.value) : [];
+    } catch (e) { voted = []; }
+  }
+
+  function getVotes(name) { return votes[name] || 0; }
+  function hasVoted(name) { return voted.indexOf(name) !== -1; }
+
+  async function addVote(name) {
+    if (hasVoted(name)) return null;
+    votes[name] = (votes[name] || 0) + 1;
+    voted.push(name);
+    try { await window.storage.set("cr-votes", JSON.stringify(votes), true); } catch (e) {}
+    try { await window.storage.set("cr-voted", JSON.stringify(voted), false); } catch (e) {}
+    return votes[name];
+  }
+
+  var toastTimer = null;
+  function showToast(msg) {
+    var el = document.getElementById("toast");
+    el.textContent = msg;
+    el.classList.add("show");
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      el.classList.remove("show");
+    }, 1600);
+  }
+
+  function copyIp(ip) {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(ip).catch(function () {});
+    }
+    showToast("کپی شد: " + ip);
+  }
+
+  var onlineStat = { online: 0, checked: 0 };
+  function bumpOnline(isOnline) {
+    onlineStat.checked++;
+    if (isOnline) onlineStat.online++;
+    document.getElementById("stat-online").textContent = toFa(onlineStat.online) + "/" + toFa(onlineStat.checked);
+  }
+
+  function fetchWithTimeout(url, ms) {
+    var controller = new AbortController();
+    var timer = setTimeout(function () { controller.abort(); }, ms || 7000);
+    return fetch(url, { signal: controller.signal }).finally(function () {
+      clearTimeout(timer);
+    });
+  }
+
+  function readVersion(data) {
+    if (!data) return "?";
+    if (typeof data.version === "string") return data.version;
+    if (data.version && data.version.name) return data.version.name;
+    return "?";
+  }
+
+  function paintStatus(box, state, info) {
+    box.classList.add("open");
+    if (state === "checking") {
+      box.innerHTML = '<div class="row"><span class="k"><span class="dot y"></span>در حال بررسی...</span></div>';
+      return;
+    }
+    if (state === "error") {
+      box.innerHTML = '<div class="row"><span class="k"><span class="dot r"></span>خطا در اتصال</span></div>';
+      return;
+    }
+    if (state === "offline") {
+      box.innerHTML = '<div class="row"><span class="k"><span class="dot r"></span>آفلاین</span></div>';
+      return;
+    }
+    box.innerHTML =
+      '<div class="row"><span class="k"><span class="dot g"></span>آنلاین (' + info.proto + ')</span></div>' +
+      '<div class="row"><span class="k">پلیر</span><span class="v">' + info.players + '</span></div>' +
+      '<div class="row"><span class="k">آی‌پی</span><span class="v">' + info.ip + '</span></div>' +
+      '<div class="row"><span class="k">نسخه</span><span class="v">' + info.version + '</span></div>';
+  }
+
+  async function checkOne(ip, kind) {
+    var url = kind === "bedrock"
+      ? "https://api.mcsrvstat.us/bedrock/3/" + ip
+      : "https://api.mcsrvstat.us/3/" + ip;
+    var res = await fetchWithTimeout(url);
+    return await res.json();
+  }
+
+  async function checkStatus(server, box, btn) {
+    if (btn) btn.disabled = true;
+    paintStatus(box, "checking");
+    var cleanIp = server.ip.split("/")[0].trim();
+    var order = server.t === "bedrock" ? ["bedrock"] : (server.t === "java" ? ["java"] : ["java", "bedrock"]);
+    var found = null;
+    try {
+      for (var i = 0; i < order.length; i++) {
+        var data = await checkOne(cleanIp, order[i]);
+        if (data && data.online) {
+          found = { proto: order[i] === "bedrock" ? "Bedrock" : "Java", data: data };
+          break;
+        }
+      }
+    } catch (e) {
+      paintStatus(box, "error");
+      if (btn) btn.disabled = false;
+      bumpOnline(false);
+      return false;
+    }
+    if (found) {
+      var d = found.data;
+      var players = (d.players && typeof d.players.online !== "undefined")
+        ? (d.players.online + " / " + (d.players.max || "?"))
+        : "?";
+      paintStatus(box, "online", {
+        proto: found.proto,
