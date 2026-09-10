@@ -3,140 +3,209 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>CraftRadar</title>
+<title>CraftRadar — رادار سرورهای ماینکرفت</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&family=Press+Start+2P&display=swap');
+
   :root {
-    --bg: #0a0e0c;
-    --surface: #121815;
-    --surface-2: #1a2320;
-    --line: #223028;
-    --lime: #9fef5a;
-    --lime-dim: #6fae3f;
-    --ice: #6fd9e8;
-    --amber: #ffb648;
-    --text: #eef2ef;
-    --muted: #7c8b83;
-    --radius: 16px;
+    --bg: #12160f;
+    --panel: #1b2116;
+    --panel-2: #232b1c;
+    --dirt: #7a5230;
+    --dirt-dark: #4e341f;
+    --grass: #6fae3f;
+    --grass-bright: #8fd454;
+    --stone: #9aa08f;
+    --gold: #e7b23c;
+    --diamond: #5ecfd6;
+    --redstone: #d9553f;
+    --ink: #eef0e6;
+    --ink-dim: #a6ac9b;
+    --line: #34402a;
+    --line-lo: #262f1d;
   }
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    padding-bottom: 40px;
+    font-family: 'Vazirmatn', -apple-system, 'Segoe UI', Tahoma, sans-serif;
+    background:
+      linear-gradient(180deg, #171d10 0%, var(--bg) 220px);
+    color: var(--ink);
+    padding-bottom: 46px;
+  }
+  .pixel { font-family: 'Press Start 2P', 'Vazirmatn', monospace; direction: ltr; }
+  ::selection { background: var(--grass); color: #10140b; }
+
+  /* pixel block texture used for avatars */
+  .blocktex {
+    background-image:
+      linear-gradient(45deg, rgba(0,0,0,0.16) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.16) 75%),
+      linear-gradient(45deg, rgba(0,0,0,0.16) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.16) 75%);
+    background-size: 8px 8px;
+    background-position: 0 0, 4px 4px;
   }
 
-  /* ---------- هدر ---------- */
+  /* ---------- header ---------- */
   .top {
-    padding: 28px 20px 20px;
-    background: radial-gradient(120% 100% at 20% 0%, #1c2b20 0%, var(--bg) 60%);
-    border-bottom: 1px solid var(--line);
+    padding: 22px 16px 18px;
+    border-bottom: 3px solid var(--line);
+    position: relative;
+    overflow: hidden;
   }
-  .brand-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .top::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(111,174,63,0.14), transparent 70%);
+    pointer-events: none;
+  }
+  .brand-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; position: relative; }
   .brand-mark {
-    width: 34px; height: 34px;
-    border-radius: 9px;
-    background: linear-gradient(135deg, var(--lime), var(--ice));
+    width: 40px; height: 40px;
+    background: var(--grass);
+    border: 3px solid #10140b;
+    box-shadow: inset -4px -4px 0 rgba(0,0,0,0.28), inset 3px 3px 0 rgba(255,255,255,0.18);
     flex-shrink: 0;
+    position: relative;
   }
-  .brand-row h1 { margin: 0; font-size: 19px; font-weight: 800; letter-spacing: -0.3px; }
-  .top p.tag { margin: 0 0 16px; font-size: 12.5px; color: var(--muted); line-height: 1.6; }
+  .brand-mark::after {
+    content: "";
+    position: absolute; right: 6px; bottom: 6px; left: 6px; top: 22px;
+    background: var(--dirt);
+  }
+  .brand-row h1 { margin: 0; font-size: 20px; font-weight: 800; letter-spacing: -0.2px; }
+  .brand-row .pixel-tag { font-size: 8px; color: var(--grass-bright); margin-top: 4px; }
+  .top p.tag { margin: 0 0 16px; font-size: 12.5px; color: var(--ink-dim); line-height: 1.7; max-width: 46ch; }
 
-  .stat-strip { display: flex; gap: 10px; }
+  .stat-strip { display: flex; gap: 8px; position: relative; }
   .stat-chip {
     flex: 1;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 10px 12px;
+    background: var(--panel);
+    border: 2px solid var(--line);
+    padding: 9px 8px;
     text-align: center;
   }
-  .stat-chip .num { font-size: 17px; font-weight: 800; color: var(--lime); }
-  .stat-chip .lbl { font-size: 10px; color: var(--muted); margin-top: 2px; }
+  .stat-chip .num { font-size: 17px; font-weight: 800; color: var(--grass-bright); }
+  .stat-chip .lbl { font-size: 10px; color: var(--ink-dim); margin-top: 2px; }
 
-  /* ---------- تب‌ها ---------- */
+  /* ---------- tabs ---------- */
   .tabbar {
     display: flex;
-    gap: 4px;
+    gap: 6px;
     padding: 10px 16px;
     overflow-x: auto;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 2px solid var(--line);
     position: sticky;
     top: 0;
     background: var(--bg);
-    z-index: 5;
+    z-index: 6;
   }
   .tab {
     padding: 8px 14px;
     font-size: 12.5px;
     font-weight: 700;
-    color: var(--muted);
-    background: transparent;
-    border-radius: 20px;
+    color: var(--ink-dim);
+    background: var(--panel);
+    border: 2px solid var(--line);
     cursor: pointer;
     white-space: nowrap;
-    border: 1px solid transparent;
   }
   .tab.active {
-    background: rgba(159,239,90,0.12);
-    color: var(--lime);
-    border-color: rgba(159,239,90,0.35);
+    background: rgba(111,174,63,0.18);
+    color: var(--grass-bright);
+    border-color: var(--grass);
   }
 
-  .wrap { padding: 14px 16px 10px; }
+  .wrap { padding: 14px 16px 10px; max-width: 640px; margin: 0 auto; }
   .section { display: none; }
   .section.active { display: block; }
 
-  /* ---------- کارت سرور ---------- */
+  /* ---------- toolbar (search + filters) ---------- */
+  .toolbar { margin-bottom: 12px; }
+  .search-box {
+    width: 100%;
+    padding: 10px 12px;
+    background: #0e120a;
+    border: 2px solid var(--line);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+  .search-box:focus { outline: none; border-color: var(--grass); }
+  .chip-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+  .chip {
+    padding: 6px 11px;
+    font-size: 11px;
+    font-weight: 700;
+    border: 2px solid var(--line);
+    background: var(--panel);
+    color: var(--ink-dim);
+    cursor: pointer;
+  }
+  .chip.active { border-color: var(--diamond); color: var(--diamond); background: rgba(94,207,214,0.1); }
+  .toolbar-actions { display: flex; gap: 8px; justify-content: space-between; align-items: center; }
+  .checkall-btn {
+    padding: 8px 12px;
+    font-size: 11.5px;
+    font-weight: 700;
+    border: 2px solid var(--line);
+    background: var(--panel-2);
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .checkall-btn:disabled { opacity: 0.5; }
+  .result-count { font-size: 11px; color: var(--ink-dim); }
+
+  /* ---------- server card ---------- */
   .card {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 14px 15px;
+    background: var(--panel);
+    border: 2px solid var(--line);
+    padding: 13px 14px;
     margin-bottom: 10px;
   }
   .card-head { display: flex; align-items: flex-start; gap: 11px; margin-bottom: 10px; }
   .avatar {
-    width: 38px; height: 38px;
-    border-radius: 10px;
+    width: 40px; height: 40px;
     flex-shrink: 0;
+    border: 2px solid #10140b;
+    box-shadow: inset -3px -3px 0 rgba(0,0,0,0.3), inset 2px 2px 0 rgba(255,255,255,0.15);
     display: flex; align-items: center; justify-content: center;
     font-weight: 800;
-    font-size: 13.5px;
-    color: #0a0e0c;
+    font-size: 12.5px;
+    color: #10140b;
   }
   .card-titles { flex: 1; min-width: 0; }
   .card-titles .name { font-weight: 700; font-size: 14.5px; }
-  .badge-row { display: flex; gap: 6px; margin-top: 5px; flex-wrap: wrap; }
+  .badge-row { display: flex; gap: 5px; margin-top: 5px; flex-wrap: wrap; }
   .badge {
-    font-size: 10px;
+    font-size: 9.5px;
     font-weight: 700;
-    padding: 3px 9px;
-    border-radius: 20px;
+    padding: 3px 8px;
+    border: 1px solid;
   }
-  .badge.cracked { background: rgba(159,239,90,0.12); color: var(--lime); }
-  .badge.votes { background: rgba(111,217,232,0.12); color: var(--ice); }
+  .badge.type { background: rgba(94,207,214,0.1); color: var(--diamond); border-color: rgba(94,207,214,0.4); }
+  .badge.cracked { background: rgba(217,85,63,0.12); color: #ff8a72; border-color: rgba(217,85,63,0.4); }
+  .badge.premium { background: rgba(231,178,60,0.12); color: var(--gold); border-color: rgba(231,178,60,0.4); }
+  .badge.votes { background: rgba(111,174,63,0.12); color: var(--grass-bright); border-color: rgba(111,174,63,0.4); }
 
   .ip-line {
     direction: ltr;
     text-align: left;
     font-family: 'SFMono-Regular', Consolas, monospace;
-    background: #0d1310;
+    background: #0e120a;
     border: 1px solid var(--line);
-    border-radius: 10px;
     padding: 8px 11px;
     margin-bottom: 9px;
     font-size: 12.5px;
-    color: var(--ice);
+    color: var(--diamond);
     cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  .ip-line .hint { font-family: -apple-system, Tahoma; font-size: 10px; color: var(--muted); }
+  .ip-line .hint { font-family: 'Vazirmatn', Tahoma; font-size: 10px; color: var(--ink-dim); }
 
-  .modes { font-size: 11.5px; color: var(--muted); line-height: 1.7; margin-bottom: 11px; }
+  .modes { font-size: 11.5px; color: var(--ink-dim); line-height: 1.7; margin-bottom: 11px; }
 
   .btn-row { display: flex; gap: 8px; }
   .btn {
@@ -144,132 +213,76 @@
     padding: 9px 6px;
     font-size: 11.5px;
     font-weight: 700;
-    border: 1px solid var(--line);
-    border-radius: 10px;
+    border: 2px solid var(--line);
     cursor: pointer;
-    background: var(--surface-2);
-    color: var(--text);
+    background: var(--panel-2);
+    color: var(--ink);
   }
-  .btn:active { opacity: 0.7; }
-  .btn:disabled { opacity: 0.4; cursor: default; }
-  .btn.vote-btn { background: rgba(159,239,90,0.1); border-color: rgba(159,239,90,0.3); color: var(--lime); }
+  .btn:active { transform: translateY(1px); }
+  .btn:disabled { opacity: 0.45; cursor: default; }
+  .btn.status-btn { border-color: rgba(94,207,214,0.4); color: var(--diamond); }
+  .btn.vote-btn { background: rgba(111,174,63,0.1); border-color: rgba(111,174,63,0.4); color: var(--grass-bright); }
 
   .status-box {
     margin-top: 9px;
-    background: #0d1310;
+    background: #0e120a;
     border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 9px 11px;
-    font-size: 11.5px;
-    white-space: pre-line;
+    padding: 10px 11px;
+    font-size: 12px;
     display: none;
   }
+  .status-box.show { display: block; }
+  .status-row { display: flex; justify-content: space-between; padding: 3px 0; }
+  .status-row .k { color: var(--ink-dim); }
+  .status-row .v { direction: ltr; font-family: 'SFMono-Regular', Consolas, monospace; }
+  .dot { display: inline-block; width: 8px; height: 8px; margin-left: 6px; }
+  .dot.on { background: var(--grass-bright); }
+  .dot.off { background: var(--redstone); }
+  .dot.pending { background: var(--gold); }
 
-  /* ---------- بازی‌ها ---------- */
-  .game-card {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 22px 18px;
-    text-align: center;
-    margin-bottom: 12px;
-  }
-  .game-card h3 { margin: 0 0 4px; font-size: 15px; font-weight: 800; }
-  .game-card .sub { font-size: 11.5px; color: var(--muted); margin-bottom: 18px; }
-
-  .rps-row { display: flex; justify-content: center; gap: 10px; margin-bottom: 14px; }
-  .rps-choice {
-    width: 54px; height: 54px;
-    font-size: 22px;
-    background: var(--surface-2);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    cursor: pointer;
-  }
-  .rps-choice:active { transform: scale(0.93); }
-  .rps-out { min-height: 46px; font-size: 13px; }
-  .score-row { display: flex; justify-content: center; gap: 16px; font-size: 11px; color: var(--muted); margin-top: 12px; }
-  .score-row b { color: var(--lime); }
-
-  .guess-input {
-    width: 92px;
-    text-align: center;
-    font-size: 20px;
-    font-weight: 800;
-    padding: 9px;
-    border-radius: 12px;
-    border: 1px solid var(--line);
-    background: #0d1310;
-    color: var(--amber);
-    margin-bottom: 12px;
-  }
-  .guess-out { font-size: 12.5px; min-height: 34px; margin-top: 6px; }
-  .guess-tries { font-size: 10.5px; color: var(--muted); }
-  .wide-btn {
-    padding: 10px 22px;
-    border-radius: 12px;
-    border: 1px solid var(--line);
-    font-weight: 700;
-    font-size: 12.5px;
-    cursor: pointer;
-    background: var(--surface-2);
-    color: var(--text);
-  }
-
-  /* ---------- برترین‌ها ---------- */
+  /* ---------- top / ranking ---------- */
   .rank-row {
     display: flex; align-items: center; gap: 11px;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 12px;
+    background: var(--panel);
+    border: 2px solid var(--line);
     padding: 11px 13px;
     margin-bottom: 8px;
   }
   .rank-num {
-    width: 24px; height: 24px;
-    border-radius: 7px;
-    background: var(--surface-2);
-    color: var(--lime);
+    width: 26px; height: 26px;
+    background: var(--panel-2);
+    color: var(--grass-bright);
     display: flex; align-items: center; justify-content: center;
     font-size: 11px; font-weight: 800;
     flex-shrink: 0;
+    border: 1px solid var(--line);
   }
   .rank-row .name { flex: 1; font-size: 13px; font-weight: 700; }
-  .rank-row .count { font-size: 11.5px; color: var(--ice); }
+  .rank-row .count { font-size: 11.5px; color: var(--diamond); }
   .empty-note {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 26px 18px;
+    background: var(--panel);
+    border: 2px dashed var(--line);
+    padding: 28px 18px;
     text-align: center;
-    color: var(--muted);
+    color: var(--ink-dim);
     font-size: 12.5px;
+    line-height: 1.8;
   }
 
   .toast {
     position: fixed;
     bottom: 16px; left: 50%; transform: translateX(-50%);
-    background: var(--lime);
-    color: #0a0e0c;
+    background: var(--grass-bright);
+    color: #10140b;
     padding: 10px 18px;
-    border-radius: 24px;
+    border: 2px solid #10140b;
     font-size: 12.5px;
     font-weight: 800;
     display: none;
     z-index: 50;
   }
 
-  .boot-error {
-    margin: 16px;
-    background: var(--surface);
-    border: 1px solid #4a2a24;
-    border-radius: var(--radius);
-    padding: 16px;
-    color: #ff9d8a;
-    font-size: 12.5px;
-    direction: ltr;
-    text-align: left;
-  }
+  .foot-note { text-align: center; font-size: 10.5px; color: var(--ink-dim); margin-top: 18px; line-height: 1.8; }
 </style>
 </head>
 <body>
@@ -277,109 +290,118 @@
 <div class="top">
   <div class="brand-row">
     <div class="brand-mark"></div>
-    <h1>CraftRadar</h1>
+    <div>
+      <h1>CraftRadar</h1>
+      <div class="pixel-tag pixel">SINCE 2026</div>
+    </div>
   </div>
-  <p class="tag">رادار پیدا کردن سرورهای ماینکرفت — وضعیت زنده، رأی‌گیری و بازی</p>
+  <p class="tag">رادار پیدا کردن سرورهای ماینکرفت — ایرانی و خارجی، وضعیت زنده، تعداد پلیر، آی‌پی عددی، نسخه و نوع (جاوا/بدراک)، رأی‌گیری برای بهترین‌ها.</p>
   <div class="stat-strip">
-    <div class="stat-chip"><div class="num" id="stat-total">۰</div><div class="lbl">سرور</div></div>
+    <div class="stat-chip"><div class="num" id="stat-total">۰</div><div class="lbl">کل سرورها</div></div>
     <div class="stat-chip"><div class="num" id="stat-iran">۰</div><div class="lbl">ایرانی</div></div>
     <div class="stat-chip"><div class="num" id="stat-foreign">۰</div><div class="lbl">خارجی</div></div>
+    <div class="stat-chip"><div class="num" id="stat-online">؟</div><div class="lbl">آنلاین (بررسی‌شده)</div></div>
   </div>
 </div>
 
 <div class="tabbar" id="tabbar">
-  <div class="tab active" data-tab="iran">🇮🇷 ایران</div>
+  <div class="tab active" data-tab="iran">🇮🇷 ایرانی</div>
   <div class="tab" data-tab="foreign">🌍 خارجی</div>
   <div class="tab" data-tab="top">🏆 برترین‌ها</div>
-  <div class="tab" data-tab="games">🎮 بازی‌ها</div>
 </div>
 
 <div class="wrap">
-  <div class="section active" id="sec-iran"><div id="list-iran"></div></div>
-  <div class="section" id="sec-foreign"><div id="list-foreign"></div></div>
-  <div class="section" id="sec-top"><div id="list-top"></div></div>
 
-  <div class="section" id="sec-games">
-    <div class="game-card">
-      <h3>سنگ کاغذ قیچی</h3>
-      <div class="sub">یه دست مسابقه با CraftRadar</div>
-      <div class="rps-row">
-        <button class="rps-choice" data-c="🪨">🪨</button>
-        <button class="rps-choice" data-c="📄">📄</button>
-        <button class="rps-choice" data-c="✂️">✂️</button>
+  <div class="section active" id="sec-iran">
+    <div class="toolbar">
+      <input class="search-box" id="search-iran" placeholder="جستجوی نام سرور ایرانی...">
+      <div class="chip-row" id="filter-iran">
+        <div class="chip active" data-val="all">همه</div>
+        <div class="chip" data-val="java">جاوا</div>
+        <div class="chip" data-val="bedrock">بدراک</div>
       </div>
-      <div class="rps-out" id="rps-out">یکی از گزینه‌ها رو انتخاب کن...</div>
-      <div class="score-row">
-        <span>برد: <b id="rps-win">0</b></span>
-        <span>باخت: <b id="rps-lose">0</b></span>
-        <span>مساوی: <b id="rps-draw">0</b></span>
+      <div class="toolbar-actions">
+        <button class="checkall-btn" id="checkall-iran">📡 بررسی وضعیت همه</button>
+        <span class="result-count" id="count-iran"></span>
       </div>
     </div>
+    <div id="list-iran"></div>
+  </div>
 
-    <div class="game-card">
-      <h3>حدس عدد</h3>
-      <div class="sub">یه عدد بین ۱ تا ۱۰۰ حدس بزن</div>
-      <input type="number" class="guess-input" id="guess-input" placeholder="؟" min="1" max="100">
-      <br>
-      <button class="wide-btn" style="background:rgba(111,217,232,0.12);border-color:rgba(111,217,232,0.3);color:var(--ice);" id="guess-submit">حدس بزن</button>
-      <div class="guess-out" id="guess-msg">آماده‌ای؟</div>
-      <div class="guess-tries" id="guess-tries"></div>
-      <br>
-      <button class="wide-btn" id="guess-restart">🔁 بازی جدید</button>
+  <div class="section" id="sec-foreign">
+    <div class="toolbar">
+      <input class="search-box" id="search-foreign" placeholder="جستجوی نام سرور خارجی...">
+      <div class="chip-row" id="filter-foreign">
+        <div class="chip active" data-val="all">همه</div>
+        <div class="chip" data-val="cracked">کرک (Cracked)</div>
+        <div class="chip" data-val="premium">پرمیوم (Premium)</div>
+      </div>
+      <div class="toolbar-actions">
+        <button class="checkall-btn" id="checkall-foreign">📡 بررسی وضعیت همه</button>
+        <span class="result-count" id="count-foreign"></span>
+      </div>
     </div>
+    <div id="list-foreign"></div>
+  </div>
+
+  <div class="section" id="sec-top">
+    <div id="list-top"></div>
+  </div>
+
+  <div class="foot-note">
+    وضعیت سرورها به‌صورت زنده از سرویس mcsrvstat.us خونده می‌شه.<br>
+    بعضی سرورها ممکنه دیگه فعال نباشن یا آی‌پی‌شون عوض شده باشه — همیشه قبل از رفتن، وضعیت رو چک کن.
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
-<div id="boot-error-holder"></div>
 
 <script>
-try {
+(function () {
 
 var SERVERS = {
   iran: [
-    { name: "GunMax", ip: "play.gunmax.org", mode: "Survival, Roleplay, SkyMine, BedWars" },
-    { name: "GameUp", ip: "mc.gameup.ir", mode: "Survival, SkyBlock, BedWars, Creative, Economy, Factions" },
-    { name: "Xcraft", ip: "play.xcraft.ir", mode: "Survival, SMP, SkyBlock, Practice, Parkour, SkyMine, Creative, BedWars" },
-    { name: "RexoCraft", ip: "play.rexocraft.com", mode: "BedWars, Survival, SkyMine, SkyBlock, ThePit, Arcade" },
-    { name: "Iran Minecraft", ip: "play.iranminecraft.com", mode: "Survival, SkyBlock, BedWars, Hunger Games, Minigames" },
-    { name: "TrexMine", ip: "play.trexmine.com", mode: "Survival, SkyBlock, BedWars, PvP, Minigames" },
-    { name: "MagicPixel", ip: "play.magicpixel.ir", mode: "Roleplay, RPG, SkyMine, SMP" },
-    { name: "InfinityStar", ip: "play.infinitystar.ir", mode: "Roleplay, Survival, SMP" },
-    { name: "HorizonNetwork", ip: "play.horizonnetwork.ir", mode: "SkyMine, SMP, ThePit, Survival" },
-    { name: "St Abad", ip: "play.stabad.ir", mode: "Survival, Practice" },
-    { name: "LunarProCraft", ip: "play.lunarprocraft.ir", mode: "OneBlock, Minigames, BedWars" },
-    { name: "ArianCraft", ip: "play.svariancraft.ir", mode: "BedWars, OneBlock, SkyBlock, Survival, Practice, Parkour" },
-    { name: "SUSIS MC", ip: "play.susismc.ir", mode: "Survival, SMP, Anarchy, Zombie" },
-    { name: "MineShard", ip: "mc.mineshard.top", mode: "PracticePvP, Bridge Training" },
-    { name: "OnyxMine", ip: "play.onyx-mc.ir", mode: "Survival و حالت‌های مختلف" },
-    { name: "VoidShot", ip: "play.voidshot.ir", mode: "Roleplay, BedWars, SkyBlock, Survival" },
-    { name: "PaladinGuard", ip: "java.paladinguard.ir", mode: "Survival, Roleplay, SMP, Bedrock" },
-    { name: "PandaSMP", ip: "play.pandasmp.ir", mode: "Lifesteal, SMP, Anarchy" },
-    { name: "ColdGame", ip: "play.coldgame.ir", mode: "Survival, SlimeFun, SkyMine, Practice" },
-    { name: "BitCraft", ip: "play.bitonetop.com", mode: "Survival, PvP, Economy" },
-    { name: "RubyLand", ip: "play.mcbe.ir", mode: "Bedrock Survival, Economy, Roleplay" }
+    { name: "GunMax", ip: "play.gunmax.org", type: "java", modes: "Survival, Roleplay, SkyMine, BedWars" },
+    { name: "GameUp", ip: "mc.gameup.ir", type: "java", modes: "Survival, SkyBlock, BedWars, Creative, Economy, Factions" },
+    { name: "Xcraft", ip: "play.xcraft.ir", type: "java", modes: "Survival, SMP, SkyBlock, Practice, Parkour, SkyMine, Creative, BedWars" },
+    { name: "RexoCraft", ip: "play.rexocraft.com", type: "java", modes: "BedWars, Survival, SkyMine, SkyBlock, ThePit, Arcade" },
+    { name: "TrexMine", ip: "play.trexmine.com", type: "java", modes: "Survival, SkyBlock, BedWars, PvP, Minigames" },
+    { name: "MagicPixel", ip: "play.magicpixel.ir", type: "java", modes: "Roleplay, RPG, SkyMine, SMP" },
+    { name: "InfinityStar", ip: "play.infinitystar.ir", type: "java", modes: "Roleplay, Survival, SMP" },
+    { name: "HorizonNetwork", ip: "play.horizonnetwork.ir", type: "java", modes: "SkyMine, SMP, ThePit, Survival" },
+    { name: "LunarProCraft", ip: "play.lunarprocraft.ir", type: "java", modes: "OneBlock, Minigames, BedWars" },
+    { name: "ArianCraft", ip: "play.svariancraft.ir", type: "java", modes: "BedWars, OneBlock, SkyBlock, Survival, Practice, Parkour" },
+    { name: "SUSIS MC", ip: "play.susismc.ir", type: "java", modes: "Survival, SMP, Anarchy, Zombie" },
+    { name: "VoidShot", ip: "play.voidshot.ir", type: "java", modes: "Roleplay, BedWars, SkyBlock, Survival" },
+    { name: "PaladinGuard", ip: "java.paladinguard.ir", type: "both", modes: "Survival, Roleplay, SMP, پشتیبانی از بدراک" },
+    { name: "PandaSMP", ip: "play.pandasmp.ir", type: "java", modes: "Lifesteal, SMP, Anarchy" },
+    { name: "ColdGame", ip: "play.coldgame.ir", type: "java", modes: "Survival, SlimeFun, SkyMine, Practice" },
+    { name: "RubyLand", ip: "play.mcbe.ir", type: "bedrock", modes: "Bedrock Survival, Economy, Roleplay" }
   ],
   foreign: [
-    { name: "Pika Network", ip: "play.pika-network.net", mode: "BedWars, SkyBlock, Factions, Lifesteal, Prison, Survival, OneBlock, KitPvP", status: "Cracked" },
-    { name: "JartexNetwork", ip: "play.jartexnetwork.com", mode: "BedWars, SkyWars, Survival, Prison, SkyBlock, Factions, PvP", status: "Cracked" },
-    { name: "MineBerry", ip: "mc.mineberry.org", mode: "Survival, Anarchy, Economy, Factions, KitPvP, Minigames, PvP", status: "Cracked" },
-    { name: "HylexMC", ip: "play.hylexmc.net", mode: "BedWars, Lifesteal, OneBlock, Parkour, PvP", status: "Cracked" },
-    { name: "Twerion", ip: "twerion.net", mode: "BedWars, SkyBlock, PvP, Minigames, CityBuild", status: "Cracked" },
-    { name: "AppleMC", ip: "play.applemc.fun", mode: "Survival, BedWars, Earth, Lifesteal, Economy, PvP", status: "Cracked" },
-    { name: "UltimisMC", ip: "play.ultimismc.com", mode: "Survival, BedWars, Lifesteal, OneBlock, Parkour, PvP", status: "Cracked" },
-    { name: "LifestealSMP", ip: "play.lifestealsmp.com", mode: "Survival, Lifesteal, Earth, Factions, PvP, Minigames", status: "Cracked" },
-    { name: "6b6t", ip: "play.6b6t.org", mode: "Anarchy, Survival, PvP", status: "Cracked" },
-    { name: "OneBlocky", ip: "play.oneblocky.com", mode: "OneBlock, SkyBlock, Survival, Economy, PvP", status: "Cracked" }
+    { name: "Hypixel", ip: "mc.hypixel.net", type: "java", access: "premium", modes: "BedWars, SkyBlock, SkyWars, Murder Mystery, ده‌ها مینی‌گیم" },
+    { name: "Wynncraft", ip: "play.wynncraft.com", type: "java", access: "premium", modes: "MMORPG سفارشی، کوئست، لول‌آپ" },
+    { name: "CubeCraft Games", ip: "play.cubecraft.net", type: "both", access: "premium", modes: "SkyWars, EggWars, Lucky Islands" },
+    { name: "Purple Prison", ip: "play.purpleprison.org", type: "java", access: "cracked", modes: "Prison, Economy, Mining" },
+    { name: "6b6t", ip: "play.6b6t.org", type: "java", access: "cracked", modes: "Anarchy, Survival, PvP" },
+    { name: "Pika Network", ip: "play.pika-network.net", type: "both", access: "cracked", modes: "BedWars, SkyBlock, Factions, Lifesteal, Prison, Survival" },
+    { name: "JartexNetwork", ip: "play.jartexnetwork.com", type: "java", access: "cracked", modes: "BedWars, SkyWars, Survival, Prison, SkyBlock, Factions" },
+    { name: "MineBerry", ip: "mc.mineberry.org", type: "java", access: "cracked", modes: "Survival, Anarchy, Economy, Factions, KitPvP" },
+    { name: "HylexMC", ip: "play.hylexmc.net", type: "java", access: "cracked", modes: "BedWars, Lifesteal, OneBlock, Parkour, PvP" },
+    { name: "Twerion", ip: "twerion.net", type: "java", access: "cracked", modes: "BedWars, SkyBlock, PvP, Minigames, CityBuild" },
+    { name: "AppleMC", ip: "play.applemc.fun", type: "java", access: "cracked", modes: "Survival, BedWars, Earth, Lifesteal, Economy" },
+    { name: "UltimisMC", ip: "play.ultimismc.com", type: "java", access: "cracked", modes: "Survival, BedWars, Lifesteal, OneBlock, Parkour" },
+    { name: "LifestealSMP", ip: "play.lifestealsmp.com", type: "java", access: "cracked", modes: "Survival, Lifesteal, Earth, Factions, PvP" },
+    { name: "OneBlocky", ip: "play.oneblocky.com", type: "java", access: "cracked", modes: "OneBlock, SkyBlock, Survival, Economy" }
   ]
 };
 
-var AVATAR_COLORS = ["#9fef5a", "#6fd9e8", "#ffb648", "#f97362", "#c792ea", "#7fd8a6"];
+var AVATAR_COLORS = ["#6fae3f", "#5ecfd6", "#e7b23c", "#d9553f", "#b98ce0", "#7a5230"];
 function avatarStyle(name) {
   var sum = 0;
   for (var i = 0; i < name.length; i++) sum += name.charCodeAt(i);
   var color = AVATAR_COLORS[sum % AVATAR_COLORS.length];
-  var letters = name.replace(/[^A-Za-z\u0600-\u06FF]/g, "").slice(0, 2).toUpperCase() || "MC";
+  var letters = name.replace(/[^A-Za-z]/g, "").slice(0, 2).toUpperCase() || "MC";
   return { color: color, letters: letters };
 }
 
@@ -388,37 +410,49 @@ function toFa(n) {
   return String(n).replace(/[0-9]/g, function (d) { return map[d]; });
 }
 
-/* ---------- رأی‌ها (localStorage) ---------- */
-function safeGet(key, fallback) {
-  try {
-    var v = localStorage.getItem(key);
-    return v ? JSON.parse(v) : fallback;
-  } catch (e) { return fallback; }
-}
-function safeSet(key, val) {
-  try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {}
+function typeLabel(t) {
+  if (t === "java") return "Java";
+  if (t === "bedrock") return "Bedrock";
+  return "Java + Bedrock";
 }
 
-var votes = safeGet("craftradar_votes", {});
-var votedServers = safeGet("craftradar_voted", []);
+/* ---------- persistent storage (votes) ---------- */
+var votes = {};
+var votedByMe = [];
+var storageReady = false;
+
+async function loadStorage() {
+  try {
+    var v = await window.storage.get("craftradar-votes", true);
+    votes = (v && v.value) ? JSON.parse(v.value) : {};
+  } catch (e) { votes = {}; }
+  try {
+    var mine = await window.storage.get("craftradar-voted-by-me", false);
+    votedByMe = (mine && mine.value) ? JSON.parse(mine.value) : [];
+  } catch (e) { votedByMe = []; }
+  storageReady = true;
+}
 
 function getVotes(name) { return votes[name] || 0; }
-function hasVoted(name) { return votedServers.indexOf(name) !== -1; }
-function addVote(name) {
+function hasVoted(name) { return votedByMe.indexOf(name) !== -1; }
+
+async function addVote(name) {
   if (hasVoted(name)) return null;
   votes[name] = (votes[name] || 0) + 1;
-  safeSet("craftradar_votes", votes);
-  votedServers.push(name);
-  safeSet("craftradar_voted", votedServers);
+  votedByMe.push(name);
+  try { await window.storage.set("craftradar-votes", JSON.stringify(votes), true); } catch (e) {}
+  try { await window.storage.set("craftradar-voted-by-me", JSON.stringify(votedByMe), false); } catch (e) {}
   return votes[name];
 }
 
-/* ---------- توست ---------- */
+/* ---------- toast ---------- */
+var toastTimer = null;
 function showToast(msg) {
   var t = document.getElementById("toast");
   t.textContent = msg;
   t.style.display = "block";
-  setTimeout(function () { t.style.display = "none"; }, 1300);
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(function () { t.style.display = "none"; }, 1400);
 }
 function copyIp(ip) {
   if (navigator.clipboard) {
@@ -427,97 +461,204 @@ function copyIp(ip) {
   showToast("کپی شد: " + ip);
 }
 
-/* ---------- وضعیت زنده ---------- */
-function checkStatus(ip, outEl, btn) {
-  outEl.style.display = "block";
-  outEl.textContent = "در حال بررسی...";
-  btn.disabled = true;
-  var cleanIp = ip.split("/")[0].trim();
-
-  fetch("https://api.mcsrvstat.us/3/" + cleanIp)
-    .then(function (r) { return r.json(); })
-    .then(function (data) {
-      if (data.online) {
-        outEl.textContent =
-          "🟢 آنلاین (Java)\n" +
-          "🌐 IP عددی: " + (data.ip || "?") + "\n" +
-          "👥 پلیر: " + (data.players ? data.players.online : "?") + "/" + (data.players ? data.players.max : "?") + "\n" +
-          "🧱 نسخه: " + (data.version || "?");
-        btn.disabled = false;
-        return;
-      }
-      return fetch("https://api.mcsrvstat.us/bedrock/3/" + cleanIp)
-        .then(function (r) { return r.json(); })
-        .then(function (data2) {
-          if (data2.online) {
-            outEl.textContent =
-              "🟢 آنلاین (Bedrock)\n" +
-              "🌐 IP عددی: " + (data2.ip || "?") + "\n" +
-              "👥 پلیر: " + (data2.players ? data2.players.online : "?") + "/" + (data2.players ? data2.players.max : "?");
-          } else {
-            outEl.textContent = "🔴 آفلاین یا در دسترس نیست";
-          }
-          btn.disabled = false;
-        });
-    })
-    .catch(function () {
-      outEl.textContent = "⚠️ خطا در بررسی وضعیت (اتصال اینترنت رو چک کن)";
-      btn.disabled = false;
-    });
+/* ---------- online counter ---------- */
+var onlineCheckedCount = { online: 0, checked: 0 };
+function bumpOnlineStat(isOnline) {
+  onlineCheckedCount.checked++;
+  if (isOnline) onlineCheckedCount.online++;
+  document.getElementById("stat-online").textContent =
+    toFa(onlineCheckedCount.online) + "/" + toFa(onlineCheckedCount.checked);
 }
 
-/* ---------- رندر لیست ---------- */
-function renderList(category, containerId) {
-  var list = document.getElementById(containerId);
-  list.innerHTML = "";
-  SERVERS[category].forEach(function (s) {
-    var av = avatarStyle(s.name);
-    var card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML =
-      '<div class="card-head">' +
-        '<div class="avatar" style="background:' + av.color + '">' + av.letters + '</div>' +
-        '<div class="card-titles">' +
-          '<div class="name">' + s.name + '</div>' +
-          '<div class="badge-row">' +
-            (s.status ? '<span class="badge cracked">' + s.status + '</span>' : '') +
-            '<span class="badge votes votes-badge">🗳️ ' + toFa(getVotes(s.name)) + '</span>' +
-          '</div>' +
-        '</div>' +
-      '</div>' +
-      '<div class="ip-line"><span>' + s.ip + '</span><span class="hint">کپی</span></div>' +
-      '<div class="modes">' + s.mode + '</div>' +
-      '<div class="btn-row">' +
-        '<button class="btn status-btn">📡 وضعیت</button>' +
-        '<button class="btn vote-btn">🗳️ رأی</button>' +
-      '</div>' +
-      '<div class="status-box"></div>';
+/* ---------- live status check ---------- */
+function fetchWithTimeout(url, ms) {
+  var controller = new AbortController();
+  var timer = setTimeout(function () { controller.abort(); }, ms);
+  return fetch(url, { signal: controller.signal }).finally(function () { clearTimeout(timer); });
+}
 
-    card.querySelector(".ip-line").onclick = function () { copyIp(s.ip); };
+function readVersion(data) {
+  if (!data) return "?";
+  if (typeof data.version === "string") return data.version;
+  if (data.version && data.version.name) return data.version.name;
+  return "?";
+}
 
-    var statusBtn = card.querySelector(".status-btn");
-    var outEl = card.querySelector(".status-box");
-    statusBtn.onclick = function () { checkStatus(s.ip, outEl, statusBtn); };
+function paintStatus(box, state, info) {
+  box.classList.add("show");
+  if (state === "checking") {
+    box.innerHTML = '<div class="status-row"><span class="k"><span class="dot pending"></span>در حال بررسی...</span><span class="v"></span></div>';
+    return;
+  }
+  if (state === "error") {
+    box.innerHTML = '<div class="status-row"><span class="k"><span class="dot off"></span>خطا در اتصال</span><span class="v"></span></div>';
+    return;
+  }
+  if (state === "offline") {
+    box.innerHTML = '<div class="status-row"><span class="k"><span class="dot off"></span>آفلاین یا در دسترس نیست</span><span class="v"></span></div>';
+    return;
+  }
+  box.innerHTML =
+    '<div class="status-row"><span class="k"><span class="dot on"></span>آنلاین (' + info.proto + ')</span><span class="v"></span></div>' +
+    '<div class="status-row"><span class="k">پلیر</span><span class="v">' + info.players + '</span></div>' +
+    '<div class="status-row"><span class="k">آی‌پی عددی</span><span class="v">' + info.ip + '</span></div>' +
+    '<div class="status-row"><span class="k">نسخه</span><span class="v">' + info.version + '</span></div>';
+}
 
-    var voteBtn = card.querySelector(".vote-btn");
-    var votesBadge = card.querySelector(".votes-badge");
-    if (hasVoted(s.name)) {
-      voteBtn.textContent = "✅ رأی دادی";
-      voteBtn.disabled = true;
-    }
-    voteBtn.onclick = function () {
-      var newTotal = addVote(s.name);
-      if (newTotal === null) {
-        showToast("قبلاً به " + s.name + " رأی دادی");
-        return;
+async function checkOneEndpoint(cleanIp, kind) {
+  var url = kind === "bedrock"
+    ? "https://api.mcsrvstat.us/bedrock/3/" + cleanIp
+    : "https://api.mcsrvstat.us/3/" + cleanIp;
+  var res = await fetchWithTimeout(url, 7000);
+  var data = await res.json();
+  return data;
+}
+
+async function checkStatus(server, box, btn) {
+  if (btn) btn.disabled = true;
+  paintStatus(box, "checking");
+  var cleanIp = server.ip.split("/")[0].trim();
+  var order = server.type === "bedrock" ? ["bedrock"] : (server.type === "java" ? ["java"] : ["java", "bedrock"]);
+
+  var found = null;
+  try {
+    for (var i = 0; i < order.length; i++) {
+      var data = await checkOneEndpoint(cleanIp, order[i]);
+      if (data && data.online) {
+        found = { proto: order[i] === "bedrock" ? "Bedrock" : "Java", data: data };
+        break;
       }
-      votesBadge.textContent = "🗳️ " + toFa(newTotal);
-      voteBtn.textContent = "✅ رأی دادی";
-      voteBtn.disabled = true;
-      showToast("به " + s.name + " رأی دادی!");
-    };
+    }
+  } catch (e) {
+    paintStatus(box, "error");
+    if (btn) btn.disabled = false;
+    bumpOnlineStat(false);
+    return false;
+  }
 
-    list.appendChild(card);
+  if (found) {
+    var d = found.data;
+    var playersTxt = (d.players && typeof d.players.online !== "undefined")
+      ? (d.players.online + " / " + (d.players.max || "?"))
+      : "?";
+    paintStatus(box, "online", {
+      proto: found.proto,
+      players: playersTxt,
+      ip: d.ip || "?",
+      version: readVersion(d)
+    });
+    bumpOnlineStat(true);
+    if (btn) btn.disabled = false;
+    return true;
+  } else {
+    paintStatus(box, "offline");
+    bumpOnlineStat(false);
+    if (btn) btn.disabled = false;
+    return false;
+  }
+}
+
+/* simple concurrency-limited queue so "check all" doesn't hammer the API / lag the UI */
+async function runQueue(tasks, concurrency) {
+  var idx = 0;
+  async function worker() {
+    while (idx < tasks.length) {
+      var my = idx++;
+      try { await tasks[my](); } catch (e) {}
+    }
+  }
+  var workers = [];
+  for (var i = 0; i < concurrency && i < tasks.length; i++) workers.push(worker());
+  await Promise.all(workers);
+}
+
+/* ---------- filters state ---------- */
+var state = {
+  iran: { search: "", filter: "all" },
+  foreign: { search: "", filter: "all" }
+};
+
+function matchesFilters(category, s) {
+  var st = state[category];
+  if (st.search && s.name.toLowerCase().indexOf(st.search.toLowerCase()) === -1) return false;
+  if (category === "iran") {
+    if (st.filter === "java" && s.type === "bedrock") return false;
+    if (st.filter === "bedrock" && s.type === "java") return false;
+  } else {
+    if (st.filter !== "all" && s.access !== st.filter) return false;
+  }
+  return true;
+}
+
+/* ---------- render list ---------- */
+function buildCard(category, s) {
+  var av = avatarStyle(s.name);
+  var card = document.createElement("div");
+  card.className = "card";
+
+  var badges = '<span class="badge type">' + typeLabel(s.type) + '</span>';
+  if (s.access === "cracked") badges += '<span class="badge cracked">کرک</span>';
+  if (s.access === "premium") badges += '<span class="badge premium">پرمیوم</span>';
+  badges += '<span class="badge votes votes-badge">🗳️ ' + toFa(getVotes(s.name)) + '</span>';
+
+  card.innerHTML =
+    '<div class="card-head">' +
+      '<div class="avatar blocktex" style="background:' + av.color + '">' + av.letters + '</div>' +
+      '<div class="card-titles">' +
+        '<div class="name">' + s.name + '</div>' +
+        '<div class="badge-row">' + badges + '</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="ip-line"><span>' + s.ip + '</span><span class="hint">کپی</span></div>' +
+    '<div class="modes">' + s.modes + '</div>' +
+    '<div class="btn-row">' +
+      '<button class="btn status-btn">📡 وضعیت</button>' +
+      '<button class="btn vote-btn">🗳️ رأی</button>' +
+    '</div>' +
+    '<div class="status-box"></div>';
+
+  card.querySelector(".ip-line").onclick = function () { copyIp(s.ip); };
+
+  var statusBtn = card.querySelector(".status-btn");
+  var statusBox = card.querySelector(".status-box");
+  statusBtn.onclick = function () { checkStatus(s, statusBox, statusBtn); };
+  card._checkStatus = function () { return checkStatus(s, statusBox, null); };
+
+  var voteBtn = card.querySelector(".vote-btn");
+  var votesBadge = card.querySelector(".votes-badge");
+  if (hasVoted(s.name)) {
+    voteBtn.textContent = "✅ رأی دادی";
+    voteBtn.disabled = true;
+  }
+  voteBtn.onclick = async function () {
+    voteBtn.disabled = true;
+    var newTotal = await addVote(s.name);
+    if (newTotal === null) {
+      showToast("قبلاً به " + s.name + " رأی دادی");
+      voteBtn.textContent = "✅ رأی دادی";
+      return;
+    }
+    votesBadge.textContent = "🗳️ " + toFa(newTotal);
+    voteBtn.textContent = "✅ رأی دادی";
+    showToast("به " + s.name + " رأی دادی!");
+  };
+
+  return card;
+}
+
+function renderList(category) {
+  var list = document.getElementById("list-" + category);
+  var countEl = document.getElementById("count-" + category);
+  list.innerHTML = "";
+  var filtered = SERVERS[category].filter(function (s) { return matchesFilters(category, s); });
+  countEl.textContent = toFa(filtered.length) + " سرور";
+
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="empty-note">چیزی با این فیلتر پیدا نشد.<br>جستجو یا فیلتر رو تغییر بده.</div>';
+    return;
+  }
+  filtered.forEach(function (s) {
+    list.appendChild(buildCard(category, s));
   });
 }
 
@@ -529,10 +670,10 @@ function renderTop() {
 
   var anyVotes = sorted.some(function (s) { return getVotes(s.name) > 0; });
   if (!anyVotes) {
-    list.innerHTML = '<div class="empty-note">هنوز کسی رأی نداده! برو تو تب سرورها و اولین نفر باش 🚀</div>';
+    list.innerHTML = '<div class="empty-note">هنوز کسی رأی نداده!<br>برو تو تب ایرانی یا خارجی و اولین نفر باش 🚀</div>';
     return;
   }
-  sorted.slice(0, 10).forEach(function (s, i) {
+  sorted.slice(0, 12).forEach(function (s, i) {
     var row = document.createElement("div");
     row.className = "rank-row";
     row.innerHTML =
@@ -543,16 +684,82 @@ function renderTop() {
   });
 }
 
-/* ---------- آمار بالای صفحه ---------- */
-document.getElementById("stat-total").textContent = toFa(SERVERS.iran.length + SERVERS.foreign.length);
-document.getElementById("stat-iran").textContent = toFa(SERVERS.iran.length);
-document.getElementById("stat-foreign").textContent = toFa(SERVERS.foreign.length);
+function renderAll() {
+  renderList("iran");
+  renderList("foreign");
+  renderTop();
+}
 
-/* ---------- تب‌ها ---------- */
-var tabs = document.querySelectorAll(".tab");
-for (var i = 0; i < tabs.length; i++) {
-  tabs[i].onclick = function () {
-    var target = this.getAttribute("data-tab");
-    var allTabs = document.querySelectorAll(".tab");
-    for (var j = 0; j < allTabs.length; j++) allTabs[j].classList.remove("active");
- 
+/* ---------- header stats ---------- */
+function paintHeaderStats() {
+  document.getElementById("stat-total").textContent = toFa(SERVERS.iran.length + SERVERS.foreign.length);
+  document.getElementById("stat-iran").textContent = toFa(SERVERS.iran.length);
+  document.getElementById("stat-foreign").textContent = toFa(SERVERS.foreign.length);
+}
+
+/* ---------- tabs ---------- */
+function setupTabs() {
+  var tabs = document.querySelectorAll(".tab");
+  for (var i = 0; i < tabs.length; i++) {
+    tabs[i].onclick = function () {
+      var target = this.getAttribute("data-tab");
+      var allTabs = document.querySelectorAll(".tab");
+      for (var j = 0; j < allTabs.length; j++) allTabs[j].classList.remove("active");
+      this.classList.add("active");
+      var allSections = document.querySelectorAll(".section");
+      for (var k = 0; k < allSections.length; k++) allSections[k].classList.remove("active");
+      document.getElementById("sec-" + target).classList.add("active");
+      if (target === "top") renderTop();
+    };
+  }
+}
+
+/* ---------- search + filter chips ---------- */
+function setupToolbar(category) {
+  var searchEl = document.getElementById("search-" + category);
+  searchEl.oninput = function () {
+    state[category].search = searchEl.value;
+    renderList(category);
+  };
+
+  var chips = document.querySelectorAll("#filter-" + category + " .chip");
+  for (var i = 0; i < chips.length; i++) {
+    chips[i].onclick = function () {
+      var group = this.parentElement.querySelectorAll(".chip");
+      for (var j = 0; j < group.length; j++) group[j].classList.remove("active");
+      this.classList.add("active");
+      state[category].filter = this.getAttribute("data-val");
+      renderList(category);
+    };
+  }
+
+  var checkAllBtn = document.getElementById("checkall-" + category);
+  checkAllBtn.onclick = async function () {
+    checkAllBtn.disabled = true;
+    checkAllBtn.textContent = "⏳ در حال بررسی...";
+    var list = document.getElementById("list-" + category);
+    var cards = Array.prototype.slice.call(list.querySelectorAll(".card"));
+    var tasks = cards.map(function (c) { return function () { return c._checkStatus(); }; });
+    await runQueue(tasks, 3);
+    checkAllBtn.disabled = false;
+    checkAllBtn.textContent = "📡 بررسی وضعیت همه";
+  };
+}
+
+/* ---------- boot ---------- */
+async function boot() {
+  paintHeaderStats();
+  setupTabs();
+  setupToolbar("iran");
+  setupToolbar("foreign");
+  renderAll();
+  await loadStorage();
+  renderAll();
+}
+
+boot();
+
+})();
+</script>
+</body>
+</html>
