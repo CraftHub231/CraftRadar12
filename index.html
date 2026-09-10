@@ -8,617 +8,518 @@
   @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&family=Press+Start+2P&display=swap');
 
   :root {
-    --bg: #070a07;
-    --panel: rgba(16, 22, 14, 0.78);
-    --panel-2: rgba(22, 30, 18, 0.88);
-    --grass: #6fdc4a;
-    --grass-bright: #8ff06a;
-    --diamond: #00e8ff;
-    --diamond-glow: rgba(0, 232, 255, 0.35);
+    --bg: #05080a;
+    --panel: rgba(12, 18, 16, 0.82);
+    --panel-2: rgba(18, 26, 22, 0.9);
+    --glass: rgba(255,255,255,0.03);
+    --cyan: #00e8ff;
+    --cyan-dim: rgba(0,232,255,0.15);
+    --green: #6fdc4a;
+    --green-bright: #8ff06a;
     --gold: #ffc94a;
-    --redstone: #ff5a4a;
-    --ink: #f2f6ea;
-    --ink-dim: #9eae8c;
-    --line: rgba(111, 220, 74, 0.18);
-    --line-strong: rgba(0, 232, 255, 0.45);
+    --red: #ff5a4a;
+    --ink: #eef4ec;
+    --ink-dim: #8fa08a;
+    --line: rgba(0,232,255,0.18);
+    --line-strong: rgba(0,232,255,0.45);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  
   body {
     font-family: 'Vazirmatn', system-ui, sans-serif;
     background: 
-      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 232, 255, 0.12), transparent),
-      radial-gradient(ellipse 60% 40% at 90% 10%, rgba(111, 220, 74, 0.08), transparent),
-      #070a07;
+      radial-gradient(ellipse 90% 60% at 50% -30%, rgba(0,232,255,0.09), transparent),
+      radial-gradient(ellipse 50% 40% at 100% 0%, rgba(111,220,74,0.06), transparent),
+      #05080a;
     color: var(--ink);
     min-height: 100vh;
-    padding-bottom: 70px;
+    padding-bottom: 60px;
     overflow-x: hidden;
-    opacity: 0;
-    animation: pageIn 0.6s ease forwards;
   }
-
-  @keyframes pageIn {
-    to { opacity: 1; }
-  }
-
   .pixel { font-family: 'Press Start 2P', monospace; direction: ltr; }
 
-  /* HEADER */
-  .top {
+  /* ========== HEADER ========== */
+  .header {
+    padding: 22px 18px 18px;
+    border-bottom: 1px solid var(--line);
     position: relative;
-    padding: 32px 20px 28px;
-    overflow: hidden;
   }
-
-  .top::after {
-    content: "";
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--diamond), transparent);
-    opacity: 0.5;
-  }
-
-  .brand-row {
+  .header-top {
     display: flex;
     align-items: center;
-    gap: 18px;
-    margin-bottom: 18px;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
   }
-
-  .logo-wrap {
-    width: 80px;
-    height: 80px;
-    flex-shrink: 0;
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
   }
-
-  .logo-img {
-    width: 80px;
-    height: 80px;
+  .logo {
+    width: 58px; height: 58px;
     border-radius: 50%;
-    border: 3px solid var(--diamond);
-    box-shadow: 
-      0 0 0 4px rgba(0, 232, 255, 0.15),
-      0 0 28px var(--diamond-glow);
+    border: 2.5px solid var(--cyan);
+    box-shadow: 0 0 0 3px rgba(0,232,255,0.12), 0 0 22px rgba(0,232,255,0.25);
     object-fit: cover;
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
-
-  .logo-img:hover {
-    transform: scale(1.08) rotate(-4deg);
-  }
-
-  .brand-text h1 {
-    font-size: 27px;
+  .brand h1 {
+    font-size: 22px;
     font-weight: 800;
-    letter-spacing: -0.5px;
-    background: linear-gradient(105deg, #ffffff 20%, var(--diamond) 80%);
+    background: linear-gradient(100deg, #fff 30%, var(--cyan));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
   }
+  .brand .sub { font-size: 9px; color: var(--green-bright); margin-top: 3px; letter-spacing: 1px; }
 
-  .pixel-tag {
-    font-size: 9px;
-    color: var(--grass-bright);
-    margin-top: 6px;
-    letter-spacing: 1.5px;
-  }
-
-  .tag {
-    font-size: 14px;
-    color: var(--ink-dim);
-    line-height: 1.85;
-    max-width: 540px;
-    margin-bottom: 24px;
-  }
-
-  .stat-strip {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-  }
-
-  .stat-chip {
-    background: var(--panel);
-    backdrop-filter: blur(16px);
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 15px 10px;
-    text-align: center;
-    transition: all 0.3s ease;
-  }
-
-  .stat-chip:hover {
-    border-color: var(--line-strong);
-    transform: translateY(-3px);
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4), 0 0 18px rgba(0, 232, 255, 0.1);
-  }
-
-  .stat-chip .num {
-    font-size: 23px;
-    font-weight: 800;
-    color: var(--grass-bright);
-  }
-
-  .stat-chip .lbl {
-    font-size: 11.5px;
-    color: var(--ink-dim);
-    margin-top: 4px;
-  }
-
-  /* TABS */
-  .tabbar {
-    display: flex;
-    gap: 10px;
-    padding: 14px 16px;
-    overflow-x: auto;
-    position: sticky;
-    top: 0;
-    background: rgba(7, 10, 7, 0.9);
-    backdrop-filter: blur(20px);
-    z-index: 30;
-    border-bottom: 1px solid rgba(111, 220, 74, 0.12);
-  }
-
-  .tab {
-    padding: 10px 18px;
-    font-size: 14px;
+  .user-area { display: flex; align-items: center; gap: 10px; }
+  .btn-login, .btn-logout {
+    padding: 9px 16px;
+    border-radius: 12px;
+    font-size: 13px;
     font-weight: 700;
-    color: var(--ink-dim);
+    border: 1px solid var(--line);
     background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.25s ease;
-  }
-
-  .tab:hover { color: var(--ink); border-color: rgba(0, 232, 255, 0.35); }
-
-  .tab.active {
-    background: linear-gradient(135deg, rgba(0, 232, 255, 0.18), rgba(111, 220, 74, 0.12));
-    color: var(--diamond);
-    border-color: var(--diamond);
-    box-shadow: 0 0 18px rgba(0, 232, 255, 0.2);
-  }
-
-  .wrap {
-    padding: 20px 16px 30px;
-    max-width: 700px;
-    margin: 0 auto;
-  }
-
-  .section { display: none; }
-  .section.active { display: block; }
-
-  /* TOOLBAR */
-  .toolbar { margin-bottom: 16px; }
-
-  .search-box {
-    width: 100%;
-    padding: 13px 16px;
-    background: rgba(8, 12, 6, 0.7);
-    border: 1px solid var(--line);
-    border-radius: 16px;
     color: var(--ink);
-    font-family: inherit;
-    font-size: 14.5px;
-    margin-bottom: 12px;
-    transition: all 0.25s;
-  }
-
-  .search-box:focus {
-    outline: none;
-    border-color: var(--diamond);
-    box-shadow: 0 0 0 4px rgba(0, 232, 255, 0.12);
-  }
-
-  .chip-row {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-bottom: 12px;
-  }
-
-  .chip {
-    padding: 8px 15px;
-    font-size: 12.5px;
-    font-weight: 700;
-    border: 1px solid var(--line);
-    background: var(--panel);
-    color: var(--ink-dim);
-    border-radius: 50px;
     cursor: pointer;
     transition: all 0.2s;
   }
-
-  .chip:hover { color: var(--ink); border-color: rgba(0, 232, 255, 0.4); }
-
-  .chip.active {
-    border-color: var(--diamond);
-    color: var(--diamond);
-    background: rgba(0, 232, 255, 0.1);
+  .btn-login:hover, .btn-logout:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    box-shadow: 0 0 14px rgba(0,232,255,0.15);
   }
-
-  .toolbar-actions {
-    display: flex;
-    gap: 12px;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .checkall-btn {
-    padding: 10px 16px;
-    font-size: 13px;
-    font-weight: 700;
-    border: 1px solid var(--line);
-    background: var(--panel-2);
-    color: var(--ink);
-    border-radius: 14px;
-    cursor: pointer;
-    transition: all 0.25s;
-  }
-
-  .checkall-btn:hover:not(:disabled) {
-    border-color: var(--diamond);
-    color: var(--diamond);
-  }
-
-  .checkall-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-  .result-count { font-size: 12.5px; color: var(--ink-dim); }
-
-  /* CARDS + LANDING SYSTEM */
-  .card {
-    background: var(--panel);
-    backdrop-filter: blur(14px);
-    border: 1px solid var(--line);
+  .user-badge {
+    font-size: 12.5px;
+    color: var(--green-bright);
+    background: rgba(111,220,74,0.1);
+    padding: 7px 12px;
     border-radius: 20px;
-    padding: 17px 18px;
-    margin-bottom: 14px;
-    transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
-    position: relative;
-    overflow: hidden;
-    opacity: 0;
-    transform: translateY(28px);
+    border: 1px solid rgba(111,220,74,0.3);
   }
 
-  .card.landed {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .card::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--diamond), var(--grass), transparent);
-    opacity: 0;
-    transition: opacity 0.35s;
-  }
-
-  .card:hover {
-    transform: translateY(-5px);
-    border-color: rgba(0, 232, 255, 0.5);
-    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45), 0 0 24px rgba(0, 232, 255, 0.12);
-  }
-
-  .card:hover::before { opacity: 1; }
-
-  .card-head {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    margin-bottom: 13px;
-  }
-
-  .avatar {
-    width: 46px;
-    height: 46px;
-    flex-shrink: 0;
-    border-radius: 13px;
-    border: 2px solid rgba(0, 0, 0, 0.35);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    font-size: 14px;
-    color: #070a07;
-  }
-
-  .card-titles { flex: 1; min-width: 0; }
-
-  .card-titles .name {
-    font-weight: 700;
-    font-size: 16.5px;
-  }
-
-  .badge-row {
-    display: flex;
-    gap: 6px;
-    margin-top: 7px;
-    flex-wrap: wrap;
-  }
-
-  .badge {
-    font-size: 11px;
-    font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 9px;
-    border: 1px solid;
-  }
-
-  .badge.type {
-    background: rgba(0, 232, 255, 0.1);
-    color: var(--diamond);
-    border-color: rgba(0, 232, 255, 0.35);
-  }
-
-  .badge.cracked {
-    background: rgba(255, 90, 74, 0.12);
-    color: #ff8a7a;
-    border-color: rgba(255, 90, 74, 0.35);
-  }
-
-  .badge.premium {
-    background: rgba(255, 201, 74, 0.12);
-    color: var(--gold);
-    border-color: rgba(255, 201, 74, 0.35);
-  }
-
-  .badge.votes {
-    background: rgba(111, 220, 74, 0.12);
-    color: var(--grass-bright);
-    border-color: rgba(111, 220, 74, 0.35);
-  }
-
-  .ip-line {
-    direction: ltr;
-    text-align: left;
-    font-family: 'SFMono-Regular', Consolas, monospace;
-    background: rgba(5, 8, 4, 0.75);
-    border: 1px solid var(--line);
-    border-radius: 13px;
-    padding: 11px 14px;
-    margin-bottom: 12px;
-    font-size: 13.5px;
-    color: var(--diamond);
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: all 0.25s;
-  }
-
-  .ip-line:hover {
-    border-color: var(--diamond);
-    background: rgba(0, 232, 255, 0.07);
-  }
-
-  .ip-line .hint {
-    font-family: 'Vazirmatn';
-    font-size: 11.5px;
-    color: var(--ink-dim);
-  }
-
-  .modes {
+  .tag {
     font-size: 13px;
     color: var(--ink-dim);
     line-height: 1.7;
-    margin-bottom: 14px;
+    max-width: 520px;
+    margin-bottom: 16px;
   }
 
-  .btn-row { display: flex; gap: 11px; }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  .stat {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 12px 8px;
+    text-align: center;
+  }
+  .stat .n { font-size: 20px; font-weight: 800; color: var(--green-bright); }
+  .stat .l { font-size: 11px; color: var(--ink-dim); margin-top: 2px; }
 
-  .btn {
-    flex: 1;
-    padding: 11px 8px;
+  /* ========== TABS ========== */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    padding: 12px 16px;
+    overflow-x: auto;
+    position: sticky;
+    top: 0;
+    background: rgba(5,8,10,0.92);
+    backdrop-filter: blur(16px);
+    z-index: 20;
+    border-bottom: 1px solid var(--line);
+  }
+  .tab {
+    padding: 9px 16px;
     font-size: 13.5px;
     font-weight: 700;
+    color: var(--ink-dim);
+    background: var(--panel);
     border: 1px solid var(--line);
-    border-radius: 13px;
+    border-radius: 12px;
     cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .tab:hover { color: var(--ink); }
+  .tab.active {
+    background: linear-gradient(135deg, rgba(0,232,255,0.15), rgba(111,220,74,0.1));
+    color: var(--cyan);
+    border-color: var(--cyan);
+    box-shadow: 0 0 14px rgba(0,232,255,0.18);
+  }
+
+  .wrap { padding: 16px; max-width: 680px; margin: 0 auto; }
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ========== TOOLBAR ========== */
+  .toolbar { margin-bottom: 14px; }
+  .search {
+    width: 100%;
+    padding: 12px 14px;
+    background: rgba(6,10,8,0.8);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  .search:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(0,232,255,0.1); }
+  .chips { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 10px; }
+  .chip {
+    padding: 7px 13px;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--ink-dim);
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  .chip.active { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-dim); }
+  .actions { display: flex; justify-content: space-between; align-items: center; }
+  .check-all {
+    padding: 9px 14px;
+    font-size: 12.5px;
+    font-weight: 700;
+    border: 1px solid var(--line);
     background: var(--panel-2);
     color: var(--ink);
-    transition: all 0.25s;
+    border-radius: 12px;
+    cursor: pointer;
   }
+  .check-all:hover:not(:disabled) { border-color: var(--cyan); color: var(--cyan); }
+  .check-all:disabled { opacity: 0.5; }
+  .count { font-size: 12px; color: var(--ink-dim); }
 
-  .btn:hover:not(:disabled) { transform: translateY(-2px); }
-  .btn:active { transform: translateY(1px); }
+  /* ========== CARDS ========== */
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 15px 16px;
+    margin-bottom: 12px;
+    transition: all 0.3s cubic-bezier(0.25,0.8,0.25,1);
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  .card.landed { opacity: 1; transform: translateY(0); }
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: var(--line-strong);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.4), 0 0 20px rgba(0,232,255,0.08);
+  }
+  .card-head { display: flex; gap: 12px; margin-bottom: 11px; }
+  .avatar {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 14px; color: #05080a;
+    flex-shrink: 0;
+  }
+  .name { font-weight: 700; font-size: 15.5px; }
+  .badges { display: flex; gap: 5px; margin-top: 5px; flex-wrap: wrap; }
+  .badge {
+    font-size: 10.5px; font-weight: 700;
+    padding: 3px 9px; border-radius: 8px; border: 1px solid;
+  }
+  .badge.type { background: var(--cyan-dim); color: var(--cyan); border-color: rgba(0,232,255,0.35); }
+  .badge.cracked { background: rgba(255,90,74,0.1); color: #ff8a7a; border-color: rgba(255,90,74,0.3); }
+  .badge.premium { background: rgba(255,201,74,0.1); color: var(--gold); border-color: rgba(255,201,74,0.3); }
+  .badge.votes { background: rgba(111,220,74,0.1); color: var(--green-bright); border-color: rgba(111,220,74,0.3); }
+
+  .ip-box {
+    direction: ltr; text-align: left;
+    font-family: Consolas, monospace;
+    background: rgba(4,7,6,0.8);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 10px 13px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: var(--cyan);
+    cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .ip-box:hover { border-color: var(--cyan); background: rgba(0,232,255,0.06); }
+  .ip-box .hint { font-family: 'Vazirmatn'; font-size: 11px; color: var(--ink-dim); }
+
+  .modes { font-size: 12.5px; color: var(--ink-dim); line-height: 1.65; margin-bottom: 12px; }
+
+  .btns { display: flex; gap: 9px; }
+  .btn {
+    flex: 1; padding: 10px 6px;
+    font-size: 13px; font-weight: 700;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--panel-2);
+    color: var(--ink);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn:hover:not(:disabled) { transform: translateY(-1px); }
   .btn:disabled { opacity: 0.45; cursor: default; }
-
-  .btn.status-btn {
-    border-color: rgba(0, 232, 255, 0.4);
-    color: var(--diamond);
-  }
-
-  .btn.status-btn:hover:not(:disabled) {
-    background: rgba(0, 232, 255, 0.1);
-  }
-
-  .btn.vote-btn {
-    background: rgba(111, 220, 74, 0.08);
-    border-color: rgba(111, 220, 74, 0.4);
-    color: var(--grass-bright);
-  }
-
-  .btn.vote-btn:hover:not(:disabled) {
-    background: rgba(111, 220, 74, 0.16);
-  }
+  .btn.status { border-color: rgba(0,232,255,0.4); color: var(--cyan); }
+  .btn.status:hover:not(:disabled) { background: rgba(0,232,255,0.1); }
+  .btn.vote { background: rgba(111,220,74,0.08); border-color: rgba(111,220,74,0.4); color: var(--green-bright); }
+  .btn.vote:hover:not(:disabled) { background: rgba(111,220,74,0.15); }
 
   .status-box {
-    margin-top: 13px;
-    background: rgba(5, 8, 4, 0.7);
+    margin-top: 11px;
+    background: rgba(4,7,6,0.75);
     border: 1px solid var(--line);
-    border-radius: 13px;
-    padding: 13px 15px;
-    font-size: 13.5px;
+    border-radius: 12px;
+    padding: 12px 13px;
+    font-size: 13px;
     display: none;
   }
+  .status-box.show { display: block; animation: fade 0.25s ease; }
+  @keyframes fade { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:none} }
 
-  .status-box.show { display: block; animation: fadeIn 0.3s ease; }
+  .s-row { display: flex; justify-content: space-between; padding: 3px 0; }
+  .s-row .k { color: var(--ink-dim); }
+  .s-row .v { direction: ltr; font-family: Consolas, monospace; }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(5px); }
-    to { opacity: 1; transform: translateY(0); }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-left: 6px; }
+  .dot.on { background: var(--green-bright); box-shadow: 0 0 8px var(--green-bright); }
+  .dot.off { background: var(--red); }
+  .dot.pending { background: var(--gold); animation: pulse 1s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+
+  .players-toggle {
+    margin-top: 8px;
+    padding: 7px 0;
+    font-size: 12.5px;
+    color: var(--cyan);
+    cursor: pointer;
+    text-align: center;
+    border-top: 1px dashed var(--line);
   }
-
-  .status-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 4px 0;
-  }
-
-  .status-row .k { color: var(--ink-dim); }
-  .status-row .v {
+  .players-list {
+    margin-top: 8px;
+    max-height: 140px;
+    overflow-y: auto;
+    font-size: 12px;
     direction: ltr;
-    font-family: 'SFMono-Regular', Consolas, monospace;
+    text-align: left;
+    display: none;
   }
-
-  .dot {
+  .players-list.show { display: block; }
+  .players-list span {
     display: inline-block;
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    margin-left: 7px;
-  }
-
-  .dot.on { background: var(--grass-bright); box-shadow: 0 0 9px var(--grass-bright); }
-  .dot.off { background: var(--redstone); }
-  .dot.pending { background: var(--gold); animation: pulse 1.1s infinite; }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.35; }
+    background: rgba(0,232,255,0.08);
+    border: 1px solid rgba(0,232,255,0.2);
+    padding: 3px 8px;
+    border-radius: 6px;
+    margin: 3px 3px 0 0;
+    color: var(--ink);
   }
 
   /* RANK */
   .rank-row {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+    display: flex; align-items: center; gap: 12px;
     background: var(--panel);
     border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 14px 16px;
-    margin-bottom: 11px;
+    border-radius: 14px;
+    padding: 12px 14px;
+    margin-bottom: 9px;
+    opacity: 0; transform: translateX(16px);
     transition: all 0.3s;
-    opacity: 0;
-    transform: translateX(18px);
   }
-
-  .rank-row.landed {
-    opacity: 1;
-    transform: translateX(0);
-  }
-
-  .rank-row:hover {
-    border-color: var(--diamond);
-    transform: translateX(-4px);
-  }
-
+  .rank-row.landed { opacity: 1; transform: none; }
   .rank-num {
-    width: 34px;
-    height: 34px;
-    background: linear-gradient(135deg, rgba(0, 232, 255, 0.22), rgba(111, 220, 74, 0.15));
-    color: var(--diamond);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13.5px;
-    font-weight: 800;
-    flex-shrink: 0;
-    border-radius: 11px;
+    width: 30px; height: 30px;
+    background: linear-gradient(135deg, rgba(0,232,255,0.2), rgba(111,220,74,0.12));
+    color: var(--cyan);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800;
+    border-radius: 10px;
     border: 1px solid var(--line-strong);
   }
+  .rank-row .name { flex: 1; font-weight: 700; font-size: 14px; }
+  .rank-row .count { font-size: 13px; color: var(--cyan); }
 
-  .rank-row .name {
-    flex: 1;
-    font-size: 15px;
-    font-weight: 700;
-  }
-
-  .rank-row .count {
-    font-size: 13.5px;
-    color: var(--diamond);
-  }
-
-  .empty-note {
+  .empty {
     background: var(--panel);
     border: 1px dashed var(--line);
-    border-radius: 18px;
-    padding: 40px 22px;
+    border-radius: 16px;
+    padding: 36px 18px;
     text-align: center;
     color: var(--ink-dim);
-    font-size: 15px;
-    line-height: 1.95;
+    font-size: 14px;
+    line-height: 1.9;
   }
 
   .toast {
-    position: fixed;
-    bottom: 26px;
-    left: 50%;
-    transform: translateX(-50%) translateY(16px);
-    background: linear-gradient(135deg, var(--grass-bright), #5fcf3a);
-    color: #070a07;
-    padding: 13px 26px;
-    border-radius: 15px;
-    font-size: 14.5px;
-    font-weight: 800;
+    position: fixed; bottom: 22px; left: 50%;
+    transform: translateX(-50%) translateY(12px);
+    background: linear-gradient(135deg, var(--green-bright), #5fcf3a);
+    color: #05080a;
+    padding: 12px 22px;
+    border-radius: 14px;
+    font-size: 14px; font-weight: 800;
+    display: none; z-index: 100;
+    box-shadow: 0 8px 24px rgba(111,220,74,0.35);
+    opacity: 0; transition: all 0.25s;
+  }
+  .toast.show { display: block; opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  .foot {
+    text-align: center;
+    font-size: 12px;
+    color: var(--ink-dim);
+    margin-top: 28px;
+    line-height: 1.8;
+    opacity: 0.8;
+  }
+
+  /* ========== LOGIN MODAL (Night Theme) ========== */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(8px);
+    z-index: 200;
     display: none;
-    z-index: 100;
-    box-shadow: 0 10px 28px rgba(111, 220, 74, 0.4);
-    opacity: 0;
-    transition: all 0.3s ease;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
   }
+  .modal-overlay.show { display: flex; }
 
-  .toast.show {
-    display: block;
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
+  .login-box {
+    width: 100%;
+    max-width: 360px;
+    background: linear-gradient(165deg, #0c1412 0%, #0a1010 100%);
+    border-radius: 28px;
+    padding: 28px 26px;
+    border: 1px solid rgba(0,232,255,0.25);
+    box-shadow: 0 0 0 1px rgba(0,232,255,0.08), 0 25px 50px rgba(0,0,0,0.5), 0 0 40px rgba(0,232,255,0.08);
+    position: relative;
   }
-
-  .foot-note {
+  .login-box .close {
+    position: absolute; top: 14px; left: 16px;
+    background: none; border: none; color: var(--ink-dim);
+    font-size: 22px; cursor: pointer; line-height: 1;
+  }
+  .login-box .close:hover { color: var(--cyan); }
+  .login-heading {
+    text-align: center;
+    font-weight: 800;
+    font-size: 26px;
+    color: var(--cyan);
+    margin-bottom: 6px;
+  }
+  .login-sub {
     text-align: center;
     font-size: 12.5px;
     color: var(--ink-dim);
-    margin-top: 32px;
-    line-height: 1.9;
-    opacity: 0.85;
+    margin-bottom: 22px;
+  }
+  .login-form .input {
+    width: 100%;
+    background: rgba(6,10,8,0.9);
+    border: 1px solid var(--line);
+    padding: 14px 16px;
+    border-radius: 16px;
+    margin-bottom: 12px;
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 14px;
+  }
+  .login-form .input:focus {
+    outline: none;
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 3px rgba(0,232,255,0.12);
+  }
+  .login-form .input::placeholder { color: #5a6a5e; }
+  .login-btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 16px;
+    font-weight: 800;
+    font-size: 15px;
+    color: #05080a;
+    background: linear-gradient(90deg, var(--cyan), #00c4d9);
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 8px 20px rgba(0,232,255,0.25);
+  }
+  .login-btn:hover { transform: scale(1.02); box-shadow: 0 10px 24px rgba(0,232,255,0.35); }
+  .login-btn:active { transform: scale(0.97); }
+  .login-or {
+    text-align: center;
+    font-size: 12px;
+    color: var(--ink-dim);
+    margin: 18px 0 12px;
+  }
+  .socials {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+  .social {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: rgba(8,12,10,0.8);
+    display: grid; place-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .social:hover { border-color: var(--cyan); transform: scale(1.1); }
+  .social svg { width: 18px; height: 18px; fill: var(--ink-dim); }
+  .social:hover svg { fill: var(--cyan); }
+  .login-note {
+    text-align: center;
+    font-size: 11px;
+    color: var(--ink-dim);
+    margin-top: 16px;
+    line-height: 1.5;
   }
 
-  @media (max-width: 520px) {
-    .stat-strip { grid-template-columns: repeat(2, 1fr); }
-    .logo-img, .logo-wrap { width: 66px; height: 66px; }
-    .brand-text h1 { font-size: 22px; }
+  @media (max-width: 500px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .logo { width: 48px; height: 48px; }
+    .brand h1 { font-size: 19px; }
   }
 </style>
 </head>
 <body>
-<div class="top">
-  <div class="brand-row">
-    <div class="logo-wrap">
-      <img class="logo-img" src="data:image/png;base64,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f+YTkLVwzq45jv/+03r+ufT/3u0+/H5fZKjU4D2p9KhPPQOG6IG13FuopscJNgxjRRRZDlcgDPoHB5aPjS1fsXxgaHhkdPnczNTc7MzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMz07OzU7OzszOzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMz" alt="CraftRadar">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <div class="brand">
+      <img class="logo" src="data:image/png;base64,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f+YTkLVwzq45jv/+03r+ufT/3u0+/H5fZKjU4D2p9KhPPQOG6IG13FuopscJNgxjRRRZDlcgDPoHB5aPjS1fsXxgaHhkdPnczNTc7MzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzM" alt="CraftRadar">
+      <div>
+        <h1>CraftRadar</h1>
+        <div class="sub pixel">SINCE 2026</div>
+      </div>
     </div>
-    <div class="brand-text">
-      <h1>CraftRadar</h1>
-      <div class="pixel-tag pixel">SINCE 2026</div>
+    <div class="user-area" id="userArea">
+      <button class="btn-login" id="openLogin">ورود / ثبت‌نام</button>
     </div>
   </div>
-  <p class="tag">رادار حرفه‌ای پیدا کردن سرورهای ماینکرفت — ایرانی و خارجی، وضعیت زنده، تعداد پلیر، آی‌پی عددی، نسخه و نوع (جاوا/بدراک)، رأی‌گیری برای بهترین‌ها.</p>
-  <div class="stat-strip">
-    <div class="stat-chip"><div class="num" id="stat-total">۰</div><div class="lbl">کل سرورها</div></div>
-    <div class="stat-chip"><div class="num" id="stat-iran">۰</div><div class="lbl">ایرانی</div></div>
-    <div class="stat-chip"><div class="num" id="stat-foreign">۰</div><div class="lbl">خارجی</div></div>
-    <div class="stat-chip"><div class="num" id="stat-online">؟</div><div class="lbl">آنلاین (بررسی‌شده)</div></div>
+  <p class="tag">رادار حرفه‌ای سرورهای ماینکرفت — وضعیت زنده، آی‌پی + پورت، لیست پلیرها و رأی‌گیری (فقط برای کاربران لاگین‌شده)</p>
+  <div class="stats">
+    <div class="stat"><div class="n" id="stat-total">۰</div><div class="l">کل سرورها</div></div>
+    <div class="stat"><div class="n" id="stat-iran">۰</div><div class="l">ایرانی</div></div>
+    <div class="stat"><div class="n" id="stat-foreign">۰</div><div class="l">خارجی</div></div>
+    <div class="stat"><div class="n" id="stat-online">؟</div><div class="l">آنلاین</div></div>
   </div>
 </div>
 
-<div class="tabbar" id="tabbar">
+<!-- TABS -->
+<div class="tabs">
   <div class="tab active" data-tab="iran">🇮🇷 ایرانی</div>
   <div class="tab" data-tab="foreign">🌍 خارجی</div>
   <div class="tab" data-tab="top">🏆 برترین‌ها</div>
@@ -627,15 +528,15 @@
 <div class="wrap">
   <div class="section active" id="sec-iran">
     <div class="toolbar">
-      <input class="search-box" id="search-iran" placeholder="جستجوی نام سرور ایرانی...">
-      <div class="chip-row" id="filter-iran">
+      <input class="search" id="search-iran" placeholder="جستجوی سرور ایرانی...">
+      <div class="chips" id="filter-iran">
         <div class="chip active" data-val="all">همه</div>
         <div class="chip" data-val="java">جاوا</div>
         <div class="chip" data-val="bedrock">بدراک</div>
       </div>
-      <div class="toolbar-actions">
-        <button class="checkall-btn" id="checkall-iran">📡 بررسی وضعیت همه</button>
-        <span class="result-count" id="count-iran"></span>
+      <div class="actions">
+        <button class="check-all" id="checkall-iran">📡 بررسی همه</button>
+        <span class="count" id="count-iran"></span>
       </div>
     </div>
     <div id="list-iran"></div>
@@ -643,15 +544,15 @@
 
   <div class="section" id="sec-foreign">
     <div class="toolbar">
-      <input class="search-box" id="search-foreign" placeholder="جستجوی نام سرور خارجی...">
-      <div class="chip-row" id="filter-foreign">
+      <input class="search" id="search-foreign" placeholder="جستجوی سرور خارجی...">
+      <div class="chips" id="filter-foreign">
         <div class="chip active" data-val="all">همه</div>
-        <div class="chip" data-val="cracked">کرک (Cracked)</div>
-        <div class="chip" data-val="premium">پرمیوم (Premium)</div>
+        <div class="chip" data-val="cracked">کرک</div>
+        <div class="chip" data-val="premium">پرمیوم</div>
       </div>
-      <div class="toolbar-actions">
-        <button class="checkall-btn" id="checkall-foreign">📡 بررسی وضعیت همه</button>
-        <span class="result-count" id="count-foreign"></span>
+      <div class="actions">
+        <button class="check-all" id="checkall-foreign">📡 بررسی همه</button>
+        <span class="count" id="count-foreign"></span>
       </div>
     </div>
     <div id="list-foreign"></div>
@@ -661,435 +562,435 @@
     <div id="list-top"></div>
   </div>
 
-  <div class="foot-note">
-    وضعیت سرورها به‌صورت زنده از سرویس mcsrvstat.us خونده می‌شه.<br>
-    بعضی سرورها ممکنه دیگه فعال نباشن یا آی‌پی‌شون عوض شده باشه — همیشه قبل از رفتن، وضعیت رو چک کن.
+  <div class="foot">
+    وضعیت از mcsrvstat.us خوانده می‌شود. بعضی سرورها ممکن است آفلاین باشند یا آی‌پی‌شان تغییر کرده باشد.
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="loginModal">
+  <div class="login-box">
+    <button class="close" id="closeLogin">×</button>
+    <div class="login-heading">ورود به حساب</div>
+    <div class="login-sub">برای رأی دادن باید وارد شوید</div>
+    <form class="login-form" id="loginForm">
+      <input class="input" type="email" id="email" placeholder="ایمیل" required>
+      <input class="input" type="password" id="password" placeholder="رمز عبور" required>
+      <button class="login-btn" type="submit">ورود</button>
+    </form>
+    <div class="login-or">یا ورود سریع</div>
+    <div class="socials">
+      <button class="social" title="Google" onclick="fakeSocial('Google')">
+        <svg viewBox="0 0 488 512"><path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"/></svg>
+      </button>
+      <button class="social" title="Guest" onclick="fakeSocial('مهمان')">
+        <svg viewBox="0 0 448 512"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></svg>
+      </button>
+    </div>
+    <div class="login-note">این یک سیستم محلی است. اطلاعات فقط روی دستگاه شما ذخیره می‌شود.</div>
+  </div>
+</div>
+
 <script>
-(function () {
+(function(){
+  // ===== DATA =====
   var SERVERS = {
     iran: [
-      { name: "GunMax", ip: "play.gunmax.org", type: "java", modes: "Survival, Roleplay, SkyMine, BedWars" },
-      { name: "GameUp", ip: "mc.gameup.ir", type: "java", modes: "Survival, SkyBlock, BedWars, Creative, Economy, Factions" },
-      { name: "Xcraft", ip: "play.xcraft.ir", type: "java", modes: "Survival, SMP, SkyBlock, Practice, Parkour, SkyMine, Creative, BedWars" },
-      { name: "RexoCraft", ip: "play.rexocraft.com", type: "java", modes: "BedWars, Survival, SkyMine, SkyBlock, ThePit, Arcade" },
-      { name: "TrexMine", ip: "play.trexmine.com", type: "java", modes: "Survival, SkyBlock, BedWars, PvP, Minigames" },
-      { name: "MagicPixel", ip: "play.magicpixel.ir", type: "java", modes: "Roleplay, RPG, SkyMine, SMP" },
-      { name: "InfinityStar", ip: "play.infinitystar.ir", type: "java", modes: "Roleplay, Survival, SMP" },
-      { name: "HorizonNetwork", ip: "play.horizonnetwork.ir", type: "java", modes: "SkyMine, SMP, ThePit, Survival" },
-      { name: "LunarProCraft", ip: "play.lunarprocraft.ir", type: "java", modes: "OneBlock, Minigames, BedWars" },
-      { name: "ArianCraft", ip: "play.svariancraft.ir", type: "java", modes: "BedWars, OneBlock, SkyBlock, Survival, Practice, Parkour" },
-      { name: "SUSIS MC", ip: "play.susismc.ir", type: "java", modes: "Survival, SMP, Anarchy, Zombie" },
-      { name: "VoidShot", ip: "play.voidshot.ir", type: "java", modes: "Roleplay, BedWars, SkyBlock, Survival" },
-      { name: "PaladinGuard", ip: "java.paladinguard.ir", type: "both", modes: "Survival, Roleplay, SMP, پشتیبانی از بدراک" },
-      { name: "PandaSMP", ip: "play.pandasmp.ir", type: "java", modes: "Lifesteal, SMP, Anarchy" },
-      { name: "ColdGame", ip: "play.coldgame.ir", type: "java", modes: "Survival, SlimeFun, SkyMine, Practice" },
-      { name: "RubyLand", ip: "play.mcbe.ir", type: "bedrock", modes: "Bedrock Survival, Economy, Roleplay" }
+      {name:"GunMax",ip:"play.gunmax.org",type:"java",modes:"Survival, Roleplay, SkyMine, BedWars"},
+      {name:"GameUp",ip:"mc.gameup.ir",type:"java",modes:"Survival, SkyBlock, BedWars, Creative, Economy, Factions"},
+      {name:"Xcraft",ip:"play.xcraft.ir",type:"java",modes:"Survival, SMP, SkyBlock, Practice, Parkour, SkyMine, Creative, BedWars"},
+      {name:"RexoCraft",ip:"play.rexocraft.com",type:"java",modes:"BedWars, Survival, SkyMine, SkyBlock, ThePit, Arcade"},
+      {name:"TrexMine",ip:"play.trexmine.com",type:"java",modes:"Survival, SkyBlock, BedWars, PvP, Minigames"},
+      {name:"MagicPixel",ip:"play.magicpixel.ir",type:"java",modes:"Roleplay, RPG, SkyMine, SMP"},
+      {name:"InfinityStar",ip:"play.infinitystar.ir",type:"java",modes:"Roleplay, Survival, SMP"},
+      {name:"HorizonNetwork",ip:"play.horizonnetwork.ir",type:"java",modes:"SkyMine, SMP, ThePit, Survival"},
+      {name:"LunarProCraft",ip:"play.lunarprocraft.ir",type:"java",modes:"OneBlock, Minigames, BedWars"},
+      {name:"ArianCraft",ip:"play.svariancraft.ir",type:"java",modes:"BedWars, OneBlock, SkyBlock, Survival, Practice, Parkour"},
+      {name:"SUSIS MC",ip:"play.susismc.ir",type:"java",modes:"Survival, SMP, Anarchy, Zombie"},
+      {name:"VoidShot",ip:"play.voidshot.ir",type:"java",modes:"Roleplay, BedWars, SkyBlock, Survival"},
+      {name:"PaladinGuard",ip:"java.paladinguard.ir",type:"both",modes:"Survival, Roleplay, SMP, پشتیبانی بدراک"},
+      {name:"PandaSMP",ip:"play.pandasmp.ir",type:"java",modes:"Lifesteal, SMP, Anarchy"},
+      {name:"ColdGame",ip:"play.coldgame.ir",type:"java",modes:"Survival, SlimeFun, SkyMine, Practice"},
+      {name:"RubyLand",ip:"play.mcbe.ir",type:"bedrock",modes:"Bedrock Survival, Economy, Roleplay"}
     ],
     foreign: [
-      { name: "Hypixel", ip: "mc.hypixel.net", type: "java", access: "premium", modes: "BedWars, SkyBlock, SkyWars, Murder Mystery, ده‌ها مینی‌گیم" },
-      { name: "Wynncraft", ip: "play.wynncraft.com", type: "java", access: "premium", modes: "MMORPG سفارشی، کوئست، لول‌آپ" },
-      { name: "CubeCraft Games", ip: "play.cubecraft.net", type: "both", access: "premium", modes: "SkyWars, EggWars, Lucky Islands" },
-      { name: "Purple Prison", ip: "play.purpleprison.org", type: "java", access: "cracked", modes: "Prison, Economy, Mining" },
-      { name: "6b6t", ip: "play.6b6t.org", type: "java", access: "cracked", modes: "Anarchy, Survival, PvP" },
-      { name: "Pika Network", ip: "play.pika-network.net", type: "both", access: "cracked", modes: "BedWars, SkyBlock, Factions, Lifesteal, Prison, Survival" },
-      { name: "JartexNetwork", ip: "play.jartexnetwork.com", type: "java", access: "cracked", modes: "BedWars, SkyWars, Survival, Prison, SkyBlock, Factions" },
-      { name: "MineBerry", ip: "mc.mineberry.org", type: "java", access: "cracked", modes: "Survival, Anarchy, Economy, Factions, KitPvP" },
-      { name: "HylexMC", ip: "play.hylexmc.net", type: "java", access: "cracked", modes: "BedWars, Lifesteal, OneBlock, Parkour, PvP" },
-      { name: "Twerion", ip: "twerion.net", type: "java", access: "cracked", modes: "BedWars, SkyBlock, PvP, Minigames, CityBuild" },
-      { name: "AppleMC", ip: "play.applemc.fun", type: "java", access: "cracked", modes: "Survival, BedWars, Earth, Lifesteal, Economy" },
-      { name: "UltimisMC", ip: "play.ultimismc.com", type: "java", access: "cracked", modes: "Survival, BedWars, Lifesteal, OneBlock, Parkour" },
-      { name: "LifestealSMP", ip: "play.lifestealsmp.com", type: "java", access: "cracked", modes: "Survival, Lifesteal, Earth, Factions, PvP" },
-      { name: "OneBlocky", ip: "play.oneblocky.com", type: "java", access: "cracked", modes: "OneBlock, SkyBlock, Survival, Economy" }
+      {name:"Hypixel",ip:"mc.hypixel.net",type:"java",access:"premium",modes:"BedWars, SkyBlock, SkyWars, Murder Mystery"},
+      {name:"Wynncraft",ip:"play.wynncraft.com",type:"java",access:"premium",modes:"MMORPG, Quest, Level up"},
+      {name:"CubeCraft Games",ip:"play.cubecraft.net",type:"both",access:"premium",modes:"SkyWars, EggWars, Lucky Islands"},
+      {name:"Purple Prison",ip:"play.purpleprison.org",type:"java",access:"cracked",modes:"Prison, Economy, Mining"},
+      {name:"6b6t",ip:"play.6b6t.org",type:"java",access:"cracked",modes:"Anarchy, Survival, PvP"},
+      {name:"Pika Network",ip:"play.pika-network.net",type:"both",access:"cracked",modes:"BedWars, SkyBlock, Factions, Lifesteal, Prison"},
+      {name:"JartexNetwork",ip:"play.jartexnetwork.com",type:"java",access:"cracked",modes:"BedWars, SkyWars, Survival, Prison, SkyBlock"},
+      {name:"MineBerry",ip:"mc.mineberry.org",type:"java",access:"cracked",modes:"Survival, Anarchy, Economy, Factions, KitPvP"},
+      {name:"HylexMC",ip:"play.hylexmc.net",type:"java",access:"cracked",modes:"BedWars, Lifesteal, OneBlock, Parkour, PvP"},
+      {name:"Twerion",ip:"twerion.net",type:"java",access:"cracked",modes:"BedWars, SkyBlock, PvP, Minigames, CityBuild"},
+      {name:"AppleMC",ip:"play.applemc.fun",type:"java",access:"cracked",modes:"Survival, BedWars, Earth, Lifesteal, Economy"},
+      {name:"UltimisMC",ip:"play.ultimismc.com",type:"java",access:"cracked",modes:"Survival, BedWars, Lifesteal, OneBlock, Parkour"},
+      {name:"LifestealSMP",ip:"play.lifestealsmp.com",type:"java",access:"cracked",modes:"Survival, Lifesteal, Earth, Factions, PvP"},
+      {name:"OneBlocky",ip:"play.oneblocky.com",type:"java",access:"cracked",modes:"OneBlock, SkyBlock, Survival, Economy"}
     ]
   };
 
-  var AVATAR_COLORS = ["#6fdc4a", "#00e8ff", "#ffc94a", "#ff5a4a", "#b98ce0", "#7a5230"];
+  var AVATAR_COLORS = ["#6fdc4a","#00e8ff","#ffc94a","#ff5a4a","#b98ce0","#7a5230"];
 
-  function avatarStyle(name) {
-    var sum = 0;
-    for (var i = 0; i < name.length; i++) sum += name.charCodeAt(i);
-    return {
-      color: AVATAR_COLORS[sum % AVATAR_COLORS.length],
-      letters: name.replace(/[^A-Za-z]/g, "").slice(0, 2).toUpperCase() || "MC"
-    };
+  // ===== STATE =====
+  var currentUser = null; // {email, name}
+  var votes = {};         // serverName -> count
+  var myVotes = [];       // array of server names I voted
+
+  // ===== HELPERS =====
+  function toFa(n){ return String(n).replace(/[0-9]/g,d=>"۰۱۲۳۴۵۶۷۸۹"[d]); }
+  function avatarStyle(name){
+    var sum=0; for(var i=0;i<name.length;i++) sum+=name.charCodeAt(i);
+    return {color:AVATAR_COLORS[sum%AVATAR_COLORS.length], letters:name.replace(/[^A-Za-z]/g,"").slice(0,2).toUpperCase()||"MC"};
   }
+  function typeLabel(t){ return t==="java"?"Java":t==="bedrock"?"Bedrock":"Java + Bedrock"; }
 
-  function toFa(n) {
-    return String(n).replace(/[0-9]/g, function(d){ return "۰۱۲۳۴۵۶۷۸۹"[d]; });
+  // ===== STORAGE =====
+  function loadAll(){
+    try{
+      var u = localStorage.getItem("cr_user");
+      if(u) currentUser = JSON.parse(u);
+    }catch(e){}
+    try{
+      var v = localStorage.getItem("cr_votes");
+      if(v) votes = JSON.parse(v);
+    }catch(e){}
+    try{
+      var m = localStorage.getItem("cr_myvotes");
+      if(m) myVotes = JSON.parse(m);
+    }catch(e){}
   }
+  function saveUser(){ localStorage.setItem("cr_user", JSON.stringify(currentUser)); }
+  function saveVotes(){ localStorage.setItem("cr_votes", JSON.stringify(votes)); }
+  function saveMyVotes(){ localStorage.setItem("cr_myvotes", JSON.stringify(myVotes)); }
 
-  function typeLabel(t) {
-    if (t === "java") return "Java";
-    if (t === "bedrock") return "Bedrock";
-    return "Java + Bedrock";
-  }
+  function getVotes(name){ return votes[name]||0; }
+  function hasVoted(name){ return myVotes.indexOf(name)!==-1; }
 
-  // Storage
-  var votes = {}, votedByMe = [];
-
-  async function loadStorage() {
-    try {
-      var v = await window.storage.get("craftradar-votes", true);
-      votes = (v && v.value) ? JSON.parse(v.value) : {};
-    } catch(e){ votes = {}; }
-    try {
-      var mine = await window.storage.get("craftradar-voted-by-me", false);
-      votedByMe = (mine && mine.value) ? JSON.parse(mine.value) : [];
-    } catch(e){ votedByMe = []; }
-  }
-
-  function getVotes(name){ return votes[name] || 0; }
-  function hasVoted(name){ return votedByMe.indexOf(name) !== -1; }
-
-  async function addVote(name) {
-    if (hasVoted(name)) return null;
-    votes[name] = (votes[name] || 0) + 1;
-    votedByMe.push(name);
-    try { await window.storage.set("craftradar-votes", JSON.stringify(votes), true); } catch(e){}
-    try { await window.storage.set("craftradar-voted-by-me", JSON.stringify(votedByMe), false); } catch(e){}
+  function doVote(name){
+    if(!currentUser){ showToast("اول وارد شوید"); openLogin(); return null; }
+    if(hasVoted(name)){ showToast("قبلاً به این سرور رأی داده‌اید"); return null; }
+    votes[name] = (votes[name]||0)+1;
+    myVotes.push(name);
+    saveVotes(); saveMyVotes();
     return votes[name];
   }
 
-  // Toast
-  var toastTimer = null;
-  function showToast(msg) {
-    var t = document.getElementById("toast");
-    t.textContent = msg;
-    t.classList.add("show");
-    if (toastTimer) clearTimeout(toastTimer);
-    toastTimer = setTimeout(function(){ t.classList.remove("show"); }, 1800);
+  // ===== UI HELPERS =====
+  function showToast(msg){
+    var t=document.getElementById("toast");
+    t.textContent=msg; t.classList.add("show");
+    clearTimeout(t._timer);
+    t._timer=setTimeout(()=>t.classList.remove("show"),1800);
+  }
+  function copyIp(ip){
+    if(navigator.clipboard) navigator.clipboard.writeText(ip).catch(()=>{});
+    showToast("کپی شد: "+ip);
   }
 
-  function copyIp(ip) {
-    if (navigator.clipboard) navigator.clipboard.writeText(ip).catch(function(){});
-    showToast("کپی شد: " + ip);
+  // ===== USER AREA =====
+  function updateUserArea(){
+    var area=document.getElementById("userArea");
+    if(currentUser){
+      area.innerHTML = '<span class="user-badge">👤 '+(currentUser.name||currentUser.email.split("@")[0])+'</span><button class="btn-logout" id="logoutBtn">خروج</button>';
+      document.getElementById("logoutBtn").onclick = function(){
+        currentUser=null; localStorage.removeItem("cr_user");
+        updateUserArea(); showToast("خارج شدید");
+        renderAll();
+      };
+    } else {
+      area.innerHTML = '<button class="btn-login" id="openLogin">ورود / ثبت‌نام</button>';
+      document.getElementById("openLogin").onclick = openLogin;
+    }
   }
 
-  // Online counter
-  var onlineCheckedCount = { online: 0, checked: 0 };
-  function bumpOnlineStat(isOnline) {
-    onlineCheckedCount.checked++;
-    if (isOnline) onlineCheckedCount.online++;
-    document.getElementById("stat-online").textContent =
-      toFa(onlineCheckedCount.online) + "/" + toFa(onlineCheckedCount.checked);
+  // ===== LOGIN =====
+  function openLogin(){ document.getElementById("loginModal").classList.add("show"); }
+  function closeLogin(){ document.getElementById("loginModal").classList.remove("show"); }
+  document.getElementById("closeLogin").onclick = closeLogin;
+  document.getElementById("loginModal").onclick = function(e){ if(e.target===this) closeLogin(); };
+
+  document.getElementById("loginForm").onsubmit = function(e){
+    e.preventDefault();
+    var email = document.getElementById("email").value.trim();
+    var pass = document.getElementById("password").value;
+    if(!email || !pass){ showToast("ایمیل و رمز را وارد کنید"); return; }
+    currentUser = { email: email, name: email.split("@")[0] };
+    saveUser();
+    closeLogin();
+    updateUserArea();
+    showToast("خوش آمدید " + currentUser.name);
+    renderAll();
+  };
+
+  window.fakeSocial = function(provider){
+    currentUser = { email: provider.toLowerCase()+"@guest.local", name: provider };
+    saveUser();
+    closeLogin();
+    updateUserArea();
+    showToast("ورود با " + provider);
+    renderAll();
+  };
+
+  // ===== STATUS =====
+  var onlineStat = {online:0, checked:0};
+  function bumpOnline(isOn){
+    onlineStat.checked++;
+    if(isOn) onlineStat.online++;
+    document.getElementById("stat-online").textContent = toFa(onlineStat.online)+"/"+toFa(onlineStat.checked);
   }
 
-  // Status
-  function fetchWithTimeout(url, ms) {
-    var controller = new AbortController();
-    var timer = setTimeout(function(){ controller.abort(); }, ms);
-    return fetch(url, { signal: controller.signal }).finally(function(){ clearTimeout(timer); });
+  function fetchWithTimeout(url,ms){
+    var c=new AbortController();
+    var t=setTimeout(()=>c.abort(),ms);
+    return fetch(url,{signal:c.signal}).finally(()=>clearTimeout(t));
   }
 
-  function readVersion(data) {
-    if (!data) return "?";
-    if (typeof data.version === "string") return data.version;
-    if (data.version && data.version.name) return data.version.name;
-    return "?";
-  }
-
-  function paintStatus(box, state, info) {
+  async function checkStatus(server, box, btn){
+    if(btn) btn.disabled=true;
     box.classList.add("show");
-    if (state === "checking") {
-      box.innerHTML = '<div class="status-row"><span class="k"><span class="dot pending"></span>در حال بررسی...</span></div>';
-      return;
-    }
-    if (state === "error") {
-      box.innerHTML = '<div class="status-row"><span class="k"><span class="dot off"></span>خطا در اتصال</span></div>';
-      return;
-    }
-    if (state === "offline") {
-      box.innerHTML = '<div class="status-row"><span class="k"><span class="dot off"></span>آفلاین یا در دسترس نیست</span></div>';
-      return;
-    }
-    box.innerHTML =
-      '<div class="status-row"><span class="k"><span class="dot on"></span>آنلاین (' + info.proto + ')</span></div>' +
-      '<div class="status-row"><span class="k">پلیر</span><span class="v">' + info.players + '</span></div>' +
-      '<div class="status-row"><span class="k">آی‌پی عددی</span><span class="v">' + info.ip + '</span></div>' +
-      '<div class="status-row"><span class="k">نسخه</span><span class="v">' + info.version + '</span></div>';
-  }
+    box.innerHTML = '<div class="s-row"><span class="k"><span class="dot pending"></span>در حال بررسی...</span></div>';
 
-  async function checkOneEndpoint(cleanIp, kind) {
-    var url = kind === "bedrock"
-      ? "https://api.mcsrvstat.us/bedrock/3/" + cleanIp
-      : "https://api.mcsrvstat.us/3/" + cleanIp;
-    var res = await fetchWithTimeout(url, 7000);
-    return await res.json();
-  }
+    var clean = server.ip.split("/")[0].trim();
+    var order = server.type==="bedrock"?["bedrock"]:(server.type==="java"?["java"]:["java","bedrock"]);
+    var found=null;
 
-  async function checkStatus(server, box, btn) {
-    if (btn) btn.disabled = true;
-    paintStatus(box, "checking");
-    var cleanIp = server.ip.split("/")[0].trim();
-    var order = server.type === "bedrock" ? ["bedrock"] : (server.type === "java" ? ["java"] : ["java", "bedrock"]);
-    var found = null;
-    try {
-      for (var i = 0; i < order.length; i++) {
-        var data = await checkOneEndpoint(cleanIp, order[i]);
-        if (data && data.online) {
-          found = { proto: order[i] === "bedrock" ? "Bedrock" : "Java", data: data };
+    try{
+      for(var i=0;i<order.length;i++){
+        var url = order[i]==="bedrock" ? "https://api.mcsrvstat.us/bedrock/3/"+clean : "https://api.mcsrvstat.us/3/"+clean;
+        var res = await fetchWithTimeout(url,7000);
+        var data = await res.json();
+        if(data && data.online){
+          found = {proto: order[i]==="bedrock"?"Bedrock":"Java", data:data};
           break;
         }
       }
-    } catch(e) {
-      paintStatus(box, "error");
-      if (btn) btn.disabled = false;
-      bumpOnlineStat(false);
-      return false;
+    }catch(e){
+      box.innerHTML = '<div class="s-row"><span class="k"><span class="dot off"></span>خطا در اتصال</span></div>';
+      if(btn) btn.disabled=false;
+      bumpOnline(false);
+      return;
     }
-    if (found) {
-      var d = found.data;
-      var playersTxt = (d.players && typeof d.players.online !== "undefined")
-        ? (d.players.online + " / " + (d.players.max || "?")) : "?";
-      paintStatus(box, "online", {
-        proto: found.proto,
-        players: playersTxt,
-        ip: d.ip || "?",
-        version: readVersion(d)
-      });
-      bumpOnlineStat(true);
-      if (btn) btn.disabled = false;
-      return true;
-    } else {
-      paintStatus(box, "offline");
-      bumpOnlineStat(false);
-      if (btn) btn.disabled = false;
-      return false;
+
+    if(!found){
+      box.innerHTML = '<div class="s-row"><span class="k"><span class="dot off"></span>آفلاین یا در دسترس نیست</span></div>';
+      if(btn) btn.disabled=false;
+      bumpOnline(false);
+      return;
     }
+
+    var d = found.data;
+    var playersTxt = (d.players && d.players.online!==undefined) ? (d.players.online+" / "+(d.players.max||"?")) : "?";
+    var ipTxt = d.ip || "?";
+    if(d.port) ipTxt += ":" + d.port;
+    var ver = (typeof d.version==="string") ? d.version : (d.version&&d.version.name)||"?";
+
+    var html = 
+      '<div class="s-row"><span class="k"><span class="dot on"></span>آنلاین ('+found.proto+')</span></div>'+
+      '<div class="s-row"><span class="k">پلیر</span><span class="v">'+playersTxt+'</span></div>'+
+      '<div class="s-row"><span class="k">آی‌پی + پورت</span><span class="v">'+ipTxt+'</span></div>'+
+      '<div class="s-row"><span class="k">نسخه</span><span class="v">'+ver+'</span></div>';
+
+    if(d.players && d.players.list && d.players.list.length){
+      html += '<div class="players-toggle" data-open="0">مشاهده پلیرها ('+d.players.list.length+') ▾</div>';
+      html += '<div class="players-list">'+d.players.list.map(p=>'<span>'+p+'</span>').join('')+'</div>';
+    }
+
+    box.innerHTML = html;
+
+    var toggle = box.querySelector(".players-toggle");
+    if(toggle){
+      toggle.onclick = function(){
+        var list = box.querySelector(".players-list");
+        var open = this.getAttribute("data-open")==="1";
+        if(open){
+          list.classList.remove("show");
+          this.setAttribute("data-open","0");
+          this.textContent = "مشاهده پلیرها ("+d.players.list.length+") ▾";
+        } else {
+          list.classList.add("show");
+          this.setAttribute("data-open","1");
+          this.textContent = "بستن لیست پلیرها ▴";
+        }
+      };
+    }
+
+    if(btn) btn.disabled=false;
+    bumpOnline(true);
   }
 
-  async function runQueue(tasks, concurrency) {
-    var idx = 0;
-    async function worker() {
-      while (idx < tasks.length) {
-        var my = idx++;
-        try { await tasks[my](); } catch(e){}
-      }
-    }
-    var workers = [];
-    for (var i = 0; i < concurrency && i < tasks.length; i++) workers.push(worker());
-    await Promise.all(workers);
+  async function runQueue(tasks, conc){
+    var i=0;
+    async function w(){ while(i<tasks.length){ var my=i++; try{await tasks[my]();}catch(e){} } }
+    var ws=[]; for(var k=0;k<conc&&k<tasks.length;k++) ws.push(w());
+    await Promise.all(ws);
   }
 
-  // Filters
-  var state = {
-    iran: { search: "", filter: "all" },
-    foreign: { search: "", filter: "all" }
-  };
-
-  function matchesFilters(category, s) {
-    var st = state[category];
-    if (st.search && s.name.toLowerCase().indexOf(st.search.toLowerCase()) === -1) return false;
-    if (category === "iran") {
-      if (st.filter === "java" && s.type === "bedrock") return false;
-      if (st.filter === "bedrock" && s.type === "java") return false;
+  // ===== FILTERS =====
+  var state = {iran:{search:"",filter:"all"}, foreign:{search:"",filter:"all"}};
+  function matches(cat,s){
+    var st=state[cat];
+    if(st.search && s.name.toLowerCase().indexOf(st.search.toLowerCase())===-1) return false;
+    if(cat==="iran"){
+      if(st.filter==="java" && s.type==="bedrock") return false;
+      if(st.filter==="bedrock" && s.type==="java") return false;
     } else {
-      if (st.filter !== "all" && s.access !== st.filter) return false;
+      if(st.filter!=="all" && s.access!==st.filter) return false;
     }
     return true;
   }
 
-  // ========== LANDING SYSTEM (بدون باگ) ==========
-  var currentObserver = null;
-
-  function landElements() {
-    // قبلی رو پاک کن تا باگ نداشته باشه
-    if (currentObserver) {
-      currentObserver.disconnect();
-      currentObserver = null;
-    }
-
-    var items = document.querySelectorAll(".card:not(.landed), .rank-row:not(.landed)");
-    if (!items.length) return;
-
-    currentObserver = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          var el = entry.target;
-          // تأخیر استیجر برای حس خفن‌تر
-          var delay = (Array.from(items).indexOf(el) % 8) * 45;
-          setTimeout(function() {
-            el.classList.add("landed");
-          }, delay);
-          currentObserver.unobserve(el);
+  // ===== LANDING =====
+  var obs=null;
+  function land(){
+    if(obs){ obs.disconnect(); obs=null; }
+    var items=document.querySelectorAll(".card:not(.landed), .rank-row:not(.landed)");
+    if(!items.length) return;
+    obs=new IntersectionObserver(entries=>{
+      entries.forEach(en=>{
+        if(en.isIntersecting){
+          var el=en.target;
+          var delay=(Array.from(items).indexOf(el)%7)*40;
+          setTimeout(()=>el.classList.add("landed"),delay);
+          obs.unobserve(el);
         }
       });
-    }, {
-      threshold: 0.08,
-      rootMargin: "0px 0px -30px 0px"
-    });
-
-    items.forEach(function(el) {
-      currentObserver.observe(el);
-    });
+    },{threshold:0.08,rootMargin:"0px 0px -25px 0px"});
+    items.forEach(el=>obs.observe(el));
   }
 
-  // Render
-  function buildCard(category, s) {
-    var av = avatarStyle(s.name);
-    var card = document.createElement("div");
-    card.className = "card";
-    var badges = '<span class="badge type">' + typeLabel(s.type) + '</span>';
-    if (s.access === "cracked") badges += '<span class="badge cracked">کرک</span>';
-    if (s.access === "premium") badges += '<span class="badge premium">پرمیوم</span>';
-    badges += '<span class="badge votes votes-badge">🗳️ ' + toFa(getVotes(s.name)) + '</span>';
+  // ===== RENDER =====
+  function buildCard(cat,s){
+    var av=avatarStyle(s.name);
+    var card=document.createElement("div");
+    card.className="card";
+    var badges='<span class="badge type">'+typeLabel(s.type)+'</span>';
+    if(s.access==="cracked") badges+='<span class="badge cracked">کرک</span>';
+    if(s.access==="premium") badges+='<span class="badge premium">پرمیوم</span>';
+    badges+='<span class="badge votes votes-badge">🗳️ '+toFa(getVotes(s.name))+'</span>';
 
-    card.innerHTML =
-      '<div class="card-head">' +
-        '<div class="avatar" style="background:' + av.color + '">' + av.letters + '</div>' +
-        '<div class="card-titles">' +
-          '<div class="name">' + s.name + '</div>' +
-          '<div class="badge-row">' + badges + '</div>' +
-        '</div>' +
-      '</div>' +
-      '<div class="ip-line"><span>' + s.ip + '</span><span class="hint">کپی</span></div>' +
-      '<div class="modes">' + s.modes + '</div>' +
-      '<div class="btn-row">' +
-        '<button class="btn status-btn">📡 وضعیت</button>' +
-        '<button class="btn vote-btn">🗳️ رأی</button>' +
-      '</div>' +
+    card.innerHTML=
+      '<div class="card-head">'+
+        '<div class="avatar" style="background:'+av.color+'">'+av.letters+'</div>'+
+        '<div><div class="name">'+s.name+'</div><div class="badges">'+badges+'</div></div>'+
+      '</div>'+
+      '<div class="ip-box"><span>'+s.ip+'</span><span class="hint">کپی</span></div>'+
+      '<div class="modes">'+s.modes+'</div>'+
+      '<div class="btns">'+
+        '<button class="btn status">📡 وضعیت</button>'+
+        '<button class="btn vote">🗳️ رأی</button>'+
+      '</div>'+
       '<div class="status-box"></div>';
 
-    card.querySelector(".ip-line").onclick = function(){ copyIp(s.ip); };
-    var statusBtn = card.querySelector(".status-btn");
-    var statusBox = card.querySelector(".status-box");
-    statusBtn.onclick = function(){ checkStatus(s, statusBox, statusBtn); };
-    card._checkStatus = function(){ return checkStatus(s, statusBox, null); };
+    card.querySelector(".ip-box").onclick=()=>copyIp(s.ip);
+    var statusBtn=card.querySelector(".status");
+    var statusBox=card.querySelector(".status-box");
+    statusBtn.onclick=()=>checkStatus(s,statusBox,statusBtn);
+    card._check=()=>checkStatus(s,statusBox,null);
 
-    var voteBtn = card.querySelector(".vote-btn");
-    var votesBadge = card.querySelector(".votes-badge");
-    if (hasVoted(s.name)) {
-      voteBtn.textContent = "✅ رأی دادی";
-      voteBtn.disabled = true;
+    var voteBtn=card.querySelector(".vote");
+    var badge=card.querySelector(".votes-badge");
+    if(hasVoted(s.name)){
+      voteBtn.textContent="✅ رأی دادید";
+      voteBtn.disabled=true;
     }
-    voteBtn.onclick = async function() {
-      voteBtn.disabled = true;
-      var newTotal = await addVote(s.name);
-      if (newTotal === null) {
-        showToast("قبلاً به " + s.name + " رأی دادی");
-        voteBtn.textContent = "✅ رأی دادی";
-        return;
-      }
-      votesBadge.textContent = "🗳️ " + toFa(newTotal);
-      voteBtn.textContent = "✅ رأی دادی";
-      showToast("به " + s.name + " رأی دادی!");
+    voteBtn.onclick=function(){
+      var n=doVote(s.name);
+      if(n===null) return;
+      badge.textContent="🗳️ "+toFa(n);
+      voteBtn.textContent="✅ رأی دادید";
+      voteBtn.disabled=true;
+      showToast("به "+s.name+" رأی دادید!");
     };
     return card;
   }
 
-  function renderList(category) {
-    var list = document.getElementById("list-" + category);
-    var countEl = document.getElementById("count-" + category);
-    list.innerHTML = "";
-    var filtered = SERVERS[category].filter(function(s){ return matchesFilters(category, s); });
-    countEl.textContent = toFa(filtered.length) + " سرور";
-    if (filtered.length === 0) {
-      list.innerHTML = '<div class="empty-note">چیزی با این فیلتر پیدا نشد.<br>جستجو یا فیلتر رو تغییر بده.</div>';
+  function renderList(cat){
+    var list=document.getElementById("list-"+cat);
+    var cnt=document.getElementById("count-"+cat);
+    list.innerHTML="";
+    var filtered=SERVERS[cat].filter(s=>matches(cat,s));
+    cnt.textContent=toFa(filtered.length)+" سرور";
+    if(!filtered.length){
+      list.innerHTML='<div class="empty">چیزی پیدا نشد.<br>فیلتر یا جستجو را تغییر دهید.</div>';
       return;
     }
-    filtered.forEach(function(s){ list.appendChild(buildCard(category, s)); });
-    // لندینگ بعد از رندر
-    requestAnimationFrame(function() {
-      setTimeout(landElements, 30);
-    });
+    filtered.forEach(s=>list.appendChild(buildCard(cat,s)));
+    requestAnimationFrame(()=>setTimeout(land,20));
   }
 
-  function renderTop() {
-    var all = SERVERS.iran.concat(SERVERS.foreign);
-    var sorted = all.slice().sort(function(a, b){ return getVotes(b.name) - getVotes(a.name); });
-    var list = document.getElementById("list-top");
-    list.innerHTML = "";
-    var anyVotes = sorted.some(function(s){ return getVotes(s.name) > 0; });
-    if (!anyVotes) {
-      list.innerHTML = '<div class="empty-note">هنوز کسی رأی نداده!<br>برو تو تب ایرانی یا خارجی و اولین نفر باش 🚀</div>';
+  function renderTop(){
+    var all=SERVERS.iran.concat(SERVERS.foreign);
+    var sorted=all.slice().sort((a,b)=>getVotes(b.name)-getVotes(a.name));
+    var list=document.getElementById("list-top");
+    list.innerHTML="";
+    if(!sorted.some(s=>getVotes(s.name)>0)){
+      list.innerHTML='<div class="empty">هنوز رأیی ثبت نشده.<br>اول وارد شوید و رأی دهید 🚀</div>';
       return;
     }
-    sorted.slice(0, 12).forEach(function(s, i) {
-      var row = document.createElement("div");
-      row.className = "rank-row";
-      row.innerHTML =
-        '<div class="rank-num">' + toFa(i + 1) + '</div>' +
-        '<div class="name">' + s.name + '</div>' +
-        '<div class="count">🗳️ ' + toFa(getVotes(s.name)) + ' رأی</div>';
+    sorted.slice(0,12).forEach((s,i)=>{
+      var row=document.createElement("div");
+      row.className="rank-row";
+      row.innerHTML='<div class="rank-num">'+toFa(i+1)+'</div><div class="name">'+s.name+'</div><div class="count">🗳️ '+toFa(getVotes(s.name))+'</div>';
       list.appendChild(row);
     });
-    requestAnimationFrame(function() {
-      setTimeout(landElements, 30);
-    });
+    requestAnimationFrame(()=>setTimeout(land,20));
   }
 
-  function renderAll() {
-    renderList("iran");
-    renderList("foreign");
-    renderTop();
+  function renderAll(){ renderList("iran"); renderList("foreign"); renderTop(); }
+
+  function paintStats(){
+    document.getElementById("stat-total").textContent=toFa(SERVERS.iran.length+SERVERS.foreign.length);
+    document.getElementById("stat-iran").textContent=toFa(SERVERS.iran.length);
+    document.getElementById("stat-foreign").textContent=toFa(SERVERS.foreign.length);
   }
 
-  function paintHeaderStats() {
-    document.getElementById("stat-total").textContent = toFa(SERVERS.iran.length + SERVERS.foreign.length);
-    document.getElementById("stat-iran").textContent = toFa(SERVERS.iran.length);
-    document.getElementById("stat-foreign").textContent = toFa(SERVERS.foreign.length);
-  }
-
-  function setupTabs() {
-    document.querySelectorAll(".tab").forEach(function(tab) {
-      tab.onclick = function() {
-        var target = this.getAttribute("data-tab");
-        document.querySelectorAll(".tab").forEach(function(t){ t.classList.remove("active"); });
+  // ===== SETUP =====
+  function setupTabs(){
+    document.querySelectorAll(".tab").forEach(tab=>{
+      tab.onclick=function(){
+        var t=this.dataset.tab;
+        document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
         this.classList.add("active");
-        document.querySelectorAll(".section").forEach(function(s){ s.classList.remove("active"); });
-        document.getElementById("sec-" + target).classList.add("active");
-        if (target === "top") renderTop();
-        else {
-          requestAnimationFrame(function() {
-            setTimeout(landElements, 40);
-          });
-        }
+        document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+        document.getElementById("sec-"+t).classList.add("active");
+        if(t==="top") renderTop();
+        else requestAnimationFrame(()=>setTimeout(land,30));
       };
     });
   }
 
-  function setupToolbar(category) {
-    var searchEl = document.getElementById("search-" + category);
-    searchEl.oninput = function() {
-      state[category].search = searchEl.value;
-      renderList(category);
+  function setupToolbar(cat){
+    document.getElementById("search-"+cat).oninput=function(){
+      state[cat].search=this.value; renderList(cat);
     };
-    document.querySelectorAll("#filter-" + category + " .chip").forEach(function(chip) {
-      chip.onclick = function() {
-        this.parentElement.querySelectorAll(".chip").forEach(function(c){ c.classList.remove("active"); });
+    document.querySelectorAll("#filter-"+cat+" .chip").forEach(chip=>{
+      chip.onclick=function(){
+        this.parentElement.querySelectorAll(".chip").forEach(c=>c.classList.remove("active"));
         this.classList.add("active");
-        state[category].filter = this.getAttribute("data-val");
-        renderList(category);
+        state[cat].filter=this.dataset.val;
+        renderList(cat);
       };
     });
-    var checkAllBtn = document.getElementById("checkall-" + category);
-    checkAllBtn.onclick = async function() {
-      checkAllBtn.disabled = true;
-      checkAllBtn.textContent = "⏳ در حال بررسی...";
-      var cards = Array.from(document.getElementById("list-" + category).querySelectorAll(".card"));
-      var tasks = cards.map(function(c){ return function(){ return c._checkStatus(); }; });
-      await runQueue(tasks, 3);
-      checkAllBtn.disabled = false;
-      checkAllBtn.textContent = "📡 بررسی وضعیت همه";
+    document.getElementById("checkall-"+cat).onclick=async function(){
+      this.disabled=true; this.textContent="⏳ در حال بررسی...";
+      var cards=Array.from(document.getElementById("list-"+cat).querySelectorAll(".card"));
+      await runQueue(cards.map(c=>()=>c._check()),3);
+      this.disabled=false; this.textContent="📡 بررسی همه";
     };
   }
 
-  async function boot() {
-    paintHeaderStats();
-    setupTabs();
-    setupToolbar("iran");
-    setupToolbar("foreign");
-    renderAll();
-    await loadStorage();
-    renderAll();
-  }
-
-  boot();
+  // ===== BOOT =====
+  loadAll();
+  paintStats();
+  updateUserArea();
+  setupTabs();
+  setupToolbar("iran");
+  setupToolbar("foreign");
+  renderAll();
 })();
 </script>
 </body>
