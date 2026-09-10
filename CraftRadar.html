@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>CraftRadar</title>
+<style>
+  :root {
+    --bg: #0a0e0c;
+    --surface: #121815;
+    --surface-2: #1a2320;
+    --line: #223028;
+    --lime: #9fef5a;
+    --lime-dim: #6fae3f;
+    --ice: #6fd9e8;
+    --amber: #ffb648;
+    --text: #eef2ef;
+    --muted: #7c8b83;
+    --radius: 16px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding-bottom: 40px;
+  }
+
+  /* ---------- هدر ---------- */
+  .top {
+    padding: 28px 20px 20px;
+    background: radial-gradient(120% 100% at 20% 0%, #1c2b20 0%, var(--bg) 60%);
+    border-bottom: 1px solid var(--line);
+  }
+  .brand-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .brand-mark {
+    width: 34px; height: 34px;
+    border-radius: 9px;
+    background: linear-gradient(135deg, var(--lime), var(--ice));
+    flex-shrink: 0;
+  }
+  .brand-row h1 { margin: 0; font-size: 19px; font-weight: 800; letter-spacing: -0.3px; }
+  .top p.tag { margin: 0 0 16px; font-size: 12.5px; color: var(--muted); line-height: 1.6; }
+
+  .stat-strip { display: flex; gap: 10px; }
+  .stat-chip {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 10px 12px;
+    text-align: center;
+  }
+  .stat-chip .num { font-size: 17px; font-weight: 800; color: var(--lime); }
+  .stat-chip .lbl { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+  /* ---------- تب‌ها ---------- */
+  .tabbar {
+    display: flex;
+    gap: 4px;
+    padding: 10px 16px;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 5;
+  }
+  .tab {
+    padding: 8px 14px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--muted);
+    background: transparent;
+    border-radius: 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    border: 1px solid transparent;
+  }
+  .tab.active {
+    background: rgba(159,239,90,0.12);
+    color: var(--lime);
+    border-color: rgba(159,239,90,0.35);
+  }
+
+  .wrap { padding: 14px 16px 10px; }
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ---------- کارت سرور ---------- */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 14px 15px;
+    margin-bottom: 10px;
+  }
+  .card-head { display: flex; align-items: flex-start; gap: 11px; margin-bottom: 10px; }
+  .avatar {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800;
+    font-size: 13.5px;
+    color: #0a0e0c;
+  }
+  .card-titles { flex: 1; min-width: 0; }
+  .card-titles .name { font-weight: 700; font-size: 14.5px; }
+  .badge-row { display: flex; gap: 6px; margin-top: 5px; flex-wrap: wrap; }
+  .badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 20px;
+  }
+  .badge.cracked { background: rgba(159,239,90,0.12); color: var(--lime); }
+  .badge.votes { background: rgba(111,217,232,0.12); color: var(--ice); }
+
+  .ip-line {
+    direction: ltr;
+    text-align: left;
+    font-family: 'SFMono-Regular', Consolas, monospace;
+    background: #0d1310;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 8px 11px;
+    margin-bottom: 9px;
+    font-size: 12.5px;
+    color: var(--ice);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .ip-line .hint { font-family: -apple-system, Tahoma; font-size: 10px; color: var(--muted); }
+
+  .modes { font-size: 11.5px; color: var(--muted); line-height: 1.7; margin-bottom: 11px; }
+
+  .btn-row { display: flex; gap: 8px; }
+  .btn {
+    flex: 1;
+    padding: 9px 6px;
+    font-size: 11.5px;
+    font-weight: 700;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    cursor: pointer;
+    background: var(--surface-2);
+    color: var(--text);
+  }
+  .btn:active { opacity: 0.7; }
+  .btn:disabled { opacity: 0.4; cursor: default; }
+  .btn.vote-btn { background: rgba(159,239,90,0.1); border-color: rgba(159,239,90,0.3); color: var(--lime); }
+
+  .status-box {
+    margin-top: 9px;
+    background: #0d1310;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 9px 11px;
+    font-size: 11.5px;
+    white-space: pre-line;
+    display: none;
+  }
+
+  /* ---------- بازی‌ها ---------- */
+  .game-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 22px 18px;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  .game-card h3 { margin: 0 0 4px; font-size: 15px; font-weight: 800; }
+  .game-card .sub { font-size: 11.5px; color: var(--muted); margin-bottom: 18px; }
+
+  .rps-row { display: flex; justify-content: center; gap: 10px; margin-bottom: 14px; }
+  .rps-choice {
+    width: 54px; height: 54px;
+    font-size: 22px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    cursor: pointer;
+  }
+  .rps-choice:active { transform: scale(0.93); }
+  .rps-out { min-height: 46px; font-size: 13px; }
+  .score-row { display: flex; justify-content: center; gap: 16px; font-size: 11px; color: var(--muted); margin-top: 12px; }
+  .score-row b { color: var(--lime); }
+
+  .guess-input {
+    width: 92px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 800;
+    padding: 9px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: #0d1310;
+    color: var(--amber);
+    margin-bottom: 12px;
+  }
+  .guess-out { font-size: 12.5px; min-height: 34px; margin-top: 6px; }
+  .guess-tries { font-size: 10.5px; color: var(--muted); }
+  .wide-btn {
+    padding: 10px 22px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    font-weight: 700;
+    font-size: 12.5px;
+    cursor: pointer;
+    background: var(--surface-2);
+    color: var(--text);
+  }
+
+  /* ---------- برترین‌ها ---------- */
+  .rank-row {
+    display: flex; align-items: center; gap: 11px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 11px 13px;
+    margin-bottom: 8px;
+  }
+  .rank-num {
+    width: 24px; height: 24px;
+    border-radius: 7px;
+    background: var(--surface-2);
+    color: var(--lime);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800;
+    flex-shrink: 0;
+  }
+  .rank-row .name { flex: 1; font-size: 13px; font-weight: 700; }
+  .rank-row .count { font-size: 11.5px; color: var(--ice); }
+  .empty-note {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 26px 18px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 12.5px;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 16px; left: 50%; transform: translateX(-50%);
+    background: var(--lime);
+    color: #0a0e0c;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 12.5px;
+    font-weight: 800;
+    display: none;
+    z-index: 50;
+  }
+
+  .boot-error {
+    margin: 16px;
+    background: var(--surface);
+    border: 1px solid #4a2a24;
+    border-radius: var(--radius);
+    padding: 16px;
+    color: #ff9d8a;
+    font-size: 12.5px;
+    direction: ltr;
+    text-align: left;
+  }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="brand-row">
+    <div class="brand-mark"></div>
+    <h1>CraftRadar</h1>
+  </div>
+  <p class="tag">رادار پیدا کردن سرورهای ماینکرفت — وضعیت زنده، رأی‌گیری و بازی</p>
+  <div class="stat-strip">
+    <div class="stat-chip"><div class="num" id="stat-total">۰</div><div class="lbl">سرور</div></div>
+    <div class="stat-chip"><div class="num" id="stat-iran">۰</div><div class="lbl">ایرانی</div></div>
+    <div class="stat-chip"><div class="num" id="stat-foreign">۰</div><div class="lbl">خارجی</div></div>
+  </div>
+</div>
+
+<div class="tabbar" id="tabbar">
+  <div class="tab active" data-tab="iran">🇮🇷 ایران</div>
+  <div class="tab" data-tab="foreign">🌍 خارجی</div>
+  <div class="tab" data-tab="top">🏆 برترین‌ها</div>
+  <div class="tab" data-tab="games">🎮 بازی‌ها</div>
+</div>
+
+<div class="wrap">
+  <div class="section active" id="sec-iran"><div id="list-iran"></div></div>
+  <div class="section" id="sec-foreign"><div id="list-foreign"></div></div>
+  <div class="section" id="sec-top"><div id="list-top"></div></div>
+
+  <div class="section" id="sec-games">
+    <div class="game-card">
+      <h3>سنگ کاغذ قیچی</h3>
+      <div class="sub">یه دست مسابقه با CraftRadar</div>
+      <div class="rps-row">
+        <button class="rps-choice" data-c="🪨">🪨</button>
+        <button class="rps-choice" data-c="📄">📄</button>
+        <button class="rps-choice" data-c="✂️">✂️</button>
+      </div>
+      <div class="rps-out" id="rps-out">یکی از گزینه‌ها رو انتخاب کن...</div>
+      <div class="score-row">
+        <span>برد: <b id="rps-win">0</b></span>
+        <span>باخت: <b id="rps-lose">0</b></span>
+        <span>مساوی: <b id="rps-draw">0</b></span>
+      </div>
+    </div>
+
+    <div class="game-card">
+      <h3>حدس عدد</h3>
+      <div class="sub">یه عدد بین ۱ تا ۱۰۰ حدس بزن</div>
+      <input type="number" class="guess-input" id="guess-input" placeholder="؟" min="1" max="100">
+      <br>
+      <button class="wide-btn" style="background:rgba(111,217,232,0.12);border-color:rgba(111,217,232,0.3);color:var(--ice);" id="guess-submit">حدس بزن</button>
+      <div class="guess-out" id="guess-msg">آماده‌ای؟</div>
+      <div class="guess-tries" id="guess-tries"></div>
+      <br>
+      <button class="wide-btn" id="guess-restart">🔁 بازی جدید</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div id="boot-error-holder"></div>
+
+<script>
+try {
+
+var SERVERS = {
+  iran: [
+    { name: "GunMax", ip: "play.gunmax.org", mode: "Survival, Roleplay, SkyMine, BedWars" },
+    { name: "GameUp", ip: "mc.gameup.ir", mode: "Survival, SkyBlock, BedWars, Creative, Economy, Factions" },
+    { name: "Xcraft", ip: "play.xcraft.ir", mode: "Survival, SMP, SkyBlock, Practice, Parkour, SkyMine, Creative, BedWars" },
+    { name: "RexoCraft", ip: "play.rexocraft.com", mode: "BedWars, Survival, SkyMine, SkyBlock, ThePit, Arcade" },
+    { name: "Iran Minecraft", ip: "play.iranminecraft.com", mode: "Survival, SkyBlock, BedWars, Hunger Games, Minigames" },
+    { name: "TrexMine", ip: "play.trexmine.com", mode: "Survival, SkyBlock, BedWars, PvP, Minigames" },
+    { name: "MagicPixel", ip: "play.magicpixel.ir", mode: "Roleplay, RPG, SkyMine, SMP" },
+    { name: "InfinityStar", ip: "play.infinitystar.ir", mode: "Roleplay, Survival, SMP" },
+    { name: "HorizonNetwork", ip: "play.horizonnetwork.ir", mode: "SkyMine, SMP, ThePit, Survival" },
+    { name: "St Abad", ip: "play.stabad.ir", mode: "Survival, Practice" },
+    { name: "LunarProCraft", ip: "play.lunarprocraft.ir", mode: "OneBlock, Minigames, BedWars" },
+    { name: "ArianCraft", ip: "play.svariancraft.ir", mode: "BedWars, OneBlock, SkyBlock, Survival, Practice, Parkour" },
+    { name: "SUSIS MC", ip: "play.susismc.ir", mode: "Survival, SMP, Anarchy, Zombie" },
+    { name: "MineShard", ip: "mc.mineshard.top", mode: "PracticePvP, Bridge Training" },
+    { name: "OnyxMine", ip: "play.onyx-mc.ir", mode: "Survival و حالت‌های مختلف" },
+    { name: "VoidShot", ip: "play.voidshot.ir", mode: "Roleplay, BedWars, SkyBlock, Survival" },
+    { name: "PaladinGuard", ip: "java.paladinguard.ir", mode: "Survival, Roleplay, SMP, Bedrock" },
+    { name: "PandaSMP", ip: "play.pandasmp.ir", mode: "Lifesteal, SMP, Anarchy" },
+    { name: "ColdGame", ip: "play.coldgame.ir", mode: "Survival, SlimeFun, SkyMine, Practice" },
+    { name: "BitCraft", ip: "play.bitonetop.com", mode: "Survival, PvP, Economy" },
+    { name: "RubyLand", ip: "play.mcbe.ir", mode: "Bedrock Survival, Economy, Roleplay" }
+  ],
+  foreign: [
+    { name: "Pika Network", ip: "play.pika-network.net", mode: "BedWars, SkyBlock, Factions, Lifesteal, Prison, Survival, OneBlock, KitPvP", status: "Cracked" },
+    { name: "JartexNetwork", ip: "play.jartexnetwork.com", mode: "BedWars, SkyWars, Survival, Prison, SkyBlock, Factions, PvP", status: "Cracked" },
+    { name: "MineBerry", ip: "mc.mineberry.org", mode: "Survival, Anarchy, Economy, Factions, KitPvP, Minigames, PvP", status: "Cracked" },
+    { name: "HylexMC", ip: "play.hylexmc.net", mode: "BedWars, Lifesteal, OneBlock, Parkour, PvP", status: "Cracked" },
+    { name: "Twerion", ip: "twerion.net", mode: "BedWars, SkyBlock, PvP, Minigames, CityBuild", status: "Cracked" },
+    { name: "AppleMC", ip: "play.applemc.fun", mode: "Survival, BedWars, Earth, Lifesteal, Economy, PvP", status: "Cracked" },
+    { name: "UltimisMC", ip: "play.ultimismc.com", mode: "Survival, BedWars, Lifesteal, OneBlock, Parkour, PvP", status: "Cracked" },
+    { name: "LifestealSMP", ip: "play.lifestealsmp.com", mode: "Survival, Lifesteal, Earth, Factions, PvP, Minigames", status: "Cracked" },
+    { name: "6b6t", ip: "play.6b6t.org", mode: "Anarchy, Survival, PvP", status: "Cracked" },
+    { name: "OneBlocky", ip: "play.oneblocky.com", mode: "OneBlock, SkyBlock, Survival, Economy, PvP", status: "Cracked" }
+  ]
+};
+
+var AVATAR_COLORS = ["#9fef5a", "#6fd9e8", "#ffb648", "#f97362", "#c792ea", "#7fd8a6"];
+function avatarStyle(name) {
+  var sum = 0;
+  for (var i = 0; i < name.length; i++) sum += name.charCodeAt(i);
+  var color = AVATAR_COLORS[sum % AVATAR_COLORS.length];
+  var letters = name.replace(/[^A-Za-z\u0600-\u06FF]/g, "").slice(0, 2).toUpperCase() || "MC";
+  return { color: color, letters: letters };
+}
+
+function toFa(n) {
+  var map = ["۰","۱","۲","۳","۴","۵","۶","۷","۸","۹"];
+  return String(n).replace(/[0-9]/g, function (d) { return map[d]; });
+}
+
+/* ---------- رأی‌ها (localStorage) ---------- */
+function safeGet(key, fallback) {
+  try {
+    var v = localStorage.getItem(key);
+    return v ? JSON.parse(v) : fallback;
+  } catch (e) { return fallback; }
+}
+function safeSet(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {}
+}
+
+var votes = safeGet("craftradar_votes", {});
+var votedServers = safeGet("craftradar_voted", []);
+
+function getVotes(name) { return votes[name] || 0; }
+function hasVoted(name) { return votedServers.indexOf(name) !== -1; }
+function addVote(name) {
+  if (hasVoted(name)) return null;
+  votes[name] = (votes[name] || 0) + 1;
+  safeSet("craftradar_votes", votes);
+  votedServers.push(name);
+  safeSet("craftradar_voted", votedServers);
+  return votes[name];
+}
+
+/* ---------- توست ---------- */
+function showToast(msg) {
+  var t = document.getElementById("toast");
+  t.textContent = msg;
+  t.style.display = "block";
+  setTimeout(function () { t.style.display = "none"; }, 1300);
+}
+function copyIp(ip) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(ip).catch(function () {});
+  }
+  showToast("کپی شد: " + ip);
+}
+
+/* ---------- وضعیت زنده ---------- */
+function checkStatus(ip, outEl, btn) {
+  outEl.style.display = "block";
+  outEl.textContent = "در حال بررسی...";
+  btn.disabled = true;
+  var cleanIp = ip.split("/")[0].trim();
+
+  fetch("https://api.mcsrvstat.us/3/" + cleanIp)
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      if (data.online) {
+        outEl.textContent =
+          "🟢 آنلاین (Java)\n" +
+          "🌐 IP عددی: " + (data.ip || "?") + "\n" +
+          "👥 پلیر: " + (data.players ? data.players.online : "?") + "/" + (data.players ? data.players.max : "?") + "\n" +
+          "🧱 نسخه: " + (data.version || "?");
+        btn.disabled = false;
+        return;
+      }
+      return fetch("https://api.mcsrvstat.us/bedrock/3/" + cleanIp)
+        .then(function (r) { return r.json(); })
+        .then(function (data2) {
+          if (data2.online) {
+            outEl.textContent =
+              "🟢 آنلاین (Bedrock)\n" +
+              "🌐 IP عددی: " + (data2.ip || "?") + "\n" +
+              "👥 پلیر: " + (data2.players ? data2.players.online : "?") + "/" + (data2.players ? data2.players.max : "?");
+          } else {
+            outEl.textContent = "🔴 آفلاین یا در دسترس نیست";
+          }
+          btn.disabled = false;
+        });
+    })
+    .catch(function () {
+      outEl.textContent = "⚠️ خطا در بررسی وضعیت (اتصال اینترنت رو چک کن)";
+      btn.disabled = false;
+    });
+}
+
+/* ---------- رندر لیست ---------- */
+function renderList(category, containerId) {
+  var list = document.getElementById(containerId);
+  list.innerHTML = "";
+  SERVERS[category].forEach(function (s) {
+    var av = avatarStyle(s.name);
+    var card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML =
+      '<div class="card-head">' +
+        '<div class="avatar" style="background:' + av.color + '">' + av.letters + '</div>' +
+        '<div class="card-titles">' +
+          '<div class="name">' + s.name + '</div>' +
+          '<div class="badge-row">' +
+            (s.status ? '<span class="badge cracked">' + s.status + '</span>' : '') +
+            '<span class="badge votes votes-badge">🗳️ ' + toFa(getVotes(s.name)) + '</span>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="ip-line"><span>' + s.ip + '</span><span class="hint">کپی</span></div>' +
+      '<div class="modes">' + s.mode + '</div>' +
+      '<div class="btn-row">' +
+        '<button class="btn status-btn">📡 وضعیت</button>' +
+        '<button class="btn vote-btn">🗳️ رأی</button>' +
+      '</div>' +
+      '<div class="status-box"></div>';
+
+    card.querySelector(".ip-line").onclick = function () { copyIp(s.ip); };
+
+    var statusBtn = card.querySelector(".status-btn");
+    var outEl = card.querySelector(".status-box");
+    statusBtn.onclick = function () { checkStatus(s.ip, outEl, statusBtn); };
+
+    var voteBtn = card.querySelector(".vote-btn");
+    var votesBadge = card.querySelector(".votes-badge");
+    if (hasVoted(s.name)) {
+      voteBtn.textContent = "✅ رأی دادی";
+      voteBtn.disabled = true;
+    }
+    voteBtn.onclick = function () {
+      var newTotal = addVote(s.name);
+      if (newTotal === null) {
+        showToast("قبلاً به " + s.name + " رأی دادی");
+        return;
+      }
+      votesBadge.textContent = "🗳️ " + toFa(newTotal);
+      voteBtn.textContent = "✅ رأی دادی";
+      voteBtn.disabled = true;
+      showToast("به " + s.name + " رأی دادی!");
+    };
+
+    list.appendChild(card);
+  });
+}
+
+function renderTop() {
+  var all = SERVERS.iran.concat(SERVERS.foreign);
+  var sorted = all.slice().sort(function (a, b) { return getVotes(b.name) - getVotes(a.name); });
+  var list = document.getElementById("list-top");
+  list.innerHTML = "";
+
+  var anyVotes = sorted.some(function (s) { return getVotes(s.name) > 0; });
+  if (!anyVotes) {
+    list.innerHTML = '<div class="empty-note">هنوز کسی رأی نداده! برو تو تب سرورها و اولین نفر باش 🚀</div>';
+    return;
+  }
+  sorted.slice(0, 10).forEach(function (s, i) {
+    var row = document.createElement("div");
+    row.className = "rank-row";
+    row.innerHTML =
+      '<div class="rank-num">' + toFa(i + 1) + '</div>' +
+      '<div class="name">' + s.name + '</div>' +
+      '<div class="count">🗳️ ' + toFa(getVotes(s.name)) + ' رأی</div>';
+    list.appendChild(row);
+  });
+}
+
+/* ---------- آمار بالای صفحه ---------- */
+document.getElementById("stat-total").textContent = toFa(SERVERS.iran.length + SERVERS.foreign.length);
+document.getElementById("stat-iran").textContent = toFa(SERVERS.iran.length);
+document.getElementById("stat-foreign").textContent = toFa(SERVERS.foreign.length);
+
+/* ---------- تب‌ها ---------- */
+var tabs = document.querySelectorAll(".tab");
+for (var i = 0; i < tabs.length; i++) {
+  tabs[i].onclick = function () {
+    var target = this.getAttribute("data-tab");
+    var allTabs = document.querySelectorAll(".tab");
+    for (var j = 0; j < allTabs.length; j++) allTabs[j].classList.remove("active");
+ 
