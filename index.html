@@ -3,638 +3,787 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>CraftRadar</title>
+<title>CraftRadar — رادار سرورهای ماینکرفت</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&family=Press+Start+2P&display=swap');
 
-:root {
-  --bg: #0b0f0c;
-  --card: #121a14;
-  --card2: #1a241c;
-  --accent: #22c55e;
-  --accent2: #4ade80;
-  --text: #f0fdf4;
-  --muted: #86a Pan;
-  --border: rgba(34,197,94,0.18);
-  --red: #ef4444;
-  --gold: #fbbf24;
-}
+  :root {
+    --bg: #070a07;
+    --panel: rgba(16, 22, 14, 0.78);
+    --panel-2: rgba(22, 30, 18, 0.88);
+    --grass: #6fdc4a;
+    --grass-bright: #8ff06a;
+    --diamond: #00e8ff;
+    --diamond-glow: rgba(0, 232, 255, 0.35);
+    --gold: #ffc94a;
+    --redstone: #ff5a4a;
+    --ink: #f2f6ea;
+    --ink-dim: #9eae8c;
+    --line: rgba(111, 220, 74, 0.18);
+    --line-strong: rgba(0, 232, 255, 0.45);
+  }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    font-family: 'Vazirmatn', system-ui, sans-serif;
+    background: 
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 232, 255, 0.12), transparent),
+      radial-gradient(ellipse 60% 40% at 90% 10%, rgba(111, 220, 74, 0.08), transparent),
+      #070a07;
+    color: var(--ink);
+    min-height: 100vh;
+    padding-bottom: 70px;
+    overflow-x: hidden;
+    opacity: 0;
+    animation: pageIn 0.6s ease forwards;
+  }
 
-body {
-  font-family: 'Vazirmatn', system-ui, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  background-image: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34,197,94,0.12), transparent);
-}
+  @keyframes pageIn {
+    to { opacity: 1; }
+  }
 
-.header {
-  padding: 32px 16px 24px;
-  text-align: center;
-}
+  .pixel { font-family: 'Press Start 2P', monospace; direction: ltr; }
 
-.logo-circle {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 16px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #166534, #22c55e);
-  border: 3px solid #4ade80;
-  box-shadow: 0 0 0 6px rgba(34,197,94,0.15), 0 0 30px rgba(34,197,94,0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  font-weight: 800;
-  color: white;
-}
+  /* HEADER */
+  .top {
+    position: relative;
+    padding: 32px 20px 28px;
+    overflow: hidden;
+  }
 
-h1 {
-  font-size: 28px;
-  font-weight: 800;
-  color: #4ade80;
-  margin-bottom: 4px;
-}
+  .top::after {
+    content: "";
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--diamond), transparent);
+    opacity: 0.5;
+  }
 
-.sub {
-  font-size: 12px;
-  color: #86efac;
-  letter-spacing: 2px;
-  margin-bottom: 14px;
-}
+  .brand-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 18px;
+  }
 
-.desc {
-  font-size: 13.5px;
-  color: #a3b8a8;
-  line-height: 1.8;
-  max-width: 440px;
-  margin: 0 auto 22px;
-}
+  .logo-wrap {
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+  }
 
-.stats {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
+  .logo-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid var(--diamond);
+    box-shadow: 
+      0 0 0 4px rgba(0, 232, 255, 0.15),
+      0 0 28px var(--diamond-glow);
+    object-fit: cover;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
 
-.stat {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 12px 18px;
-  min-width: 82px;
-  text-align: center;
-}
+  .logo-img:hover {
+    transform: scale(1.08) rotate(-4deg);
+  }
 
-.stat b {
-  display: block;
-  font-size: 20px;
-  color: #4ade80;
-  font-weight: 800;
-}
+  .brand-text h1 {
+    font-size: 27px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(105deg, #ffffff 20%, var(--diamond) 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 
-.stat span {
-  font-size: 11px;
-  color: #86a;
-}
+  .pixel-tag {
+    font-size: 9px;
+    color: var(--grass-bright);
+    margin-top: 6px;
+    letter-spacing: 1.5px;
+  }
 
-.nav {
-  display: flex;
-  gap: 8px;
-  padding: 12px 14px;
-  position: sticky;
-  top: 0;
-  z-index: 30;
-  background: rgba(11,15,12,0.95);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-  overflow-x: auto;
-}
+  .tag {
+    font-size: 14px;
+    color: var(--ink-dim);
+    line-height: 1.85;
+    max-width: 540px;
+    margin-bottom: 24px;
+  }
 
-.nav button {
-  flex-shrink: 0;
-  padding: 10px 18px;
-  border-radius: 40px;
-  border: 1px solid var(--border);
-  background: var(--card);
-  color: #86a;
-  font-family: inherit;
-  font-size: 13.5px;
-  font-weight: 700;
-  cursor: pointer;
-}
+  .stat-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
 
-.nav button.active {
-  background: rgba(34,197,94,0.18);
-  color: #4ade80;
-  border-color: #22c55e;
-}
+  .stat-chip {
+    background: var(--panel);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 15px 10px;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
 
-.container {
-  max-width: 680px;
-  margin: 0 auto;
-  padding: 18px 14px 50px;
-}
+  .stat-chip:hover {
+    border-color: var(--line-strong);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4), 0 0 18px rgba(0, 232, 255, 0.1);
+  }
 
-.panel { display: none; }
-.panel.active { display: block; }
+  .stat-chip .num {
+    font-size: 23px;
+    font-weight: 800;
+    color: var(--grass-bright);
+  }
 
-.toolbar { margin-bottom: 16px; }
+  .stat-chip .lbl {
+    font-size: 11.5px;
+    color: var(--ink-dim);
+    margin-top: 4px;
+  }
 
-.search {
-  width: 100%;
-  padding: 13px 16px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  color: var(--text);
-  font-family: inherit;
-  font-size: 14px;
-  margin-bottom: 12px;
-}
+  /* TABS */
+  .tabbar {
+    display: flex;
+    gap: 10px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    position: sticky;
+    top: 0;
+    background: rgba(7, 10, 7, 0.9);
+    backdrop-filter: blur(20px);
+    z-index: 30;
+    border-bottom: 1px solid rgba(111, 220, 74, 0.12);
+  }
 
-.search:focus {
-  outline: none;
-  border-color: #22c55e;
-}
+  .tab {
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink-dim);
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.25s ease;
+  }
 
-.filters {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 12px;
-}
+  .tab:hover { color: var(--ink); border-color: rgba(0, 232, 255, 0.35); }
 
-.filters button {
-  padding: 8px 14px;
-  border-radius: 30px;
-  border: 1px solid var(--border);
-  background: var(--card);
-  color: #86a;
-  font-family: inherit;
-  font-size: 12.5px;
-  font-weight: 700;
-  cursor: pointer;
-}
+  .tab.active {
+    background: linear-gradient(135deg, rgba(0, 232, 255, 0.18), rgba(111, 220, 74, 0.12));
+    color: var(--diamond);
+    border-color: var(--diamond);
+    box-shadow: 0 0 18px rgba(0, 232, 255, 0.2);
+  }
 
-.filters button.on {
-  background: rgba(34,197,94,0.15);
-  color: #4ade80;
-  border-color: #22c55e;
-}
+  .wrap {
+    padding: 20px 16px 30px;
+    max-width: 700px;
+    margin: 0 auto;
+  }
 
-.actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+  .section { display: none; }
+  .section.active { display: block; }
 
-.actions button {
-  padding: 10px 16px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: var(--card2);
-  color: var(--text);
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-}
+  /* TOOLBAR */
+  .toolbar { margin-bottom: 16px; }
 
-.actions button:disabled { opacity: 0.5; }
+  .search-box {
+    width: 100%;
+    padding: 13px 16px;
+    background: rgba(8, 12, 6, 0.7);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 14.5px;
+    margin-bottom: 12px;
+    transition: all 0.25s;
+  }
 
-.count { font-size: 12.5px; color: #86a; }
+  .search-box:focus {
+    outline: none;
+    border-color: var(--diamond);
+    box-shadow: 0 0 0 4px rgba(0, 232, 255, 0.12);
+  }
 
-.list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
+  .chip-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
 
-.server {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 15px;
-}
+  .chip {
+    padding: 8px 15px;
+    font-size: 12.5px;
+    font-weight: 700;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--ink-dim);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
 
-.server:hover {
-  border-color: rgba(34,197,94,0.4);
-}
+  .chip:hover { color: var(--ink); border-color: rgba(0, 232, 255, 0.4); }
 
-.s-top {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 11px;
-}
+  .chip.active {
+    border-color: var(--diamond);
+    color: var(--diamond);
+    background: rgba(0, 232, 255, 0.1);
+  }
 
-.avatar {
-  width: 46px;
-  height: 46px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 15px;
-  color: #0b0f0c;
-  flex-shrink: 0;
-}
+  .toolbar-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    align-items: center;
+  }
 
-.info { flex: 1; min-width: 0; }
+  .checkall-btn {
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    border: 1px solid var(--line);
+    background: var(--panel-2);
+    color: var(--ink);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
 
-.info h3 {
-  font-size: 15.5px;
-  font-weight: 700;
-  margin-bottom: 5px;
-}
+  .checkall-btn:hover:not(:disabled) {
+    border-color: var(--diamond);
+    color: var(--diamond);
+  }
 
-.tags {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
+  .checkall-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-.tag {
-  font-size: 10.5px;
-  font-weight: 700;
-  padding: 3px 9px;
-  border-radius: 7px;
-  border: 1px solid;
-}
+  .result-count { font-size: 12.5px; color: var(--ink-dim); }
 
-.tag.t { background: rgba(34,197,94,0.12); color: #4ade80; border-color: rgba(34,197,94,0.3); }
-.tag.c { background: rgba(239,68,68,0.12); color: #fca5a5; border-color: rgba(239,68,68,0.3); }
-.tag.p { background: rgba(251,191,36,0.12); color: #fcd34d; border-color: rgba(251,191,36,0.3); }
-.tag.v { background: rgba(74,222,128,0.12); color: #86efac; border-color: rgba(74,222,128,0.3); }
+  /* CARDS + LANDING SYSTEM */
+  .card {
+    background: var(--panel);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 17px 18px;
+    margin-bottom: 14px;
+    transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(28px);
+  }
 
-.ip {
-  direction: ltr;
-  text-align: left;
-  background: #0a100c;
-  border: 1px solid var(--border);
-  border-radius: 11px;
-  padding: 11px 13px;
-  font-family: monospace;
-  font-size: 13.5px;
-  color: #4ade80;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  margin-bottom: 9px;
-}
+  .card.landed {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
-.ip:hover { border-color: #22c55e; }
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--diamond), var(--grass), transparent);
+    opacity: 0;
+    transition: opacity 0.35s;
+  }
 
-.ip span {
-  font-family: 'Vazirmatn';
-  font-size: 11px;
-  color: #86a;
-}
+  .card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(0, 232, 255, 0.5);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45), 0 0 24px rgba(0, 232, 255, 0.12);
+  }
 
-.modes {
-  font-size: 12.5px;
-  color: #86a;
-  line-height: 1.65;
-  margin-bottom: 11px;
-}
+  .card:hover::before { opacity: 1; }
 
-.btns {
-  display: flex;
-  gap: 9px;
-}
+  .card-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 13px;
+  }
 
-.btns button {
-  flex: 1;
-  padding: 11px;
-  border-radius: 11px;
-  border: 1px solid var(--border);
-  background: var(--card2);
-  color: var(--text);
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-}
+  .avatar {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    border-radius: 13px;
+    border: 2px solid rgba(0, 0, 0, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+    color: #070a07;
+  }
 
-.btns button:disabled { opacity: 0.45; }
+  .card-titles { flex: 1; min-width: 0; }
 
-.btns .st { border-color: rgba(34,197,94,0.4); color: #4ade80; }
-.btns .vt { border-color: rgba(74,222,128,0.4); color: #86efac; background: rgba(74,222,128,0.07); }
+  .card-titles .name {
+    font-weight: 700;
+    font-size: 16.5px;
+  }
 
-.status {
-  background: #0a100c;
-  border: 1px solid var(--border);
-  border-radius: 11px;
-  padding: 11px 13px;
-  font-size: 13px;
-  display: none;
-  margin-top: 11px;
-}
+  .badge-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 7px;
+    flex-wrap: wrap;
+  }
 
-.status.open { display: block; }
+  .badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 9px;
+    border: 1px solid;
+  }
 
-.row {
-  display: flex;
-  justify-content: space-between;
-  padding: 3px 0;
-}
+  .badge.type {
+    background: rgba(0, 232, 255, 0.1);
+    color: var(--diamond);
+    border-color: rgba(0, 232, 255, 0.35);
+  }
 
-.row .k { color: #86a; }
-.row .v { font-family: monospace; direction: ltr; }
+  .badge.cracked {
+    background: rgba(255, 90, 74, 0.12);
+    color: #ff8a7a;
+    border-color: rgba(255, 90, 74, 0.35);
+  }
 
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  display: inline-block;
-  margin-left: 6px;
-}
+  .badge.premium {
+    background: rgba(255, 201, 74, 0.12);
+    color: var(--gold);
+    border-color: rgba(255, 201, 74, 0.35);
+  }
 
-.dot.g { background: #4ade80; box-shadow: 0 0 8px #4ade80; }
-.dot.r { background: #ef4444; }
-.dot.y { background: #fbbf24; animation: pulse 1s infinite; }
+  .badge.votes {
+    background: rgba(111, 220, 74, 0.12);
+    color: var(--grass-bright);
+    border-color: rgba(111, 220, 74, 0.35);
+  }
 
-@keyframes pulse {
-  50% { opacity: 0.35; }
-}
+  .ip-line {
+    direction: ltr;
+    text-align: left;
+    font-family: 'SFMono-Regular', Consolas, monospace;
+    background: rgba(5, 8, 4, 0.75);
+    border: 1px solid var(--line);
+    border-radius: 13px;
+    padding: 11px 14px;
+    margin-bottom: 12px;
+    font-size: 13.5px;
+    color: var(--diamond);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.25s;
+  }
 
-.rank {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 13px;
-  padding: 13px 15px;
-}
+  .ip-line:hover {
+    border-color: var(--diamond);
+    background: rgba(0, 232, 255, 0.07);
+  }
 
-.rank:hover { border-color: #22c55e; }
+  .ip-line .hint {
+    font-family: 'Vazirmatn';
+    font-size: 11.5px;
+    color: var(--ink-dim);
+  }
 
-.num {
-  width: 32px;
-  height: 32px;
-  border-radius: 9px;
-  background: rgba(34,197,94,0.18);
-  color: #4ade80;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 13.5px;
-  flex-shrink: 0;
-}
+  .modes {
+    font-size: 13px;
+    color: var(--ink-dim);
+    line-height: 1.7;
+    margin-bottom: 14px;
+  }
 
-.rank .n { flex: 1; font-weight: 700; font-size: 14.5px; }
-.rank .c { color: #4ade80; font-size: 13px; }
+  .btn-row { display: flex; gap: 11px; }
 
-.empty {
-  text-align: center;
-  padding: 40px 18px;
-  background: var(--card);
-  border: 1px dashed var(--border);
-  border-radius: 15px;
-  color: #86a;
-  line-height: 1.9;
-}
+  .btn {
+    flex: 1;
+    padding: 11px 8px;
+    font-size: 13.5px;
+    font-weight: 700;
+    border: 1px solid var(--line);
+    border-radius: 13px;
+    cursor: pointer;
+    background: var(--panel-2);
+    color: var(--ink);
+    transition: all 0.25s;
+  }
 
-.toast {
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  background: #22c55e;
-  color: #0b0f0c;
-  padding: 12px 24px;
-  border-radius: 13px;
-  font-weight: 800;
-  font-size: 14px;
-  opacity: 0;
-  transition: 0.25s;
-  z-index: 100;
-  pointer-events: none;
-}
+  .btn:hover:not(:disabled) { transform: translateY(-2px); }
+  .btn:active { transform: translateY(1px); }
+  .btn:disabled { opacity: 0.45; cursor: default; }
 
-.toast.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
+  .btn.status-btn {
+    border-color: rgba(0, 232, 255, 0.4);
+    color: var(--diamond);
+  }
 
-.footer {
-  text-align: center;
-  padding: 30px 14px;
-  font-size: 12.5px;
-  color: #86a;
-  opacity: 0.8;
-}
+  .btn.status-btn:hover:not(:disabled) {
+    background: rgba(0, 232, 255, 0.1);
+  }
+
+  .btn.vote-btn {
+    background: rgba(111, 220, 74, 0.08);
+    border-color: rgba(111, 220, 74, 0.4);
+    color: var(--grass-bright);
+  }
+
+  .btn.vote-btn:hover:not(:disabled) {
+    background: rgba(111, 220, 74, 0.16);
+  }
+
+  .status-box {
+    margin-top: 13px;
+    background: rgba(5, 8, 4, 0.7);
+    border: 1px solid var(--line);
+    border-radius: 13px;
+    padding: 13px 15px;
+    font-size: 13.5px;
+    display: none;
+  }
+
+  .status-box.show { display: block; animation: fadeIn 0.3s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .status-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+  }
+
+  .status-row .k { color: var(--ink-dim); }
+  .status-row .v {
+    direction: ltr;
+    font-family: 'SFMono-Regular', Consolas, monospace;
+  }
+
+  .dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    margin-left: 7px;
+  }
+
+  .dot.on { background: var(--grass-bright); box-shadow: 0 0 9px var(--grass-bright); }
+  .dot.off { background: var(--redstone); }
+  .dot.pending { background: var(--gold); animation: pulse 1.1s infinite; }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+  }
+
+  /* RANK */
+  .rank-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 11px;
+    transition: all 0.3s;
+    opacity: 0;
+    transform: translateX(18px);
+  }
+
+  .rank-row.landed {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .rank-row:hover {
+    border-color: var(--diamond);
+    transform: translateX(-4px);
+  }
+
+  .rank-num {
+    width: 34px;
+    height: 34px;
+    background: linear-gradient(135deg, rgba(0, 232, 255, 0.22), rgba(111, 220, 74, 0.15));
+    color: var(--diamond);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13.5px;
+    font-weight: 800;
+    flex-shrink: 0;
+    border-radius: 11px;
+    border: 1px solid var(--line-strong);
+  }
+
+  .rank-row .name {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .rank-row .count {
+    font-size: 13.5px;
+    color: var(--diamond);
+  }
+
+  .empty-note {
+    background: var(--panel);
+    border: 1px dashed var(--line);
+    border-radius: 18px;
+    padding: 40px 22px;
+    text-align: center;
+    color: var(--ink-dim);
+    font-size: 15px;
+    line-height: 1.95;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 26px;
+    left: 50%;
+    transform: translateX(-50%) translateY(16px);
+    background: linear-gradient(135deg, var(--grass-bright), #5fcf3a);
+    color: #070a07;
+    padding: 13px 26px;
+    border-radius: 15px;
+    font-size: 14.5px;
+    font-weight: 800;
+    display: none;
+    z-index: 100;
+    box-shadow: 0 10px 28px rgba(111, 220, 74, 0.4);
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
+
+  .toast.show {
+    display: block;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .foot-note {
+    text-align: center;
+    font-size: 12.5px;
+    color: var(--ink-dim);
+    margin-top: 32px;
+    line-height: 1.9;
+    opacity: 0.85;
+  }
+
+  @media (max-width: 520px) {
+    .stat-strip { grid-template-columns: repeat(2, 1fr); }
+    .logo-img, .logo-wrap { width: 66px; height: 66px; }
+    .brand-text h1 { font-size: 22px; }
+  }
 </style>
 </head>
 <body>
-
-<div class="header">
-  <div class="logo-circle">CR</div>
-  <h1>CraftRadar</h1>
-  <div class="sub">SINCE 2026</div>
-  <p class="desc">رادار سرورهای ماینکرفت ایرانی و خارجی با وضعیت زنده، تعداد بازیکن، آی‌پی و رأی‌گیری</p>
-  <div class="stats">
-    <div class="stat"><b id="stat-total">۰</b><span>کل</span></div>
-    <div class="stat"><b id="stat-iran">۰</b><span>ایرانی</span></div>
-    <div class="stat"><b id="stat-foreign">۰</b><span>خارجی</span></div>
-    <div class="stat"><b id="stat-online">؟</b><span>آنلاین</span></div>
+<div class="top">
+  <div class="brand-row">
+    <div class="logo-wrap">
+      <img class="logo-img" src="data:image/png;base64,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f+YTkLVwzq45jv/+03r+ufT/3u0+/H5fZKjU4D2p9KhPPQOG6IG13FuopscJNgxjRRRZDlcgDPoHB5aPjS1fsXxgaHhkdPnczNTc7MzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMz07OzU7OzszOzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMz" alt="CraftRadar">
+    </div>
+    <div class="brand-text">
+      <h1>CraftRadar</h1>
+      <div class="pixel-tag pixel">SINCE 2026</div>
+    </div>
+  </div>
+  <p class="tag">رادار حرفه‌ای پیدا کردن سرورهای ماینکرفت — ایرانی و خارجی، وضعیت زنده، تعداد پلیر، آی‌پی عددی، نسخه و نوع (جاوا/بدراک)، رأی‌گیری برای بهترین‌ها.</p>
+  <div class="stat-strip">
+    <div class="stat-chip"><div class="num" id="stat-total">۰</div><div class="lbl">کل سرورها</div></div>
+    <div class="stat-chip"><div class="num" id="stat-iran">۰</div><div class="lbl">ایرانی</div></div>
+    <div class="stat-chip"><div class="num" id="stat-foreign">۰</div><div class="lbl">خارجی</div></div>
+    <div class="stat-chip"><div class="num" id="stat-online">؟</div><div class="lbl">آنلاین (بررسی‌شده)</div></div>
   </div>
 </div>
 
-<div class="nav" id="nav">
-  <button class="active" data-panel="iran">🇮🇷 ایرانی</button>
-  <button data-panel="foreign">🌍 خارجی</button>
-  <button data-panel="top">🏆 برترین‌ها</button>
+<div class="tabbar" id="tabbar">
+  <div class="tab active" data-tab="iran">🇮🇷 ایرانی</div>
+  <div class="tab" data-tab="foreign">🌍 خارجی</div>
+  <div class="tab" data-tab="top">🏆 برترین‌ها</div>
 </div>
 
-<div class="container">
-  <div class="panel active" id="panel-iran">
+<div class="wrap">
+  <div class="section active" id="sec-iran">
     <div class="toolbar">
-      <input class="search" id="search-iran" placeholder="جستجوی سرور ایرانی...">
-      <div class="filters" id="filter-iran">
-        <button class="on" data-val="all">همه</button>
-        <button data-val="java">جاوا</button>
-        <button data-val="bedrock">بدراک</button>
+      <input class="search-box" id="search-iran" placeholder="جستجوی نام سرور ایرانی...">
+      <div class="chip-row" id="filter-iran">
+        <div class="chip active" data-val="all">همه</div>
+        <div class="chip" data-val="java">جاوا</div>
+        <div class="chip" data-val="bedrock">بدراک</div>
       </div>
-      <div class="actions">
-        <button id="check-iran">📡 بررسی همه</button>
-        <span class="count" id="count-iran"></span>
+      <div class="toolbar-actions">
+        <button class="checkall-btn" id="checkall-iran">📡 بررسی وضعیت همه</button>
+        <span class="result-count" id="count-iran"></span>
       </div>
     </div>
-    <div class="list" id="list-iran"></div>
+    <div id="list-iran"></div>
   </div>
 
-  <div class="panel" id="panel-foreign">
+  <div class="section" id="sec-foreign">
     <div class="toolbar">
-      <input class="search" id="search-foreign" placeholder="جستجوی سرور خارجی...">
-      <div class="filters" id="filter-foreign">
-        <button class="on" data-val="all">همه</button>
-        <button data-val="cracked">کرک</button>
-        <button data-val="premium">پرمیوم</button>
+      <input class="search-box" id="search-foreign" placeholder="جستجوی نام سرور خارجی...">
+      <div class="chip-row" id="filter-foreign">
+        <div class="chip active" data-val="all">همه</div>
+        <div class="chip" data-val="cracked">کرک (Cracked)</div>
+        <div class="chip" data-val="premium">پرمیوم (Premium)</div>
       </div>
-      <div class="actions">
-        <button id="check-foreign">📡 بررسی همه</button>
-        <span class="count" id="count-foreign"></span>
+      <div class="toolbar-actions">
+        <button class="checkall-btn" id="checkall-foreign">📡 بررسی وضعیت همه</button>
+        <span class="result-count" id="count-foreign"></span>
       </div>
     </div>
-    <div class="list" id="list-foreign"></div>
+    <div id="list-foreign"></div>
   </div>
 
-  <div class="panel" id="panel-top">
-    <div class="list" id="list-top"></div>
+  <div class="section" id="sec-top">
+    <div id="list-top"></div>
   </div>
 
-  <div class="footer">ساخته‌شده در ۲۰۲۶ • اطلاعات محفوظ است</div>
+  <div class="foot-note">
+    وضعیت سرورها به‌صورت زنده از سرویس mcsrvstat.us خونده می‌شه.<br>
+    بعضی سرورها ممکنه دیگه فعال نباشن یا آی‌پی‌شون عوض شده باشه — همیشه قبل از رفتن، وضعیت رو چک کن.
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-(function(){
-  // ========== DATA ==========
-  var DATA = {
+(function () {
+  var SERVERS = {
     iran: [
-      {n:"GunMax", ip:"play.gunmax.org", t:"java", m:"Survival, Roleplay, SkyMine, BedWars"},
-      {n:"GameUp", ip:"mc.gameup.ir", t:"java", m:"Survival, SkyBlock, BedWars, Creative, Economy"},
-      {n:"TrexMine", ip:"play.trexmine.com", t:"java", m:"Survival, SkyBlock, BedWars, PvP, Minigames"},
-      {n:"Xcraft", ip:"play.xcraft.ir", t:"java", m:"Survival, SMP, SkyBlock, Practice, Parkour, Creative"},
-      {n:"IranMinecraft", ip:"play.iranminecraft.com", t:"java", m:"Survival, SkyBlock, Economy, Minigames"},
-      {n:"RexoCraft", ip:"play.rexocraft.com", t:"java", m:"BedWars, Survival, SkyMine, SkyBlock, Arcade"},
-      {n:"MagicPixel", ip:"play.magicpixel.ir", t:"java", m:"Roleplay, RPG, SkyMine, SMP"},
-      {n:"InfinityStar", ip:"play.infinitystar.ir", t:"java", m:"Roleplay, Survival, SMP"},
-      {n:"HorizonNetwork", ip:"play.horizonnetwork.ir", t:"java", m:"SkyMine, SMP, ThePit, Survival"},
-      {n:"LunarProCraft", ip:"play.lunarprocraft.ir", t:"java", m:"OneBlock, Minigames, BedWars"},
-      {n:"ArianCraft", ip:"play.svariancraft.ir", t:"java", m:"BedWars, OneBlock, SkyBlock, Survival, Parkour"},
-      {n:"SUSIS MC", ip:"play.susismc.ir", t:"java", m:"Survival, SMP, Anarchy, Zombie"},
-      {n:"VoidShot", ip:"play.voidshot.ir", t:"java", m:"Roleplay, BedWars, SkyBlock, Survival"},
-      {n:"PaladinGuard", ip:"java.paladinguard.ir", t:"both", m:"Survival, Roleplay, SMP + Bedrock"},
-      {n:"PandaSMP", ip:"play.pandasmp.ir", t:"java", m:"Lifesteal, SMP, Anarchy"},
-      {n:"ColdGame", ip:"play.coldgame.ir", t:"java", m:"Survival, SlimeFun, SkyMine, Practice"},
-      {n:"RubyLand", ip:"play.mcbe.ir", t:"bedrock", m:"Bedrock Survival, Economy, Roleplay"},
-      {n:"LegendCraft", ip:"play.legendcraft.ir", t:"java", m:"Earth SMP, Fun, Ranks"},
-      {n:"NeoCraft", ip:"play.neocraft.ir", t:"java", m:"BedWars, Economy, McMMO"},
-      {n:"PeakCraft", ip:"play.peakcraft.ir", t:"java", m:"Roleplay, Survival"},
-      {n:"LightMC", ip:"play.lightmc.ir", t:"java", m:"Survival, SkyBlock, Minigames"},
-      {n:"MineHeaven", ip:"mc.mineheaven.ir", t:"both", m:"Survival, SkyBlock, BedWars"},
-      {n:"HelixGame", ip:"play.helixgame.ir", t:"java", m:"Custom Modes, Low Ping"},
-      {n:"ASTO MC", ip:"play.astomc.ir", t:"java", m:"Anarchy, Free Build"},
-      {n:"BitCraft", ip:"play.bitcraft.ir", t:"java", m:"BedWars, Minigames"}
+      { name: "GunMax", ip: "play.gunmax.org", type: "java", modes: "Survival, Roleplay, SkyMine, BedWars" },
+      { name: "GameUp", ip: "mc.gameup.ir", type: "java", modes: "Survival, SkyBlock, BedWars, Creative, Economy, Factions" },
+      { name: "Xcraft", ip: "play.xcraft.ir", type: "java", modes: "Survival, SMP, SkyBlock, Practice, Parkour, SkyMine, Creative, BedWars" },
+      { name: "RexoCraft", ip: "play.rexocraft.com", type: "java", modes: "BedWars, Survival, SkyMine, SkyBlock, ThePit, Arcade" },
+      { name: "TrexMine", ip: "play.trexmine.com", type: "java", modes: "Survival, SkyBlock, BedWars, PvP, Minigames" },
+      { name: "MagicPixel", ip: "play.magicpixel.ir", type: "java", modes: "Roleplay, RPG, SkyMine, SMP" },
+      { name: "InfinityStar", ip: "play.infinitystar.ir", type: "java", modes: "Roleplay, Survival, SMP" },
+      { name: "HorizonNetwork", ip: "play.horizonnetwork.ir", type: "java", modes: "SkyMine, SMP, ThePit, Survival" },
+      { name: "LunarProCraft", ip: "play.lunarprocraft.ir", type: "java", modes: "OneBlock, Minigames, BedWars" },
+      { name: "ArianCraft", ip: "play.svariancraft.ir", type: "java", modes: "BedWars, OneBlock, SkyBlock, Survival, Practice, Parkour" },
+      { name: "SUSIS MC", ip: "play.susismc.ir", type: "java", modes: "Survival, SMP, Anarchy, Zombie" },
+      { name: "VoidShot", ip: "play.voidshot.ir", type: "java", modes: "Roleplay, BedWars, SkyBlock, Survival" },
+      { name: "PaladinGuard", ip: "java.paladinguard.ir", type: "both", modes: "Survival, Roleplay, SMP, پشتیبانی از بدراک" },
+      { name: "PandaSMP", ip: "play.pandasmp.ir", type: "java", modes: "Lifesteal, SMP, Anarchy" },
+      { name: "ColdGame", ip: "play.coldgame.ir", type: "java", modes: "Survival, SlimeFun, SkyMine, Practice" },
+      { name: "RubyLand", ip: "play.mcbe.ir", type: "bedrock", modes: "Bedrock Survival, Economy, Roleplay" }
     ],
     foreign: [
-      {n:"Hypixel", ip:"mc.hypixel.net", t:"java", a:"premium", m:"BedWars, SkyBlock, SkyWars, Murder Mystery"},
-      {n:"Wynncraft", ip:"play.wynncraft.com", t:"java", a:"premium", m:"MMORPG, Quests, Leveling"},
-      {n:"CubeCraft", ip:"play.cubecraft.net", t:"both", a:"premium", m:"SkyWars, EggWars, Lucky Islands"},
-      {n:"Pika Network", ip:"play.pika-network.net", t:"both", a:"cracked", m:"BedWars, SkyBlock, Factions, Lifesteal"},
-      {n:"JartexNetwork", ip:"play.jartexnetwork.com", t:"java", a:"cracked", m:"BedWars, SkyWars, Prison, SkyBlock"},
-      {n:"6b6t", ip:"play.6b6t.org", t:"java", a:"cracked", m:"Anarchy, Survival, PvP"},
-      {n:"MineBerry", ip:"mc.mineberry.org", t:"java", a:"cracked", m:"Survival, Anarchy, Economy, KitPvP"},
-      {n:"HylexMC", ip:"play.hylexmc.net", t:"java", a:"cracked", m:"BedWars, Lifesteal, OneBlock, Parkour"},
-      {n:"AppleMC", ip:"play.applemc.fun", t:"java", a:"cracked", m:"Survival, BedWars, Earth, Lifesteal"},
-      {n:"UltimisMC", ip:"play.ultimismc.com", t:"java", a:"cracked", m:"Survival, BedWars, Lifesteal, OneBlock"},
-      {n:"LifestealSMP", ip:"play.lifestealsmp.com", t:"java", a:"cracked", m:"Survival, Lifesteal, Earth, Factions"},
-      {n:"OneBlocky", ip:"play.oneblocky.com", t:"java", a:"cracked", m:"OneBlock, SkyBlock, Survival"},
-      {n:"Purple Prison", ip:"play.purpleprison.org", t:"java", a:"cracked", m:"Prison, Economy, Mining"},
-      {n:"Twerion", ip:"twerion.net", t:"java", a:"cracked", m:"BedWars, SkyBlock, PvP, CityBuild"},
-      {n:"MineMatrix", ip:"minematrix.lol", t:"java", a:"cracked", m:"Survival, Skyblock, KitPvP, Lifesteal"},
-      {n:"DonutSMP", ip:"play.donutsmp.net", t:"java", a:"cracked", m:"Survival, Economy, Claims"},
-      {n:"ZenPvP", ip:"play.zenpvp.net", t:"java", a:"cracked", m:"Gens, Skyblock, Dungeons, Prison"},
-      {n:"Minecadia", ip:"play.minecadia.com", t:"java", a:"cracked", m:"Factions, Kitmap, McMMO"},
-      {n:"Rtrix", ip:"play.rtrix.gg", t:"java", a:"cracked", m:"Practice, Lifesteal SMP"},
-      {n:"Aeon Network", ip:"aeon-network.net", t:"java", a:"cracked", m:"Survival, Realms, Pitfall"}
+      { name: "Hypixel", ip: "mc.hypixel.net", type: "java", access: "premium", modes: "BedWars, SkyBlock, SkyWars, Murder Mystery, ده‌ها مینی‌گیم" },
+      { name: "Wynncraft", ip: "play.wynncraft.com", type: "java", access: "premium", modes: "MMORPG سفارشی، کوئست، لول‌آپ" },
+      { name: "CubeCraft Games", ip: "play.cubecraft.net", type: "both", access: "premium", modes: "SkyWars, EggWars, Lucky Islands" },
+      { name: "Purple Prison", ip: "play.purpleprison.org", type: "java", access: "cracked", modes: "Prison, Economy, Mining" },
+      { name: "6b6t", ip: "play.6b6t.org", type: "java", access: "cracked", modes: "Anarchy, Survival, PvP" },
+      { name: "Pika Network", ip: "play.pika-network.net", type: "both", access: "cracked", modes: "BedWars, SkyBlock, Factions, Lifesteal, Prison, Survival" },
+      { name: "JartexNetwork", ip: "play.jartexnetwork.com", type: "java", access: "cracked", modes: "BedWars, SkyWars, Survival, Prison, SkyBlock, Factions" },
+      { name: "MineBerry", ip: "mc.mineberry.org", type: "java", access: "cracked", modes: "Survival, Anarchy, Economy, Factions, KitPvP" },
+      { name: "HylexMC", ip: "play.hylexmc.net", type: "java", access: "cracked", modes: "BedWars, Lifesteal, OneBlock, Parkour, PvP" },
+      { name: "Twerion", ip: "twerion.net", type: "java", access: "cracked", modes: "BedWars, SkyBlock, PvP, Minigames, CityBuild" },
+      { name: "AppleMC", ip: "play.applemc.fun", type: "java", access: "cracked", modes: "Survival, BedWars, Earth, Lifesteal, Economy" },
+      { name: "UltimisMC", ip: "play.ultimismc.com", type: "java", access: "cracked", modes: "Survival, BedWars, Lifesteal, OneBlock, Parkour" },
+      { name: "LifestealSMP", ip: "play.lifestealsmp.com", type: "java", access: "cracked", modes: "Survival, Lifesteal, Earth, Factions, PvP" },
+      { name: "OneBlocky", ip: "play.oneblocky.com", type: "java", access: "cracked", modes: "OneBlock, SkyBlock, Survival, Economy" }
     ]
   };
 
-  var COLORS = ["#22c55e","#4ade80","#fbbf24","#ef4444","#a78bfa","#38bdf8"];
+  var AVATAR_COLORS = ["#6fdc4a", "#00e8ff", "#ffc94a", "#ff5a4a", "#b98ce0", "#7a5230"];
 
-  function avatar(name) {
+  function avatarStyle(name) {
     var sum = 0;
     for (var i = 0; i < name.length; i++) sum += name.charCodeAt(i);
-    var letters = name.replace(/[^A-Za-z]/g, "").slice(0, 2).toUpperCase();
-    if (!letters) letters = "MC";
-    return { color: COLORS[sum % COLORS.length], letters: letters };
+    return {
+      color: AVATAR_COLORS[sum % AVATAR_COLORS.length],
+      letters: name.replace(/[^A-Za-z]/g, "").slice(0, 2).toUpperCase() || "MC"
+    };
   }
 
   function toFa(n) {
-    return String(n).replace(/[0-9]/g, function(d) {
-      return "۰۱۲۳۴۵۶۷۸۹"[d];
-    });
+    return String(n).replace(/[0-9]/g, function(d){ return "۰۱۲۳۴۵۶۷۸۹"[d]; });
   }
 
   function typeLabel(t) {
     if (t === "java") return "Java";
     if (t === "bedrock") return "Bedrock";
-    return "Java+Bedrock";
+    return "Java + Bedrock";
   }
 
-  // ========== VOTES (localStorage) ==========
-  var votes = {};
-  var voted = [];
+  // Storage
+  var votes = {}, votedByMe = [];
 
-  function loadVotes() {
+  async function loadStorage() {
     try {
-      var v = localStorage.getItem("craftradar_votes");
-      votes = v ? JSON.parse(v) : {};
-    } catch(e) { votes = {}; }
+      var v = await window.storage.get("craftradar-votes", true);
+      votes = (v && v.value) ? JSON.parse(v.value) : {};
+    } catch(e){ votes = {}; }
     try {
-      var m = localStorage.getItem("craftradar_voted");
-      voted = m ? JSON.parse(m) : [];
-    } catch(e) { voted = []; }
+      var mine = await window.storage.get("craftradar-voted-by-me", false);
+      votedByMe = (mine && mine.value) ? JSON.parse(mine.value) : [];
+    } catch(e){ votedByMe = []; }
   }
 
-  function getVotes(name) { return votes[name] || 0; }
-  function hasVoted(name) { return voted.indexOf(name) !== -1; }
+  function getVotes(name){ return votes[name] || 0; }
+  function hasVoted(name){ return votedByMe.indexOf(name) !== -1; }
 
-  function addVote(name) {
+  async function addVote(name) {
     if (hasVoted(name)) return null;
     votes[name] = (votes[name] || 0) + 1;
-    voted.push(name);
-    try { localStorage.setItem("craftradar_votes", JSON.stringify(votes)); } catch(e) {}
-    try { localStorage.setItem("craftradar_voted", JSON.stringify(voted)); } catch(e) {}
+    votedByMe.push(name);
+    try { await window.storage.set("craftradar-votes", JSON.stringify(votes), true); } catch(e){}
+    try { await window.storage.set("craftradar-voted-by-me", JSON.stringify(votedByMe), false); } catch(e){}
     return votes[name];
   }
 
-  // ========== TOAST ==========
+  // Toast
   var toastTimer = null;
   function showToast(msg) {
-    var el = document.getElementById("toast");
-    el.textContent = msg;
-    el.classList.add("show");
+    var t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
     if (toastTimer) clearTimeout(toastTimer);
-    toastTimer = setTimeout(function() {
-      el.classList.remove("show");
-    }, 1600);
+    toastTimer = setTimeout(function(){ t.classList.remove("show"); }, 1800);
   }
 
   function copyIp(ip) {
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(ip).catch(function(){});
-    }
+    if (navigator.clipboard) navigator.clipboard.writeText(ip).catch(function(){});
     showToast("کپی شد: " + ip);
   }
 
-  // ========== ONLINE STAT ==========
-  var onlineStat = { online: 0, checked: 0 };
-  function bumpOnline(isOnline) {
-    onlineStat.checked++;
-    if (isOnline) onlineStat.online++;
-    document.getElementById("stat-online").textContent = toFa(onlineStat.online) + "/" + toFa(onlineStat.checked);
+  // Online counter
+  var onlineCheckedCount = { online: 0, checked: 0 };
+  function bumpOnlineStat(isOnline) {
+    onlineCheckedCount.checked++;
+    if (isOnline) onlineCheckedCount.online++;
+    document.getElementById("stat-online").textContent =
+      toFa(onlineCheckedCount.online) + "/" + toFa(onlineCheckedCount.checked);
   }
 
-  // ========== STATUS CHECK ==========
+  // Status
   function fetchWithTimeout(url, ms) {
     var controller = new AbortController();
-    var timer = setTimeout(function(){ controller.abort(); }, ms || 7000);
-    return fetch(url, { signal: controller.signal }).finally(function() {
-      clearTimeout(timer);
-    });
+    var timer = setTimeout(function(){ controller.abort(); }, ms);
+    return fetch(url, { signal: controller.signal }).finally(function(){ clearTimeout(timer); });
   }
 
   function readVersion(data) {
@@ -645,31 +794,31 @@ h1 {
   }
 
   function paintStatus(box, state, info) {
-    box.classList.add("open");
+    box.classList.add("show");
     if (state === "checking") {
-      box.innerHTML = '<div class="row"><span class="k"><span class="dot y"></span>در حال بررسی...</span></div>';
+      box.innerHTML = '<div class="status-row"><span class="k"><span class="dot pending"></span>در حال بررسی...</span></div>';
       return;
     }
     if (state === "error") {
-      box.innerHTML = '<div class="row"><span class="k"><span class="dot r"></span>خطا در اتصال</span></div>';
+      box.innerHTML = '<div class="status-row"><span class="k"><span class="dot off"></span>خطا در اتصال</span></div>';
       return;
     }
     if (state === "offline") {
-      box.innerHTML = '<div class="row"><span class="k"><span class="dot r"></span>آفلاین</span></div>';
+      box.innerHTML = '<div class="status-row"><span class="k"><span class="dot off"></span>آفلاین یا در دسترس نیست</span></div>';
       return;
     }
     box.innerHTML =
-      '<div class="row"><span class="k"><span class="dot g"></span>آنلاین (' + info.proto + ')</span></div>' +
-      '<div class="row"><span class="k">پلیر</span><span class="v">' + info.players + '</span></div>' +
-      '<div class="row"><span class="k">آی‌پی</span><span class="v">' + info.ip + '</span></div>' +
-      '<div class="row"><span class="k">نسخه</span><span class="v">' + info.version + '</span></div>';
+      '<div class="status-row"><span class="k"><span class="dot on"></span>آنلاین (' + info.proto + ')</span></div>' +
+      '<div class="status-row"><span class="k">پلیر</span><span class="v">' + info.players + '</span></div>' +
+      '<div class="status-row"><span class="k">آی‌پی عددی</span><span class="v">' + info.ip + '</span></div>' +
+      '<div class="status-row"><span class="k">نسخه</span><span class="v">' + info.version + '</span></div>';
   }
 
-  async function checkOne(ip, kind) {
+  async function checkOneEndpoint(cleanIp, kind) {
     var url = kind === "bedrock"
-      ? "https://api.mcsrvstat.us/bedrock/3/" + ip
-      : "https://api.mcsrvstat.us/3/" + ip;
-    var res = await fetchWithTimeout(url);
+      ? "https://api.mcsrvstat.us/bedrock/3/" + cleanIp
+      : "https://api.mcsrvstat.us/3/" + cleanIp;
+    var res = await fetchWithTimeout(url, 7000);
     return await res.json();
   }
 
@@ -677,41 +826,271 @@ h1 {
     if (btn) btn.disabled = true;
     paintStatus(box, "checking");
     var cleanIp = server.ip.split("/")[0].trim();
-    var order = server.t === "bedrock" ? ["bedrock"] : (server.t === "java" ? ["java"] : ["java", "bedrock"]);
+    var order = server.type === "bedrock" ? ["bedrock"] : (server.type === "java" ? ["java"] : ["java", "bedrock"]);
     var found = null;
     try {
       for (var i = 0; i < order.length; i++) {
-        var data = await checkOne(cleanIp, order[i]);
+        var data = await checkOneEndpoint(cleanIp, order[i]);
         if (data && data.online) {
           found = { proto: order[i] === "bedrock" ? "Bedrock" : "Java", data: data };
           break;
         }
       }
-    } catch (e) {
+    } catch(e) {
       paintStatus(box, "error");
       if (btn) btn.disabled = false;
-      bumpOnline(false);
+      bumpOnlineStat(false);
       return false;
     }
     if (found) {
       var d = found.data;
-      var players = (d.players && typeof d.players.online !== "undefined")
-        ? (d.players.online + " / " + (d.players.max || "?"))
-        : "?";
+      var playersTxt = (d.players && typeof d.players.online !== "undefined")
+        ? (d.players.online + " / " + (d.players.max || "?")) : "?";
       paintStatus(box, "online", {
         proto: found.proto,
-        players: players,
+        players: playersTxt,
         ip: d.ip || "?",
         version: readVersion(d)
       });
-      bumpOnline(true);
+      bumpOnlineStat(true);
       if (btn) btn.disabled = false;
       return true;
+    } else {
+      paintStatus(box, "offline");
+      bumpOnlineStat(false);
+      if (btn) btn.disabled = false;
+      return false;
     }
-    paintStatus(box, "offline");
-    bumpOnline(false);
-    if (btn) btn.disabled = false;
-    return false;
   }
 
-  async function runQueue(tasks
+  async function runQueue(tasks, concurrency) {
+    var idx = 0;
+    async function worker() {
+      while (idx < tasks.length) {
+        var my = idx++;
+        try { await tasks[my](); } catch(e){}
+      }
+    }
+    var workers = [];
+    for (var i = 0; i < concurrency && i < tasks.length; i++) workers.push(worker());
+    await Promise.all(workers);
+  }
+
+  // Filters
+  var state = {
+    iran: { search: "", filter: "all" },
+    foreign: { search: "", filter: "all" }
+  };
+
+  function matchesFilters(category, s) {
+    var st = state[category];
+    if (st.search && s.name.toLowerCase().indexOf(st.search.toLowerCase()) === -1) return false;
+    if (category === "iran") {
+      if (st.filter === "java" && s.type === "bedrock") return false;
+      if (st.filter === "bedrock" && s.type === "java") return false;
+    } else {
+      if (st.filter !== "all" && s.access !== st.filter) return false;
+    }
+    return true;
+  }
+
+  // ========== LANDING SYSTEM (بدون باگ) ==========
+  var currentObserver = null;
+
+  function landElements() {
+    // قبلی رو پاک کن تا باگ نداشته باشه
+    if (currentObserver) {
+      currentObserver.disconnect();
+      currentObserver = null;
+    }
+
+    var items = document.querySelectorAll(".card:not(.landed), .rank-row:not(.landed)");
+    if (!items.length) return;
+
+    currentObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var el = entry.target;
+          // تأخیر استیجر برای حس خفن‌تر
+          var delay = (Array.from(items).indexOf(el) % 8) * 45;
+          setTimeout(function() {
+            el.classList.add("landed");
+          }, delay);
+          currentObserver.unobserve(el);
+        }
+      });
+    }, {
+      threshold: 0.08,
+      rootMargin: "0px 0px -30px 0px"
+    });
+
+    items.forEach(function(el) {
+      currentObserver.observe(el);
+    });
+  }
+
+  // Render
+  function buildCard(category, s) {
+    var av = avatarStyle(s.name);
+    var card = document.createElement("div");
+    card.className = "card";
+    var badges = '<span class="badge type">' + typeLabel(s.type) + '</span>';
+    if (s.access === "cracked") badges += '<span class="badge cracked">کرک</span>';
+    if (s.access === "premium") badges += '<span class="badge premium">پرمیوم</span>';
+    badges += '<span class="badge votes votes-badge">🗳️ ' + toFa(getVotes(s.name)) + '</span>';
+
+    card.innerHTML =
+      '<div class="card-head">' +
+        '<div class="avatar" style="background:' + av.color + '">' + av.letters + '</div>' +
+        '<div class="card-titles">' +
+          '<div class="name">' + s.name + '</div>' +
+          '<div class="badge-row">' + badges + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="ip-line"><span>' + s.ip + '</span><span class="hint">کپی</span></div>' +
+      '<div class="modes">' + s.modes + '</div>' +
+      '<div class="btn-row">' +
+        '<button class="btn status-btn">📡 وضعیت</button>' +
+        '<button class="btn vote-btn">🗳️ رأی</button>' +
+      '</div>' +
+      '<div class="status-box"></div>';
+
+    card.querySelector(".ip-line").onclick = function(){ copyIp(s.ip); };
+    var statusBtn = card.querySelector(".status-btn");
+    var statusBox = card.querySelector(".status-box");
+    statusBtn.onclick = function(){ checkStatus(s, statusBox, statusBtn); };
+    card._checkStatus = function(){ return checkStatus(s, statusBox, null); };
+
+    var voteBtn = card.querySelector(".vote-btn");
+    var votesBadge = card.querySelector(".votes-badge");
+    if (hasVoted(s.name)) {
+      voteBtn.textContent = "✅ رأی دادی";
+      voteBtn.disabled = true;
+    }
+    voteBtn.onclick = async function() {
+      voteBtn.disabled = true;
+      var newTotal = await addVote(s.name);
+      if (newTotal === null) {
+        showToast("قبلاً به " + s.name + " رأی دادی");
+        voteBtn.textContent = "✅ رأی دادی";
+        return;
+      }
+      votesBadge.textContent = "🗳️ " + toFa(newTotal);
+      voteBtn.textContent = "✅ رأی دادی";
+      showToast("به " + s.name + " رأی دادی!");
+    };
+    return card;
+  }
+
+  function renderList(category) {
+    var list = document.getElementById("list-" + category);
+    var countEl = document.getElementById("count-" + category);
+    list.innerHTML = "";
+    var filtered = SERVERS[category].filter(function(s){ return matchesFilters(category, s); });
+    countEl.textContent = toFa(filtered.length) + " سرور";
+    if (filtered.length === 0) {
+      list.innerHTML = '<div class="empty-note">چیزی با این فیلتر پیدا نشد.<br>جستجو یا فیلتر رو تغییر بده.</div>';
+      return;
+    }
+    filtered.forEach(function(s){ list.appendChild(buildCard(category, s)); });
+    // لندینگ بعد از رندر
+    requestAnimationFrame(function() {
+      setTimeout(landElements, 30);
+    });
+  }
+
+  function renderTop() {
+    var all = SERVERS.iran.concat(SERVERS.foreign);
+    var sorted = all.slice().sort(function(a, b){ return getVotes(b.name) - getVotes(a.name); });
+    var list = document.getElementById("list-top");
+    list.innerHTML = "";
+    var anyVotes = sorted.some(function(s){ return getVotes(s.name) > 0; });
+    if (!anyVotes) {
+      list.innerHTML = '<div class="empty-note">هنوز کسی رأی نداده!<br>برو تو تب ایرانی یا خارجی و اولین نفر باش 🚀</div>';
+      return;
+    }
+    sorted.slice(0, 12).forEach(function(s, i) {
+      var row = document.createElement("div");
+      row.className = "rank-row";
+      row.innerHTML =
+        '<div class="rank-num">' + toFa(i + 1) + '</div>' +
+        '<div class="name">' + s.name + '</div>' +
+        '<div class="count">🗳️ ' + toFa(getVotes(s.name)) + ' رأی</div>';
+      list.appendChild(row);
+    });
+    requestAnimationFrame(function() {
+      setTimeout(landElements, 30);
+    });
+  }
+
+  function renderAll() {
+    renderList("iran");
+    renderList("foreign");
+    renderTop();
+  }
+
+  function paintHeaderStats() {
+    document.getElementById("stat-total").textContent = toFa(SERVERS.iran.length + SERVERS.foreign.length);
+    document.getElementById("stat-iran").textContent = toFa(SERVERS.iran.length);
+    document.getElementById("stat-foreign").textContent = toFa(SERVERS.foreign.length);
+  }
+
+  function setupTabs() {
+    document.querySelectorAll(".tab").forEach(function(tab) {
+      tab.onclick = function() {
+        var target = this.getAttribute("data-tab");
+        document.querySelectorAll(".tab").forEach(function(t){ t.classList.remove("active"); });
+        this.classList.add("active");
+        document.querySelectorAll(".section").forEach(function(s){ s.classList.remove("active"); });
+        document.getElementById("sec-" + target).classList.add("active");
+        if (target === "top") renderTop();
+        else {
+          requestAnimationFrame(function() {
+            setTimeout(landElements, 40);
+          });
+        }
+      };
+    });
+  }
+
+  function setupToolbar(category) {
+    var searchEl = document.getElementById("search-" + category);
+    searchEl.oninput = function() {
+      state[category].search = searchEl.value;
+      renderList(category);
+    };
+    document.querySelectorAll("#filter-" + category + " .chip").forEach(function(chip) {
+      chip.onclick = function() {
+        this.parentElement.querySelectorAll(".chip").forEach(function(c){ c.classList.remove("active"); });
+        this.classList.add("active");
+        state[category].filter = this.getAttribute("data-val");
+        renderList(category);
+      };
+    });
+    var checkAllBtn = document.getElementById("checkall-" + category);
+    checkAllBtn.onclick = async function() {
+      checkAllBtn.disabled = true;
+      checkAllBtn.textContent = "⏳ در حال بررسی...";
+      var cards = Array.from(document.getElementById("list-" + category).querySelectorAll(".card"));
+      var tasks = cards.map(function(c){ return function(){ return c._checkStatus(); }; });
+      await runQueue(tasks, 3);
+      checkAllBtn.disabled = false;
+      checkAllBtn.textContent = "📡 بررسی وضعیت همه";
+    };
+  }
+
+  async function boot() {
+    paintHeaderStats();
+    setupTabs();
+    setupToolbar("iran");
+    setupToolbar("foreign");
+    renderAll();
+    await loadStorage();
+    renderAll();
+  }
+
+  boot();
+})();
+</script>
+</body>
+</html>
