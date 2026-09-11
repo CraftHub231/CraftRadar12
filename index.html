@@ -2,33 +2,31 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<meta name="theme-color" content="#03070a">
-<title>CraftRadar — رادار حرفه‌ای سرورهای Minecraft</title>
-
-<link rel="preconnect" href="https://api.mcsrvstat.us">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#050a0c">
+<meta name="description" content="CraftRadar — رادار حرفه‌ای سرورهای ماینکرفت ایرانی و خارجی">
+<title>CraftRadar — رادار سرورهای ماینکرفت</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&family=Press+Start+2P&display=swap');
 
 :root{
-  --bg:#03070a;
-  --panel:rgba(8,15,17,.82);
-  --panel2:rgba(12,22,22,.92);
-  --cyan:#00eaff;
-  --cyan2:#00a9ff;
-  --green:#70e34e;
-  --green2:#9aff72;
+  --bg:#040709;
+  --bg2:#07100e;
+  --panel:rgba(10,19,16,.86);
+  --panel2:rgba(15,27,22,.94);
+  --cyan:#00e8ff;
+  --cyan2:#00b8d4;
+  --green:#6fdc4a;
+  --green2:#9aff75;
   --gold:#ffc94a;
-  --red:#ff5b58;
-  --purple:#a970ff;
-  --white:#f2f8f5;
-  --muted:#82958e;
-  --line:rgba(0,234,255,.16);
-  --line2:rgba(0,234,255,.42);
-  --shadow:0 20px 60px rgba(0,0,0,.45);
+  --red:#ff5d63;
+  --purple:#b98cff;
+  --text:#edf8ef;
+  --muted:#82998a;
+  --line:rgba(0,232,255,.16);
+  --line2:rgba(0,232,255,.42);
+  --shadow:0 18px 55px rgba(0,0,0,.35);
 }
 
 *{
@@ -42,136 +40,48 @@ html{
 }
 
 body{
-  font-family:'Vazirmatn',sans-serif;
-  color:var(--white);
+  font-family:'Vazirmatn',Tahoma,sans-serif;
+  color:var(--text);
   min-height:100vh;
-  background:
-    radial-gradient(circle at 50% -10%,rgba(0,234,255,.15),transparent 35%),
-    radial-gradient(circle at 100% 20%,rgba(112,227,78,.08),transparent 30%),
-    linear-gradient(180deg,#020507,#050b0d 45%,#020607);
   overflow-x:hidden;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -15%,rgba(0,232,255,.13),transparent 70%),
+    radial-gradient(ellipse 50% 50% at 100% 15%,rgba(111,220,74,.07),transparent 70%),
+    radial-gradient(ellipse 50% 50% at 0% 70%,rgba(0,150,255,.05),transparent 70%),
+    var(--bg);
 }
 
-/* =====================================================
-   ANIMATED BACKGROUND
-===================================================== */
-
-.bg-grid{
+body:before{
+  content:"";
   position:fixed;
   inset:0;
   pointer-events:none;
-  z-index:-5;
   opacity:.18;
   background-image:
-    linear-gradient(rgba(0,234,255,.07) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(0,234,255,.07) 1px,transparent 1px);
+    linear-gradient(rgba(0,232,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,232,255,.025) 1px,transparent 1px);
   background-size:45px 45px;
-  mask-image:linear-gradient(to bottom,#000,transparent 80%);
+  mask-image:linear-gradient(to bottom,#000,transparent 90%);
 }
 
-.noise{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  z-index:-4;
-  opacity:.035;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
+button,input{
+  font-family:inherit;
 }
 
-/* globe */
-
-.globe{
-  position:fixed;
-  width:620px;
-  height:620px;
-  left:50%;
-  top:-300px;
-  transform:translateX(-50%);
-  border-radius:50%;
-  z-index:-3;
-  pointer-events:none;
-  opacity:.58;
-  background:
-    radial-gradient(circle at 45% 42%,rgba(0,234,255,.08),transparent 42%),
-    radial-gradient(circle at 50% 50%,transparent 56%,rgba(0,234,255,.2) 57%,transparent 58%),
-    repeating-radial-gradient(
-      circle at 50% 50%,
-      transparent 0 38px,
-      rgba(0,234,255,.09) 39px 40px
-    );
-  border:1px solid rgba(0,234,255,.28);
-  box-shadow:
-    0 0 40px rgba(0,234,255,.14),
-    inset 0 0 80px rgba(0,234,255,.07);
-  animation:globeFloat 8s ease-in-out infinite;
+button{
+  cursor:pointer;
 }
 
-.globe:before,
-.globe:after{
-  content:"";
-  position:absolute;
-  inset:8%;
-  border-radius:50%;
-  border:1px solid rgba(0,234,255,.18);
+.pixel{
+  font-family:'Press Start 2P',monospace;
+  direction:ltr;
 }
 
-.globe:after{
-  inset:18%;
-  border-color:rgba(112,227,78,.14);
-  animation:spin 18s linear infinite;
-}
-
-.radar-sweep{
-  position:fixed;
-  width:480px;
-  height:480px;
-  left:50%;
-  top:-230px;
-  transform:translateX(-50%);
-  border-radius:50%;
-  pointer-events:none;
-  z-index:-2;
-  overflow:hidden;
-  opacity:.4;
-}
-
-.radar-sweep:after{
-  content:"";
-  position:absolute;
-  width:50%;
-  height:50%;
-  right:0;
-  top:0;
-  transform-origin:0% 100%;
-  background:linear-gradient(
-    135deg,
-    transparent 0%,
-    rgba(0,255,153,.0) 45%,
-    rgba(0,255,153,.35) 100%
-  );
-  animation:sweep 5s linear infinite;
-}
-
-@keyframes sweep{
-  to{transform:rotate(360deg)}
-}
-
-@keyframes globeFloat{
-  0%,100%{transform:translateX(-50%) translateY(0)}
-  50%{transform:translateX(-50%) translateY(12px)}
-}
-
-@keyframes spin{
-  to{transform:rotate(360deg)}
-}
-
-/* =====================================================
-   HEADER
-===================================================== */
+/* ================= HEADER ================= */
 
 .header{
   position:relative;
-  padding:22px 18px 20px;
+  padding:25px 20px 22px;
   border-bottom:1px solid var(--line);
   overflow:hidden;
 }
@@ -179,181 +89,254 @@ body{
 .header:after{
   content:"";
   position:absolute;
-  left:0;
-  right:0;
-  bottom:0;
-  height:1px;
-  background:linear-gradient(90deg,transparent,var(--cyan),transparent);
-  opacity:.5;
+  left:-15%;
+  right:-15%;
+  bottom:-90px;
+  height:180px;
+  background:radial-gradient(ellipse,rgba(0,232,255,.06),transparent 68%);
+  pointer-events:none;
 }
 
 .header-inner{
-  max-width:1050px;
+  max-width:1120px;
   margin:auto;
+  position:relative;
+  z-index:1;
 }
 
 .header-top{
   display:flex;
-  align-items:center;
   justify-content:space-between;
-  gap:18px;
-  margin-bottom:18px;
+  align-items:center;
+  gap:20px;
+  margin-bottom:22px;
 }
 
 .brand{
   display:flex;
   align-items:center;
-  gap:14px;
-}
-
-.logo-wrap{
-  width:64px;
-  height:64px;
-  border-radius:50%;
-  position:relative;
-  flex-shrink:0;
-  padding:3px;
-  background:linear-gradient(135deg,var(--cyan),#087cff,var(--green));
-  box-shadow:
-    0 0 0 3px rgba(0,234,255,.08),
-    0 0 35px rgba(0,234,255,.22);
+  gap:15px;
+  min-width:0;
 }
 
 .logo{
-  width:100%;
-  height:100%;
+  width:68px;
+  height:68px;
   border-radius:50%;
-  display:block;
   object-fit:cover;
-  background:#020608;
+  border:2px solid var(--cyan);
+  background:#020506;
+  box-shadow:
+    0 0 0 4px rgba(0,232,255,.08),
+    0 0 30px rgba(0,232,255,.22);
+  flex-shrink:0;
 }
 
 .brand h1{
-  font-size:25px;
-  font-weight:900;
-  line-height:1.1;
-  background:linear-gradient(100deg,#fff 20%,var(--cyan) 70%,var(--green2));
+  font-size:27px;
+  font-weight:800;
+  letter-spacing:-1px;
+  background:linear-gradient(100deg,#fff 20%,var(--cyan) 85%);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
 }
 
-.brand-sub{
+.brand .sub{
   margin-top:5px;
+  color:var(--green2);
   font-size:9px;
   letter-spacing:2px;
-  color:var(--green2);
-  font-family:'Press Start 2P',monospace;
-  direction:ltr;
 }
 
 .user-area{
   display:flex;
   align-items:center;
-  gap:8px;
+  gap:9px;
+  flex-shrink:0;
 }
 
 .btn-login,
 .btn-logout{
-  border:1px solid var(--line2);
-  background:rgba(6,13,15,.8);
-  color:var(--white);
-  padding:10px 15px;
+  border:1px solid var(--line);
+  color:var(--text);
+  background:var(--panel);
+  padding:10px 17px;
   border-radius:13px;
-  font-family:inherit;
-  font-weight:800;
-  cursor:pointer;
+  font-size:13px;
+  font-weight:700;
   transition:.2s;
 }
 
 .btn-login:hover,
 .btn-logout:hover{
-  border-color:var(--cyan);
   color:var(--cyan);
-  box-shadow:0 0 20px rgba(0,234,255,.12);
+  border-color:var(--cyan);
+  box-shadow:0 0 20px rgba(0,232,255,.12);
 }
 
 .user-badge{
-  padding:8px 12px;
-  border-radius:20px;
+  background:rgba(111,220,74,.08);
+  border:1px solid rgba(111,220,74,.28);
   color:var(--green2);
-  background:rgba(112,227,78,.08);
-  border:1px solid rgba(112,227,78,.25);
+  padding:9px 13px;
+  border-radius:20px;
   font-size:12px;
-  font-weight:700;
+  max-width:150px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.hero{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:30px;
+  margin-bottom:22px;
+}
+
+.hero-copy{
+  max-width:620px;
+}
+
+.hero-title{
+  font-size:clamp(22px,4vw,38px);
+  line-height:1.4;
+  font-weight:800;
+  margin-bottom:9px;
+}
+
+.hero-title span{
+  color:var(--cyan);
+  text-shadow:0 0 25px rgba(0,232,255,.25);
 }
 
 .tag{
-  max-width:720px;
   color:var(--muted);
-  font-size:13px;
-  line-height:1.9;
-  margin-bottom:18px;
+  font-size:14px;
+  line-height:2;
 }
 
-/* =====================================================
-   STATS
-===================================================== */
+.radar-orb{
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  border:1px solid rgba(0,232,255,.28);
+  position:relative;
+  flex-shrink:0;
+  background:
+    radial-gradient(circle,rgba(0,232,255,.12) 1px,transparent 2px),
+    radial-gradient(circle,rgba(0,232,255,.06),transparent 68%);
+  background-size:24px 24px,100% 100%;
+  box-shadow:0 0 45px rgba(0,232,255,.08);
+  overflow:hidden;
+}
+
+.radar-orb:before,
+.radar-orb:after{
+  content:"";
+  position:absolute;
+  inset:15%;
+  border:1px solid rgba(0,232,255,.25);
+  border-radius:50%;
+}
+
+.radar-orb:after{
+  inset:30%;
+  border-color:rgba(111,220,74,.25);
+}
+
+.radar-sweep{
+  position:absolute;
+  width:50%;
+  height:50%;
+  right:50%;
+  bottom:50%;
+  transform-origin:100% 100%;
+  background:linear-gradient(45deg,transparent 45%,rgba(0,232,255,.38));
+  clip-path:polygon(100% 100%,0 0,100% 0);
+  animation:sweep 4s linear infinite;
+}
+
+.radar-center{
+  position:absolute;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--green2);
+  box-shadow:0 0 15px var(--green2);
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+}
+
+@keyframes sweep{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+
+/* ================= STATS ================= */
 
 .stats{
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  gap:10px;
+  gap:11px;
 }
 
 .stat{
+  background:linear-gradient(145deg,rgba(14,28,22,.9),rgba(7,14,13,.9));
+  border:1px solid var(--line);
+  border-radius:17px;
+  padding:15px 10px;
+  text-align:center;
   position:relative;
   overflow:hidden;
-  padding:14px 8px;
-  border:1px solid var(--line);
-  border-radius:16px;
-  background:linear-gradient(145deg,rgba(11,21,22,.85),rgba(5,11,13,.75));
-  text-align:center;
-  box-shadow:0 8px 25px rgba(0,0,0,.18);
 }
 
-.stat:before{
+.stat:after{
   content:"";
   position:absolute;
   width:70px;
   height:70px;
+  background:rgba(0,232,255,.06);
   border-radius:50%;
-  right:-30px;
-  top:-35px;
-  background:rgba(0,234,255,.08);
-  filter:blur(15px);
+  top:-40px;
+  left:-30px;
 }
 
 .stat .n{
-  font-size:23px;
-  font-weight:900;
+  font-size:25px;
+  font-weight:800;
   color:var(--green2);
+  position:relative;
+  z-index:1;
 }
 
 .stat .l{
   color:var(--muted);
   font-size:11px;
-  margin-top:2px;
+  margin-top:4px;
+  position:relative;
+  z-index:1;
 }
 
-/* =====================================================
-   NAV
-===================================================== */
+/* ================= NAV ================= */
 
 .tabs-wrap{
   position:sticky;
   top:0;
   z-index:50;
-  background:rgba(2,6,8,.82);
-  backdrop-filter:blur(20px);
+  background:rgba(4,7,9,.84);
+  backdrop-filter:blur(18px);
   border-bottom:1px solid var(--line);
 }
 
 .tabs{
-  max-width:1050px;
+  max-width:1120px;
   margin:auto;
   display:flex;
-  gap:8px;
-  padding:12px 16px;
+  gap:9px;
+  padding:13px 20px;
   overflow-x:auto;
   scrollbar-width:none;
 }
@@ -363,44 +346,37 @@ body{
 }
 
 .tab{
-  flex:0 0 auto;
-  padding:10px 18px;
+  flex:1;
+  min-width:135px;
   border:1px solid var(--line);
-  border-radius:13px;
+  background:rgba(10,19,16,.72);
   color:var(--muted);
-  background:rgba(10,18,19,.75);
-  font-family:inherit;
-  font-weight:800;
+  border-radius:13px;
+  padding:11px 16px;
   font-size:13px;
-  cursor:pointer;
+  font-weight:800;
+  white-space:nowrap;
   transition:.2s;
 }
 
 .tab:hover{
-  color:#fff;
-  border-color:rgba(0,234,255,.3);
+  color:var(--text);
+  border-color:var(--line2);
 }
 
 .tab.active{
   color:var(--cyan);
   border-color:var(--cyan);
-  background:linear-gradient(
-    135deg,
-    rgba(0,234,255,.14),
-    rgba(112,227,78,.07)
-  );
-  box-shadow:0 0 20px rgba(0,234,255,.13);
+  background:linear-gradient(135deg,rgba(0,232,255,.14),rgba(111,220,74,.05));
+  box-shadow:0 0 20px rgba(0,232,255,.1);
 }
 
-/* =====================================================
-   MAIN
-===================================================== */
+/* ================= MAIN ================= */
 
 .wrap{
-  width:100%;
-  max-width:1050px;
+  max-width:1120px;
   margin:auto;
-  padding:20px 16px 70px;
+  padding:24px 20px 70px;
 }
 
 .section{
@@ -411,87 +387,138 @@ body{
   display:block;
 }
 
-/* =====================================================
-   TOOLBAR
-===================================================== */
+.section-heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:15px;
+  margin-bottom:20px;
+}
+
+.section-title{
+  font-size:23px;
+  font-weight:800;
+}
+
+.section-title span{
+  color:var(--cyan);
+}
+
+.section-description{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:6px;
+}
+
+.section-count{
+  color:var(--muted);
+  font-size:12px;
+  white-space:nowrap;
+}
+
+/* ================= TOOLBAR ================= */
 
 .toolbar{
-  margin-bottom:15px;
+  margin-bottom:20px;
+}
+
+.search-row{
+  display:flex;
+  gap:10px;
+  margin-bottom:12px;
 }
 
 .search{
-  width:100%;
-  padding:14px 16px;
+  flex:1;
+  min-width:0;
+  padding:13px 16px;
+  color:var(--text);
+  background:rgba(4,10,8,.9);
   border:1px solid var(--line);
-  border-radius:15px;
-  background:rgba(4,10,12,.78);
-  color:var(--white);
-  font-family:inherit;
+  border-radius:14px;
+  outline:none;
   font-size:14px;
-  margin-bottom:10px;
   transition:.2s;
 }
 
 .search::placeholder{
-  color:#596b65;
+  color:#5f7566;
 }
 
 .search:focus{
-  outline:none;
   border-color:var(--cyan);
-  box-shadow:0 0 0 3px rgba(0,234,255,.08);
+  box-shadow:0 0 0 3px rgba(0,232,255,.08);
+}
+
+.refresh-btn{
+  border:1px solid var(--line);
+  background:var(--panel);
+  color:var(--cyan);
+  border-radius:14px;
+  padding:0 16px;
+  font-size:18px;
+  transition:.2s;
+}
+
+.refresh-btn:hover{
+  border-color:var(--cyan);
+  transform:rotate(25deg);
 }
 
 .chips{
   display:flex;
+  gap:8px;
   flex-wrap:wrap;
-  gap:7px;
-  margin-bottom:11px;
+  margin-bottom:13px;
 }
 
 .chip{
-  padding:7px 13px;
-  border-radius:20px;
   border:1px solid var(--line);
-  background:rgba(9,17,18,.75);
+  background:var(--panel);
   color:var(--muted);
+  border-radius:22px;
+  padding:8px 14px;
   font-size:12px;
-  font-weight:800;
-  cursor:pointer;
+  font-weight:700;
+  transition:.2s;
+}
+
+.chip:hover{
+  color:var(--text);
 }
 
 .chip.active{
   color:var(--cyan);
+  background:rgba(0,232,255,.1);
   border-color:var(--cyan);
-  background:rgba(0,234,255,.1);
 }
 
 .actions{
   display:flex;
-  align-items:center;
   justify-content:space-between;
-  gap:10px;
+  align-items:center;
+  gap:12px;
 }
 
 .check-all{
-  border:1px solid var(--line2);
-  background:rgba(8,17,18,.9);
-  color:var(--white);
+  border:1px solid rgba(111,220,74,.32);
+  background:rgba(111,220,74,.06);
+  color:var(--green2);
   border-radius:12px;
   padding:9px 14px;
-  font-family:inherit;
-  font-weight:800;
   font-size:12px;
-  cursor:pointer;
+  font-weight:800;
+  transition:.2s;
 }
 
 .check-all:hover:not(:disabled){
-  color:var(--cyan);
-  border-color:var(--cyan);
+  background:rgba(111,220,74,.12);
+  border-color:var(--green);
 }
 
 .check-all:disabled{
   opacity:.5;
+  cursor:default;
 }
 
 .count{
@@ -499,218 +526,256 @@ body{
   font-size:12px;
 }
 
-/* =====================================================
-   SERVER GRID
-===================================================== */
+/* ================= SERVER GRID ================= */
 
 .server-grid{
   display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:13px;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:15px;
 }
 
-/* =====================================================
-   SERVER CARD
-===================================================== */
+/* ================= SERVER CARD ================= */
 
 .card{
+  background:
+    linear-gradient(145deg,rgba(13,28,22,.94),rgba(6,14,12,.96));
+  border:1px solid var(--line);
+  border-radius:21px;
+  padding:17px;
   position:relative;
   overflow:hidden;
-  border:1px solid var(--line);
-  border-radius:19px;
-  padding:16px;
-  background:
-    linear-gradient(145deg,rgba(12,23,23,.92),rgba(5,12,14,.88));
-  box-shadow:0 12px 35px rgba(0,0,0,.24);
   opacity:0;
-  transform:translateY(20px);
+  transform:translateY(18px);
   transition:
-    opacity .4s ease,
-    transform .35s ease,
-    border-color .25s,
-    box-shadow .25s;
+    opacity .45s ease,
+    transform .3s ease,
+    border-color .25s ease,
+    box-shadow .25s ease;
 }
 
 .card.landed{
   opacity:1;
-  transform:none;
-}
-
-.card:hover{
-  border-color:var(--line2);
-  box-shadow:
-    0 20px 45px rgba(0,0,0,.38),
-    0 0 25px rgba(0,234,255,.07);
+  transform:translateY(0);
 }
 
 .card:before{
   content:"";
   position:absolute;
-  width:160px;
-  height:160px;
+  width:170px;
+  height:170px;
+  left:-90px;
+  top:-100px;
   border-radius:50%;
-  top:-110px;
-  left:-80px;
-  background:rgba(0,234,255,.07);
-  filter:blur(15px);
+  background:radial-gradient(circle,rgba(0,232,255,.07),transparent 68%);
+  pointer-events:none;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+  border-color:var(--line2);
+  box-shadow:var(--shadow),0 0 25px rgba(0,232,255,.06);
 }
 
 .card-head{
   display:flex;
   align-items:center;
-  gap:12px;
-  margin-bottom:12px;
+  gap:13px;
+  margin-bottom:15px;
   position:relative;
-  z-index:1;
 }
 
-.server-icon{
-  width:56px;
-  height:56px;
-  border-radius:15px;
-  object-fit:cover;
+.server-avatar{
+  width:67px;
+  height:67px;
+  border-radius:17px;
   flex-shrink:0;
-  background:
-    linear-gradient(135deg,#0b2024,#071114);
-  border:1px solid rgba(0,234,255,.25);
-  box-shadow:0 0 18px rgba(0,234,255,.08);
+  object-fit:cover;
+  image-rendering:auto;
+  background:#07110e;
+  border:1px solid rgba(0,232,255,.3);
+  box-shadow:
+    0 0 0 3px rgba(0,232,255,.035),
+    0 0 20px rgba(0,232,255,.08);
+  transition:.25s;
 }
 
-.server-icon.fallback{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:900;
-  font-size:15px;
-  color:var(--cyan);
+.card:hover .server-avatar{
+  border-color:var(--cyan);
+  box-shadow:
+    0 0 0 3px rgba(0,232,255,.08),
+    0 0 25px rgba(0,232,255,.2);
+  transform:scale(1.035);
 }
 
-.name{
-  font-weight:900;
-  font-size:15px;
+.server-avatar.loading{
+  opacity:.45;
+  animation:avatarPulse 1.2s infinite;
 }
 
-.server-ip-small{
-  direction:ltr;
-  text-align:right;
-  font-family:Consolas,monospace;
-  color:#61736d;
-  font-size:10px;
-  margin-top:3px;
+@keyframes avatarPulse{
+  0%,100%{opacity:.45}
+  50%{opacity:1}
+}
+
+.server-main{
+  min-width:0;
+  flex:1;
+}
+
+.server-name{
+  font-size:17px;
+  font-weight:800;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  margin-bottom:7px;
 }
 
 .badges{
   display:flex;
   flex-wrap:wrap;
   gap:5px;
-  margin-top:6px;
 }
 
 .badge{
-  padding:3px 8px;
-  border-radius:8px;
+  display:inline-flex;
+  align-items:center;
+  gap:3px;
   font-size:10px;
   font-weight:800;
+  padding:4px 8px;
+  border-radius:8px;
   border:1px solid;
 }
 
 .badge.type{
   color:var(--cyan);
-  border-color:rgba(0,234,255,.3);
-  background:rgba(0,234,255,.08);
+  background:rgba(0,232,255,.08);
+  border-color:rgba(0,232,255,.28);
 }
 
 .badge.cracked{
-  color:#ff9187;
-  border-color:rgba(255,91,88,.28);
-  background:rgba(255,91,88,.08);
+  color:#ff9b91;
+  background:rgba(255,90,74,.08);
+  border-color:rgba(255,90,74,.25);
 }
 
 .badge.premium{
   color:var(--gold);
-  border-color:rgba(255,201,74,.3);
   background:rgba(255,201,74,.08);
+  border-color:rgba(255,201,74,.25);
 }
 
 .badge.votes{
   color:var(--green2);
-  border-color:rgba(112,227,78,.25);
-  background:rgba(112,227,78,.07);
+  background:rgba(111,220,74,.08);
+  border-color:rgba(111,220,74,.25);
 }
+
+.badge.live{
+  color:var(--green2);
+  background:rgba(111,220,74,.08);
+  border-color:rgba(111,220,74,.25);
+}
+
+.badge.offline{
+  color:#ff8d8d;
+  background:rgba(255,90,74,.08);
+  border-color:rgba(255,90,74,.25);
+}
+
+/* IP */
 
 .ip-box{
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  justify-content:space-between;
   gap:10px;
   direction:ltr;
   text-align:left;
-  padding:11px 13px;
+  background:rgba(2,8,6,.85);
+  border:1px solid rgba(0,232,255,.15);
   border-radius:13px;
-  border:1px solid var(--line);
-  background:rgba(2,7,9,.75);
+  padding:12px 13px;
+  margin-bottom:12px;
   color:var(--cyan);
   font-family:Consolas,monospace;
-  font-size:12px;
-  cursor:pointer;
-  margin-bottom:10px;
-}
-
-.ip-box:hover{
-  border-color:var(--cyan);
-  background:rgba(0,234,255,.05);
-}
-
-.ip-copy{
-  direction:rtl;
-  font-family:inherit;
-  color:#63766f;
-  font-size:10px;
-}
-
-.modes{
-  color:var(--muted);
-  font-size:11.5px;
-  line-height:1.8;
-  min-height:43px;
-  margin-bottom:11px;
-}
-
-.btns{
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  gap:7px;
-}
-
-.btn{
-  border:1px solid var(--line);
-  border-radius:11px;
-  padding:9px 5px;
-  background:rgba(12,21,22,.85);
-  color:var(--white);
-  font-family:inherit;
-  font-weight:800;
-  font-size:11px;
+  font-size:13px;
   cursor:pointer;
   transition:.2s;
 }
 
-.btn:hover:not(:disabled){
-  transform:translateY(-1px);
+.ip-box:hover{
+  background:rgba(0,232,255,.06);
   border-color:var(--cyan);
+}
+
+.ip-text{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.copy-hint{
+  color:var(--muted);
+  font-family:'Vazirmatn';
+  font-size:11px;
+  white-space:nowrap;
+}
+
+/* MODES */
+
+.modes{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.9;
+  min-height:47px;
+  margin-bottom:13px;
+}
+
+.modes strong{
+  color:#a9c3b0;
+}
+
+/* BUTTONS */
+
+.btns{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:8px;
+}
+
+.btn{
+  border:1px solid var(--line);
+  background:rgba(15,28,22,.8);
+  color:var(--text);
+  border-radius:12px;
+  padding:10px 6px;
+  font-size:12px;
+  font-weight:800;
+  transition:.2s;
+  white-space:nowrap;
+}
+
+.btn:hover:not(:disabled){
+  transform:translateY(-2px);
+  border-color:var(--cyan);
+  color:var(--cyan);
 }
 
 .btn.status{
   color:var(--cyan);
+  border-color:rgba(0,232,255,.25);
 }
 
-.btn.players{
-  color:#aee8ff;
+.btn.score{
+  color:var(--purple);
+  border-color:rgba(185,140,255,.25);
 }
 
 .btn.vote{
   color:var(--green2);
-  border-color:rgba(112,227,78,.3);
+  border-color:rgba(111,220,74,.28);
 }
 
 .btn:disabled{
@@ -718,29 +783,32 @@ body{
   cursor:default;
 }
 
+/* STATUS */
+
 .status-box{
   display:none;
-  margin-top:10px;
-  border:1px solid var(--line);
+  margin-top:12px;
+  padding:12px;
   border-radius:13px;
-  padding:11px;
-  background:rgba(2,7,9,.78);
-  font-size:11.5px;
+  background:rgba(2,8,6,.8);
+  border:1px solid var(--line);
+  font-size:12px;
+  animation:fadeIn .25s ease;
 }
 
 .status-box.show{
   display:block;
-  animation:fadeIn .25s ease;
 }
 
 @keyframes fadeIn{
-  from{opacity:0;transform:translateY(5px)}
+  from{opacity:0;transform:translateY(4px)}
   to{opacity:1;transform:none}
 }
 
 .s-row{
   display:flex;
   justify-content:space-between;
+  align-items:center;
   gap:10px;
   padding:4px 0;
 }
@@ -752,15 +820,21 @@ body{
 .s-row .v{
   direction:ltr;
   text-align:left;
+  color:var(--text);
   font-family:Consolas,monospace;
+  font-size:11px;
+  max-width:65%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 
 .dot{
+  display:inline-block;
   width:8px;
   height:8px;
   border-radius:50%;
-  display:inline-block;
-  margin-left:5px;
+  margin-left:6px;
 }
 
 .dot.on{
@@ -770,6 +844,7 @@ body{
 
 .dot.off{
   background:var(--red);
+  box-shadow:0 0 8px rgba(255,90,74,.5);
 }
 
 .dot.pending{
@@ -778,73 +853,64 @@ body{
 }
 
 @keyframes pulse{
-  50%{opacity:.3}
+  0%,100%{opacity:1}
+  50%{opacity:.35}
 }
 
-/* players */
-
-.players-panel{
-  display:none;
-  margin-top:10px;
-  border:1px solid var(--line);
-  border-radius:13px;
-  background:rgba(2,7,9,.78);
-  padding:10px;
-}
-
-.players-panel.show{
-  display:block;
-  animation:fadeIn .25s ease;
-}
-
-.players-title{
+.players-toggle{
+  margin-top:9px;
+  padding-top:9px;
+  border-top:1px dashed var(--line);
   color:var(--cyan);
-  font-weight:800;
-  font-size:11px;
-  margin-bottom:8px;
+  text-align:center;
+  cursor:pointer;
+  font-size:12px;
 }
 
 .players-list{
-  display:flex;
-  flex-wrap:wrap;
-  gap:5px;
-  max-height:150px;
-  overflow:auto;
+  display:none;
   direction:ltr;
-  justify-content:flex-start;
+  text-align:left;
+  max-height:140px;
+  overflow-y:auto;
+  margin-top:8px;
 }
 
-.player{
-  border:1px solid rgba(0,234,255,.18);
-  background:rgba(0,234,255,.06);
-  color:#dcebe7;
-  padding:4px 7px;
+.players-list.show{
+  display:block;
+}
+
+.players-list span{
+  display:inline-block;
+  color:var(--text);
+  background:rgba(0,232,255,.07);
+  border:1px solid rgba(0,232,255,.17);
   border-radius:7px;
+  padding:4px 8px;
+  margin:3px 3px 0 0;
   font-family:Consolas,monospace;
-  font-size:10px;
+  font-size:11px;
 }
 
-/* =====================================================
-   SCOREBOARD
-===================================================== */
+/* ================= SCOREBOARD ================= */
 
 .score-hero{
-  position:relative;
-  overflow:hidden;
-  padding:22px;
-  border:1px solid var(--line2);
-  border-radius:22px;
   background:
-    radial-gradient(circle at 80% 20%,rgba(0,234,255,.12),transparent 30%),
-    linear-gradient(145deg,rgba(10,25,26,.94),rgba(4,11,13,.9));
-  margin-bottom:15px;
+    radial-gradient(circle at 10% 0%,rgba(0,232,255,.1),transparent 35%),
+    linear-gradient(145deg,rgba(12,27,21,.95),rgba(5,13,11,.95));
+  border:1px solid var(--line);
+  border-radius:21px;
+  padding:22px;
+  margin-bottom:18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
 }
 
 .score-hero h2{
-  font-size:22px;
-  font-weight:900;
-  color:var(--cyan);
-  margin-bottom:5px;
+  font-size:23px;
+  margin-bottom:7px;
 }
 
 .score-hero p{
@@ -853,118 +919,24 @@ body{
   line-height:1.8;
 }
 
-.score-controls{
-  display:flex;
-  gap:8px;
-  margin-top:14px;
-  flex-wrap:wrap;
+.score-icon{
+  font-size:46px;
+  filter:drop-shadow(0 0 16px rgba(255,201,74,.25));
 }
 
-.score-select{
-  flex:1;
-  min-width:180px;
-  padding:11px;
-  border:1px solid var(--line);
-  border-radius:12px;
-  background:#071012;
-  color:#fff;
-  font-family:inherit;
-}
-
-.copy-score{
-  padding:11px 15px;
-  border-radius:12px;
-  border:1px solid rgba(112,227,78,.35);
-  background:rgba(112,227,78,.08);
-  color:var(--green2);
-  font-family:inherit;
-  font-weight:800;
-  cursor:pointer;
-}
-
-.scoreboard{
-  border:1px solid var(--line);
-  border-radius:18px;
-  overflow:hidden;
-  background:rgba(5,12,14,.9);
-}
-
-.score-title{
-  padding:15px;
-  background:linear-gradient(
-    90deg,
-    rgba(0,234,255,.12),
-    rgba(112,227,78,.06)
-  );
-  border-bottom:1px solid var(--line);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-
-.score-title strong{
-  color:var(--cyan);
-}
-
-.score-row{
-  display:flex;
-  justify-content:space-between;
-  padding:12px 15px;
-  border-bottom:1px solid rgba(255,255,255,.035);
-  font-size:12px;
-}
-
-.score-row:last-child{
-  border-bottom:0;
-}
-
-.score-row .key{
-  color:var(--muted);
-}
-
-.score-row .value{
-  direction:ltr;
-  font-family:Consolas,monospace;
-}
-
-.score-players{
-  padding:15px;
-}
-
-.score-players h3{
-  font-size:13px;
-  color:var(--green2);
-  margin-bottom:10px;
-}
-
-.empty{
-  border:1px dashed var(--line);
-  border-radius:17px;
-  padding:35px 18px;
-  text-align:center;
-  color:var(--muted);
-  line-height:2;
-  background:rgba(7,14,15,.6);
-}
-
-/* =====================================================
-   TOP
-===================================================== */
-
-.rank-grid{
+.rank-list{
   display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:9px;
+  gap:10px;
 }
 
 .rank-row{
   display:flex;
   align-items:center;
-  gap:11px;
-  padding:12px;
+  gap:13px;
+  padding:14px 16px;
   border:1px solid var(--line);
-  border-radius:14px;
   background:var(--panel);
+  border-radius:16px;
   opacity:0;
   transform:translateX(15px);
   transition:.35s;
@@ -976,77 +948,112 @@ body{
 }
 
 .rank-num{
-  width:32px;
-  height:32px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:10px;
+  width:35px;
+  height:35px;
+  border-radius:11px;
+  display:grid;
+  place-items:center;
+  flex-shrink:0;
   color:var(--cyan);
-  background:rgba(0,234,255,.08);
+  font-size:14px;
+  font-weight:800;
   border:1px solid var(--line2);
-  font-weight:900;
+  background:linear-gradient(135deg,rgba(0,232,255,.16),rgba(111,220,74,.08));
 }
 
-.rank-icon{
-  width:36px;
-  height:36px;
-  border-radius:9px;
-  object-fit:cover;
+.rank-row:nth-child(1) .rank-num{
+  color:var(--gold);
+  border-color:rgba(255,201,74,.4);
+  background:rgba(255,201,74,.1);
+}
+
+.rank-info{
+  flex:1;
+  min-width:0;
 }
 
 .rank-name{
-  flex:1;
   font-weight:800;
-  font-size:13px;
+  font-size:14px;
+  margin-bottom:4px;
+}
+
+.rank-ip{
+  direction:ltr;
+  text-align:right;
+  color:var(--muted);
+  font-family:Consolas,monospace;
+  font-size:11px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 
 .rank-votes{
   color:var(--green2);
-  font-size:11px;
+  font-size:13px;
+  font-weight:800;
+  white-space:nowrap;
 }
 
-/* =====================================================
-   LOGIN
-===================================================== */
+.empty{
+  padding:45px 20px;
+  border:1px dashed var(--line);
+  background:var(--panel);
+  border-radius:18px;
+  text-align:center;
+  color:var(--muted);
+  font-size:14px;
+  line-height:2;
+}
+
+/* ================= MODAL ================= */
 
 .modal-overlay{
+  display:none;
   position:fixed;
   inset:0;
   z-index:200;
-  display:none;
   align-items:center;
   justify-content:center;
-  padding:16px;
+  padding:18px;
   background:rgba(0,0,0,.78);
-  backdrop-filter:blur(12px);
+  backdrop-filter:blur(10px);
 }
 
 .modal-overlay.show{
   display:flex;
 }
 
-.login-box{
-  position:relative;
+.modal-box{
   width:100%;
-  max-width:390px;
-  padding:30px 25px;
-  border:1px solid var(--line2);
+  max-width:410px;
+  max-height:90vh;
+  overflow-y:auto;
+  position:relative;
+  padding:27px;
   border-radius:25px;
-  background:
-    radial-gradient(circle at 50% 0,rgba(0,234,255,.1),transparent 35%),
-    linear-gradient(160deg,#0b1818,#050c0e);
-  box-shadow:0 30px 80px rgba(0,0,0,.6);
+  border:1px solid rgba(0,232,255,.25);
+  background:linear-gradient(165deg,#0c1814,#07100e);
+  box-shadow:0 25px 80px rgba(0,0,0,.6),0 0 35px rgba(0,232,255,.08);
+  animation:modalIn .25s ease;
+}
+
+@keyframes modalIn{
+  from{opacity:0;transform:translateY(12px) scale(.97)}
+  to{opacity:1;transform:none}
 }
 
 .close{
   position:absolute;
   top:13px;
   left:16px;
-  background:none;
-  border:0;
+  width:30px;
+  height:30px;
+  border:none;
+  background:transparent;
   color:var(--muted);
-  font-size:25px;
+  font-size:24px;
   cursor:pointer;
 }
 
@@ -1054,93 +1061,194 @@ body{
   color:var(--cyan);
 }
 
-.login-heading{
+.modal-heading{
   text-align:center;
   color:var(--cyan);
-  font-size:25px;
-  font-weight:900;
+  font-size:23px;
+  font-weight:800;
+  margin-bottom:6px;
 }
 
-.login-sub{
+.modal-sub{
   text-align:center;
   color:var(--muted);
   font-size:12px;
-  margin:6px 0 22px;
+  margin-bottom:22px;
 }
 
 .input{
   width:100%;
-  padding:14px 15px;
-  margin-bottom:10px;
+  padding:13px 15px;
+  margin-bottom:11px;
+  color:var(--text);
+  background:rgba(3,9,7,.9);
   border:1px solid var(--line);
   border-radius:14px;
-  background:#03090b;
-  color:#fff;
-  font-family:inherit;
+  outline:none;
+  font-size:14px;
 }
 
 .input:focus{
-  outline:none;
   border-color:var(--cyan);
+  box-shadow:0 0 0 3px rgba(0,232,255,.08);
+}
+
+.input::placeholder{
+  color:#5d7163;
 }
 
 .login-btn{
   width:100%;
+  border:none;
   padding:14px;
-  border:0;
+  margin-top:7px;
   border-radius:14px;
-  background:linear-gradient(90deg,var(--cyan),#00b9d2);
-  color:#001014;
-  font-family:inherit;
-  font-weight:900;
-  cursor:pointer;
-  margin-top:5px;
+  color:#03100a;
+  background:linear-gradient(90deg,var(--cyan),#00c6d9);
+  font-size:14px;
+  font-weight:800;
+  box-shadow:0 8px 25px rgba(0,232,255,.16);
+  transition:.2s;
+}
+
+.login-btn:hover{
+  transform:translateY(-2px);
+}
+
+.login-or{
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+  margin:19px 0 12px;
+}
+
+.socials{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+}
+
+.social{
+  width:44px;
+  height:44px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  border:1px solid var(--line);
+  background:rgba(4,10,8,.8);
+  color:var(--muted);
+  font-size:18px;
+  transition:.2s;
+}
+
+.social:hover{
+  color:var(--cyan);
+  border-color:var(--cyan);
+  transform:scale(1.08);
 }
 
 .login-note{
+  color:var(--muted);
+  font-size:11px;
   text-align:center;
-  color:#65766f;
-  font-size:10px;
-  line-height:1.7;
-  margin-top:15px;
+  line-height:1.8;
+  margin-top:17px;
 }
 
-/* =====================================================
-   TOAST
-===================================================== */
+/* ================= SERVER INFO MODAL ================= */
+
+.server-info-head{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  margin-bottom:18px;
+}
+
+.info-avatar{
+  width:65px;
+  height:65px;
+  border-radius:16px;
+  object-fit:cover;
+  border:1px solid var(--line2);
+}
+
+.info-name{
+  font-size:19px;
+  font-weight:800;
+}
+
+.info-ip{
+  direction:ltr;
+  text-align:left;
+  font-family:Consolas,monospace;
+  color:var(--cyan);
+  font-size:12px;
+  margin-top:5px;
+}
+
+.info-block{
+  border:1px solid var(--line);
+  background:rgba(2,8,6,.65);
+  border-radius:14px;
+  padding:13px;
+  margin-bottom:10px;
+}
+
+.info-block-title{
+  color:var(--green2);
+  font-size:12px;
+  font-weight:800;
+  margin-bottom:9px;
+}
+
+.info-copy-btn{
+  width:100%;
+  border:1px solid var(--line);
+  background:rgba(0,232,255,.06);
+  color:var(--cyan);
+  padding:11px;
+  border-radius:12px;
+  font-size:12px;
+  font-weight:800;
+  margin-top:10px;
+}
+
+/* ================= TOAST ================= */
 
 .toast{
   position:fixed;
-  z-index:300;
+  z-index:500;
+  bottom:24px;
   left:50%;
-  bottom:22px;
-  transform:translateX(-50%) translateY(15px);
+  transform:translate(-50%,20px);
   opacity:0;
   pointer-events:none;
-  padding:12px 19px;
+  color:#041007;
+  background:linear-gradient(135deg,var(--green2),var(--green));
   border-radius:14px;
-  background:linear-gradient(135deg,var(--green2),#55c83c);
-  color:#031006;
-  font-weight:900;
-  font-size:12px;
-  box-shadow:0 12px 35px rgba(112,227,78,.3);
+  padding:12px 20px;
+  font-size:13px;
+  font-weight:800;
+  box-shadow:0 10px 35px rgba(111,220,74,.25);
   transition:.25s;
+  white-space:nowrap;
 }
 
 .toast.show{
   opacity:1;
-  transform:translateX(-50%) translateY(0);
+  transform:translate(-50%,0);
 }
 
-/* =====================================================
-   FOOTER
-===================================================== */
+/* ================= FOOTER ================= */
 
 .foot{
-  margin-top:30px;
+  max-width:1120px;
+  margin:10px auto 0;
+  padding:24px 20px 0;
+  border-top:1px solid var(--line);
+  color:#607568;
   text-align:center;
-  color:#62736d;
-  font-size:11px;
+  font-size:12px;
   line-height:2;
 }
 
@@ -1148,87 +1256,161 @@ body{
   color:var(--cyan);
 }
 
-/* =====================================================
-   RESPONSIVE
-===================================================== */
+.foot .foot-brand{
+  color:var(--green2);
+  font-weight:800;
+  margin-bottom:5px;
+}
 
-@media(max-width:760px){
+/* ================= RESPONSIVE ================= */
 
+@media(max-width:850px){
   .server-grid{
     grid-template-columns:1fr;
   }
 
-  .rank-grid{
-    grid-template-columns:1fr;
+  .hero{
+    align-items:flex-start;
+  }
+
+  .radar-orb{
+    width:125px;
+    height:125px;
+  }
+}
+
+@media(max-width:600px){
+  .header{
+    padding:18px 14px;
+  }
+
+  .header-top{
+    align-items:flex-start;
+    gap:12px;
+  }
+
+  .brand{
+    gap:10px;
+  }
+
+  .logo{
+    width:52px;
+    height:52px;
   }
 
   .brand h1{
     font-size:21px;
   }
 
-  .logo-wrap{
-    width:56px;
-    height:56px;
-  }
-
-  .header-top{
-    align-items:flex-start;
+  .brand .sub{
+    font-size:7px;
   }
 
   .btn-login,
   .btn-logout{
-    padding:8px 11px;
+    padding:8px 10px;
     font-size:11px;
   }
-}
 
-@media(max-width:520px){
-
-  .header{
-    padding:17px 13px;
+  .user-badge{
+    display:none;
   }
 
-  .wrap{
-    padding:15px 12px 55px;
+  .hero{
+    display:block;
+  }
+
+  .hero-title{
+    font-size:23px;
+  }
+
+  .tag{
+    font-size:12px;
+  }
+
+  .radar-orb{
+    display:none;
   }
 
   .stats{
     grid-template-columns:repeat(2,1fr);
+    gap:8px;
   }
 
-  .brand{
-    gap:9px;
+  .stat{
+    padding:12px 8px;
   }
 
-  .brand h1{
-    font-size:18px;
+  .stat .n{
+    font-size:21px;
   }
 
-  .brand-sub{
-    font-size:7px;
+  .tabs{
+    padding:10px 12px;
   }
 
-  .logo-wrap{
-    width:48px;
-    height:48px;
+  .tab{
+    min-width:115px;
+    padding:10px 12px;
+    font-size:12px;
   }
 
-  .tag{
-    font-size:11.5px;
+  .wrap{
+    padding:19px 12px 55px;
   }
 
-  .btns{
-    grid-template-columns:1fr 1fr;
+  .section-heading{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:5px;
   }
 
-  .btn.vote{
-    grid-column:span 2;
+  .section-title{
+    font-size:20px;
   }
 
-  .globe{
-    width:430px;
-    height:430px;
-    top:-210px;
+  .search-row{
+    gap:7px;
+  }
+
+  .refresh-btn{
+    padding:0 13px;
+  }
+
+  .card{
+    padding:14px;
+    border-radius:18px;
+  }
+
+  .server-avatar{
+    width:58px;
+    height:58px;
+    border-radius:14px;
+  }
+
+  .server-name{
+    font-size:15px;
+  }
+
+  .btn{
+    font-size:11px;
+    padding:10px 3px;
+  }
+
+  .score-hero{
+    padding:18px;
+  }
+
+  .score-hero h2{
+    font-size:19px;
+  }
+
+  .score-icon{
+    font-size:35px;
+  }
+
+  .modal-box{
+    padding:24px 18px;
   }
 }
 </style>
@@ -1236,145 +1418,121 @@ body{
 
 <body>
 
-<div class="bg-grid"></div>
-<div class="noise"></div>
-<div class="globe"></div>
-<div class="radar-sweep"></div>
-
-<!-- =====================================================
-     HEADER
-===================================================== -->
+<!-- ================= HEADER ================= -->
 
 <header class="header">
   <div class="header-inner">
 
     <div class="header-top">
-
       <div class="brand">
-
-        <div class="logo-wrap">
-          <!-- لوگوی CraftRadar -->
-          <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <rect width="100" height="100" rx="50" fill="#02080a"/>
-            <circle cx="50" cy="50" r="38" fill="none" stroke="#00eaff" stroke-width="2"/>
-            <circle cx="50" cy="50" r="28" fill="none" stroke="#00eaff" stroke-width="1" opacity=".7"/>
-            <circle cx="50" cy="50" r="17" fill="none" stroke="#20ff85" stroke-width="1.5" opacity=".8"/>
-            <path d="M50 50 L79 27" stroke="#20ff85" stroke-width="3" stroke-linecap="round"/>
-            <circle cx="50" cy="50" r="4" fill="#00eaff"/>
-            <path d="M30 65 L42 40 L57 54 L67 35 L77 65 Z"
-                  fill="#087d9b"
-                  opacity=".8"/>
-            <path d="M28 67 L41 42 L56 56 L67 37 L79 67"
-                  fill="none"
-                  stroke="#00eaff"
-                  stroke-width="2"/>
-            <text x="50" y="87"
-                  text-anchor="middle"
-                  fill="#fff"
-                  font-size="7"
-                  font-family="Arial"
-                  font-weight="bold">CRAFT</text>
-          </svg>
-        </div>
-
+        <img
+          class="logo"
+          src="logo.png"
+          alt="CraftRadar Logo"
+          onerror="this.style.display='none';"
+        >
         <div>
           <h1>CraftRadar</h1>
-          <div class="brand-sub">SERVER RADAR</div>
+          <div class="sub pixel">MINECRAFT SERVER RADAR</div>
         </div>
-
       </div>
 
-      <div class="user-area" id="userArea"></div>
-
+      <div class="user-area" id="userArea">
+        <button class="btn-login" id="openLogin">ورود / ثبت‌نام</button>
+      </div>
     </div>
 
-    <p class="tag">
-      رادار نسل جدید سرورهای Minecraft؛
-      وضعیت آنلاین، تعداد بازیکنان، نسخه، آی‌پی، لوگوی سرور،
-      لیست پلیرها و رتبه‌بندی را در یک داشبورد سریع ببین.
-    </p>
+    <div class="hero">
+      <div class="hero-copy">
+        <h2 class="hero-title">
+          سرور بعدی تو،
+          <span>اینجاست.</span>
+        </h2>
+        <p class="tag">
+          رادار حرفه‌ای سرورهای ماینکرفت؛
+          وضعیت زنده، لوگوی سرورها، آی‌پی و پورت،
+          لیست پلیرها و رأی‌گیری جامعه گیمرها.
+        </p>
+      </div>
+
+      <div class="radar-orb">
+        <div class="radar-sweep"></div>
+        <div class="radar-center"></div>
+      </div>
+    </div>
 
     <div class="stats">
       <div class="stat">
         <div class="n" id="stat-total">۰</div>
         <div class="l">کل سرورها</div>
       </div>
-
       <div class="stat">
         <div class="n" id="stat-iran">۰</div>
-        <div class="l">ایرانی</div>
+        <div class="l">سرور ایرانی</div>
       </div>
-
       <div class="stat">
         <div class="n" id="stat-foreign">۰</div>
-        <div class="l">خارجی</div>
+        <div class="l">سرور خارجی</div>
       </div>
-
       <div class="stat">
         <div class="n" id="stat-online">۰/۰</div>
-        <div class="l">بررسی‌شده</div>
+        <div class="l">بررسی آنلاین</div>
       </div>
     </div>
 
   </div>
 </header>
 
-<!-- =====================================================
-     NAVIGATION
-===================================================== -->
+<!-- ================= TABS ================= -->
 
 <div class="tabs-wrap">
   <nav class="tabs">
-
-    <button class="tab active" data-tab="iran">
-      🇮🇷 سرورهای ایرانی
-    </button>
-
-    <button class="tab" data-tab="foreign">
-      🌍 سرورهای خارجی
-    </button>
-
-    <button class="tab" data-tab="top">
-      🏆 برترین‌ها
-    </button>
-
-    <button class="tab" data-tab="score">
-      📊 اسکوربورد
-    </button>
-
+    <button class="tab active" data-tab="iran">🇮🇷 سرورهای ایرانی</button>
+    <button class="tab" data-tab="foreign">🌍 سرورهای خارجی</button>
+    <button class="tab" data-tab="top">🏆 برترین‌ها</button>
   </nav>
 </div>
 
-<!-- =====================================================
-     MAIN
-===================================================== -->
+<!-- ================= MAIN ================= -->
 
 <main class="wrap">
 
-  <!-- ================= IRAN ================= -->
+  <!-- IRAN -->
 
   <section class="section active" id="sec-iran">
 
+    <div class="section-heading">
+      <div>
+        <h2 class="section-title">سرورهای <span>ایرانی</span> 🇮🇷</h2>
+        <p class="section-description">سرورهای منتخب برای تجربه‌ای نزدیک‌تر و پایدارتر</p>
+      </div>
+      <span class="section-count" id="count-iran"></span>
+    </div>
+
     <div class="toolbar">
 
-      <input
-        class="search"
-        id="search-iran"
-        placeholder="🔎 جستجوی سرور ایرانی..."
-      >
+      <div class="search-row">
+        <input
+          class="search"
+          id="search-iran"
+          placeholder="جستجوی نام یا آی‌پی سرور ایرانی..."
+        >
+        <button class="refresh-btn" id="refresh-iran" title="بازنشانی">↻</button>
+      </div>
 
       <div class="chips" id="filter-iran">
-        <div class="chip active" data-val="all">همه</div>
-        <div class="chip" data-val="java">جاوا</div>
-        <div class="chip" data-val="bedrock">بدراک</div>
+        <button class="chip active" data-val="all">همه</button>
+        <button class="chip" data-val="java">Java</button>
+        <button class="chip" data-val="bedrock">Bedrock</button>
+        <button class="chip" data-val="survival">Survival</button>
+        <button class="chip" data-val="bedwars">BedWars</button>
+        <button class="chip" data-val="skyblock">SkyBlock</button>
+        <button class="chip" data-val="smp">SMP</button>
       </div>
 
       <div class="actions">
-        <button class="check-all" id="checkall-iran">
-          📡 بررسی همه
-        </button>
-
-        <span class="count" id="count-iran"></span>
+        <button class="check-all" id="checkall-iran">📡 بررسی همه</button>
+        <span class="count" id="count-iran-bottom"></span>
       </div>
 
     </div>
@@ -1383,30 +1541,41 @@ body{
 
   </section>
 
-  <!-- ================= FOREIGN ================= -->
+  <!-- FOREIGN -->
 
   <section class="section" id="sec-foreign">
 
+    <div class="section-heading">
+      <div>
+        <h2 class="section-title">سرورهای <span>خارجی</span> 🌍</h2>
+        <p class="section-description">شبکه‌های محبوب ماینکرفت از سراسر جهان</p>
+      </div>
+      <span class="section-count" id="count-foreign"></span>
+    </div>
+
     <div class="toolbar">
 
-      <input
-        class="search"
-        id="search-foreign"
-        placeholder="🔎 جستجوی سرور خارجی..."
-      >
+      <div class="search-row">
+        <input
+          class="search"
+          id="search-foreign"
+          placeholder="جستجوی نام یا آی‌پی سرور خارجی..."
+        >
+        <button class="refresh-btn" id="refresh-foreign" title="بازنشانی">↻</button>
+      </div>
 
       <div class="chips" id="filter-foreign">
-        <div class="chip active" data-val="all">همه</div>
-        <div class="chip" data-val="cracked">کرک</div>
-        <div class="chip" data-val="premium">پرمیوم</div>
+        <button class="chip active" data-val="all">همه</button>
+        <button class="chip" data-val="cracked">کرک</button>
+        <button class="chip" data-val="premium">پرمیوم</button>
+        <button class="chip" data-val="survival">Survival</button>
+        <button class="chip" data-val="bedwars">BedWars</button>
+        <button class="chip" data-val="skyblock">SkyBlock</button>
       </div>
 
       <div class="actions">
-        <button class="check-all" id="checkall-foreign">
-          📡 بررسی همه
-        </button>
-
-        <span class="count" id="count-foreign"></span>
+        <button class="check-all" id="checkall-foreign">📡 بررسی همه</button>
+        <span class="count" id="count-foreign-bottom"></span>
       </div>
 
     </div>
@@ -1415,126 +1584,52 @@ body{
 
   </section>
 
-  <!-- ================= TOP ================= -->
+  <!-- SCOREBOARD -->
 
   <section class="section" id="sec-top">
 
     <div class="score-hero">
-      <h2>🏆 Hall of Fame</h2>
-      <p>
-        محبوب‌ترین سرورهای CraftRadar بر اساس رأی کاربران.
-      </p>
+      <div>
+        <h2>🏆 تالار برترین‌ها</h2>
+        <p>
+          سرورهایی که بیشترین رأی جامعه CraftRadar را دریافت کرده‌اند.
+          برای رأی دادن وارد حساب شوید.
+        </p>
+      </div>
+      <div class="score-icon">🏆</div>
     </div>
 
-    <div class="rank-grid" id="list-top"></div>
+    <div class="rank-list" id="list-top"></div>
 
   </section>
-
-  <!-- ================= SCOREBOARD ================= -->
-
-  <section class="section" id="sec-score">
-
-    <div class="score-hero">
-
-      <h2>📊 Radar Scoreboard</h2>
-
-      <p>
-        سرور را انتخاب کن و وضعیت، پلیرها و اطلاعات آن را در یک
-        اسکوربورد مرتب ببین. اطلاعات آماده کپی کردن هستند.
-      </p>
-
-      <div class="score-controls">
-
-        <select class="score-select" id="scoreServer"></select>
-
-        <button class="copy-score" id="copyScore">
-          📋 کپی اسکوربورد
-        </button>
-
-      </div>
-
-    </div>
-
-    <div class="scoreboard" id="scoreboard">
-
-      <div class="score-title">
-        <strong>CRAFT RADAR</strong>
-        <span>ONLINE MONITOR</span>
-      </div>
-
-      <div class="score-row">
-        <span class="key">Server</span>
-        <span class="value" id="sc-name">---</span>
-      </div>
-
-      <div class="score-row">
-        <span class="key">IP</span>
-        <span class="value" id="sc-ip">---</span>
-      </div>
-
-      <div class="score-row">
-        <span class="key">Status</span>
-        <span class="value" id="sc-status">NOT CHECKED</span>
-      </div>
-
-      <div class="score-row">
-        <span class="key">Players</span>
-        <span class="value" id="sc-players">---</span>
-      </div>
-
-      <div class="score-row">
-        <span class="key">Version</span>
-        <span class="value" id="sc-version">---</span>
-      </div>
-
-      <div class="score-row">
-        <span class="key">Platform</span>
-        <span class="value" id="sc-platform">---</span>
-      </div>
-
-      <div class="score-players">
-
-        <h3>👥 Players</h3>
-
-        <div class="players-list" id="sc-player-list">
-          <span class="player">هنوز بررسی نشده</span>
-        </div>
-
-      </div>
-
-    </div>
-
-  </section>
-
-  <div class="foot">
-    <strong>CraftRadar</strong>
-    — مرکز پایش و کشف سرورهای Minecraft
-    <br>
-    ساخته‌شده برای گیمرها، مدیران سرور و جامعه Minecraft.
-  </div>
 
 </main>
 
-<!-- =====================================================
-     LOGIN
-===================================================== -->
+<!-- ================= FOOTER ================= -->
+
+<footer class="foot">
+  <div class="foot-brand">◆ CraftRadar — ساخته‌شده برای جامعه ماینکرفت ◆</div>
+  <strong>سرورت را پیدا کن، وارد شو، ماجراجویی را شروع کن.</strong>
+  <br>
+  اطلاعات وضعیت سرورها از سرویس بررسی Minecraft دریافت می‌شود.
+  ممکن است وضعیت بعضی سرورها به‌دلیل محدودیت شبکه یا تغییر آی‌پی موقتاً در دسترس نباشد.
+</footer>
+
+<!-- ================= TOAST ================= -->
+
+<div class="toast" id="toast"></div>
+
+<!-- ================= LOGIN MODAL ================= -->
 
 <div class="modal-overlay" id="loginModal">
-
-  <div class="login-box">
+  <div class="modal-box">
 
     <button class="close" id="closeLogin">×</button>
 
-    <div class="login-heading">
-      ورود به CraftRadar
-    </div>
-
-    <div class="login-sub">
-      برای رأی دادن و ذخیره انتخاب‌ها وارد شوید
-    </div>
+    <div class="modal-heading">ورود به حساب</div>
+    <div class="modal-sub">برای رأی دادن و ذخیره انتخاب‌ها وارد شوید</div>
 
     <form id="loginForm">
-
       <input
         class="input"
         type="email"
@@ -1551,1487 +1646,1176 @@ body{
         required
       >
 
-      <button class="login-btn" type="submit">
-        ورود به حساب
-      </button>
-
+      <button class="login-btn" type="submit">ورود به CraftRadar</button>
     </form>
 
+    <div class="login-or">یا ورود سریع</div>
+
+    <div class="socials">
+      <button class="social" title="ورود آزمایشی گوگل" onclick="fakeSocial('Google')">G</button>
+      <button class="social" title="ورود مهمان" onclick="fakeSocial('مهمان')">👤</button>
+    </div>
+
     <div class="login-note">
-      این نسخه از ورود محلی استفاده می‌کند و اطلاعات حساب
-      فقط در مرورگر همین دستگاه ذخیره می‌شود.
+      این نسخه یک سیستم ورود محلی است.
+      اطلاعات حساب روی همین دستگاه ذخیره می‌شود.
     </div>
 
   </div>
-
 </div>
 
-<div class="toast" id="toast"></div>
+<!-- ================= SERVER INFO MODAL ================= -->
 
-<!-- =====================================================
-     JAVASCRIPT
-===================================================== -->
+<div class="modal-overlay" id="infoModal">
+  <div class="modal-box">
+
+    <button class="close" id="closeInfo">×</button>
+
+    <div id="infoContent"></div>
+
+  </div>
+</div>
 
 <script>
 (function(){
 
-"use strict";
-
-/* =====================================================
-   SERVER DATA
-===================================================== */
-
-const SERVERS = {
-
-iran:[
-{
- name:"GunMax",
- ip:"play.gunmax.org",
- type:"java",
- modes:"Survival • Roleplay • SkyMine • BedWars"
-},
-{
- name:"GameUp",
- ip:"mc.gameup.ir",
- type:"java",
- modes:"Survival • SkyBlock • BedWars • Creative • Economy • Factions"
-},
-{
- name:"Xcraft",
- ip:"play.xcraft.ir",
- type:"java",
- modes:"Survival • SMP • SkyBlock • Practice • Parkour • BedWars"
-},
-{
- name:"RexoCraft",
- ip:"play.rexocraft.com",
- type:"java",
- modes:"BedWars • Survival • SkyMine • SkyBlock • ThePit • Arcade"
-},
-{
- name:"TrexMine",
- ip:"play.trexmine.com",
- type:"java",
- modes:"Survival • SkyBlock • BedWars • PvP • Minigames"
-},
-{
- name:"MagicPixel",
- ip:"play.magicpixel.ir",
- type:"java",
- modes:"Roleplay • RPG • SkyMine • SMP"
-},
-{
- name:"InfinityStar",
- ip:"play.infinitystar.ir",
- type:"java",
- modes:"Roleplay • Survival • SMP"
-},
-{
- name:"HorizonNetwork",
- ip:"play.horizonnetwork.ir",
- type:"java",
- modes:"SkyMine • SMP • ThePit • Survival"
-},
-{
- name:"LunarProCraft",
- ip:"play.lunarprocraft.ir",
- type:"java",
- modes:"OneBlock • Minigames • BedWars"
-},
-{
- name:"ArianCraft",
- ip:"play.svariancraft.ir",
- type:"java",
- modes:"BedWars • OneBlock • SkyBlock • Survival • Practice"
-},
-{
- name:"SUSIS MC",
- ip:"play.susismc.ir",
- type:"java",
- modes:"Survival • SMP • Anarchy • Zombie"
-},
-{
- name:"VoidShot",
- ip:"play.voidshot.ir",
- type:"java",
- modes:"Roleplay • BedWars • SkyBlock • Survival"
-},
-{
- name:"PaladinGuard",
- ip:"java.paladinguard.ir",
- type:"both",
- modes:"Survival • Roleplay • SMP • Bedrock"
-},
-{
- name:"PandaSMP",
- ip:"play.pandasmp.ir",
- type:"java",
- modes:"Lifesteal • SMP • Anarchy"
-},
-{
- name:"ColdGame",
- ip:"play.coldgame.ir",
- type:"java",
- modes:"Survival • SlimeFun • SkyMine • Practice"
-},
-{
- name:"RubyLand",
- ip:"play.mcbe.ir",
- type:"bedrock",
- modes:"Bedrock Survival • Economy • Roleplay"
-}
-],
-
-foreign:[
-{
- name:"Hypixel",
- ip:"mc.hypixel.net",
- type:"java",
- access:"premium",
- modes:"BedWars • SkyBlock • SkyWars • Murder Mystery"
-},
-{
- name:"Wynncraft",
- ip:"play.wynncraft.com",
- type:"java",
- access:"premium",
- modes:"MMORPG • Quest • Level Up"
-},
-{
- name:"CubeCraft Games",
- ip:"play.cubecraft.net",
- type:"both",
- access:"premium",
- modes:"SkyWars • EggWars • Lucky Islands"
-},
-{
- name:"Purple Prison",
- ip:"play.purpleprison.org",
- type:"java",
- access:"cracked",
- modes:"Prison • Economy • Mining"
-},
-{
- name:"6b6t",
- ip:"play.6b6t.org",
- type:"java",
- access:"cracked",
- modes:"Anarchy • Survival • PvP"
-},
-{
- name:"Pika Network",
- ip:"play.pika-network.net",
- type:"both",
- access:"cracked",
- modes:"BedWars • SkyBlock • Factions • Lifesteal • Prison"
-},
-{
- name:"JartexNetwork",
- ip:"play.jartexnetwork.com",
- type:"java",
- access:"cracked",
- modes:"BedWars • SkyWars • Survival • Prison • SkyBlock"
-},
-{
- name:"MineBerry",
- ip:"mc.mineberry.org",
- type:"java",
- access:"cracked",
- modes:"Survival • Anarchy • Economy • Factions • KitPvP"
-},
-{
- name:"HylexMC",
- ip:"play.hylexmc.net",
- type:"java",
- access:"cracked",
- modes:"BedWars • Lifesteal • OneBlock • Parkour • PvP"
-},
-{
- name:"Twerion",
- ip:"twerion.net",
- type:"java",
- access:"cracked",
- modes:"BedWars • SkyBlock • PvP • Minigames • CityBuild"
-},
-{
- name:"AppleMC",
- ip:"play.applemc.fun",
- type:"java",
- access:"cracked",
- modes:"Survival • BedWars • Earth • Lifesteal • Economy"
-},
-{
- name:"UltimisMC",
- ip:"play.ultimismc.com",
- type:"java",
- access:"cracked",
- modes:"Survival • BedWars • Lifesteal • OneBlock • Parkour"
-},
-{
- name:"LifestealSMP",
- ip:"play.lifestealsmp.com",
- type:"java",
- access:"cracked",
- modes:"Survival • Lifesteal • Earth • Factions • PvP"
-},
-{
- name:"OneBlocky",
- ip:"play.oneblocky.com",
- type:"java",
- access:"cracked",
- modes:"OneBlock • SkyBlock • Survival • Economy"
-}
-]
-
-};
-
-/* =====================================================
-   STATE
-===================================================== */
-
-let currentUser=null;
-let votes={};
-let myVotes=[];
-let statusCache={};
-
-const state={
- iran:{search:"",filter:"all"},
- foreign:{search:"",filter:"all"}
-};
-
-/* =====================================================
-   HELPERS
-===================================================== */
-
-function toFa(n){
- return String(n).replace(/[0-9]/g,d=>"۰۱۲۳۴۵۶۷۸۹"[d]);
-}
-
-function getAllServers(){
- return SERVERS.iran.concat(SERVERS.foreign);
-}
-
-function getVotes(name){
- return votes[name] || 0;
-}
-
-function hasVoted(name){
- return myVotes.indexOf(name)!==-1;
-}
-
-function typeLabel(type){
-
- if(type==="java") return "Java";
- if(type==="bedrock") return "Bedrock";
-
- return "Java + Bedrock";
-}
-
-function iconURL(ip){
- return "https://api.mcsrvstat.us/icon/"+encodeURIComponent(ip);
-}
-
-function escapeHTML(value){
-
- return String(value)
-   .replace(/&/g,"&amp;")
-   .replace(/</g,"&lt;")
-   .replace(/>/g,"&gt;")
-   .replace(/"/g,"&quot;")
-   .replace(/'/g,"&#039;");
-
-}
-
-/* =====================================================
-   STORAGE
-===================================================== */
-
-function loadStorage(){
-
- try{
-   const u=localStorage.getItem("cr_user");
-   if(u) currentUser=JSON.parse(u);
- }catch(e){}
-
- try{
-   const v=localStorage.getItem("cr_votes");
-   if(v) votes=JSON.parse(v);
- }catch(e){}
-
- try{
-   const m=localStorage.getItem("cr_myvotes");
-   if(m) myVotes=JSON.parse(m);
- }catch(e){}
-
-}
-
-function saveUser(){
- localStorage.setItem("cr_user",JSON.stringify(currentUser));
-}
-
-function saveVotes(){
- localStorage.setItem("cr_votes",JSON.stringify(votes));
-}
-
-function saveMyVotes(){
- localStorage.setItem("cr_myvotes",JSON.stringify(myVotes));
-}
-
-/* =====================================================
-   TOAST
-===================================================== */
-
-function showToast(message){
-
- const toast=document.getElementById("toast");
-
- toast.textContent=message;
- toast.classList.add("show");
-
- clearTimeout(toast._timer);
-
- toast._timer=setTimeout(()=>{
-   toast.classList.remove("show");
- },2000);
-
-}
-
-/* =====================================================
-   COPY
-===================================================== */
-
-async function copyText(text){
-
- try{
-
-   await navigator.clipboard.writeText(text);
-
- }catch(e){
-
-   const area=document.createElement("textarea");
-
-   area.value=text;
-   document.body.appendChild(area);
-   area.select();
-   document.execCommand("copy");
-   area.remove();
-
- }
-
- showToast("📋 کپی شد");
-
-}
-
-function copyIP(ip){
- copyText(ip);
-}
-
-/* =====================================================
-   USER
-===================================================== */
-
-function updateUserArea(){
-
- const area=document.getElementById("userArea");
-
- if(currentUser){
-
-   const name=currentUser.name || currentUser.email.split("@")[0];
-
-   area.innerHTML=
-     '<span class="user-badge">👤 '+escapeHTML(name)+'</span>'+
-     '<button class="btn-logout" id="logoutBtn">خروج</button>';
-
-   document.getElementById("logoutBtn").onclick=function(){
-
-     currentUser=null;
-
-     localStorage.removeItem("cr_user");
-
-     updateUserArea();
-
-     renderAll();
-
-     showToast("از حساب خارج شدید");
-
-   };
-
- }else{
-
-   area.innerHTML=
-     '<button class="btn-login" id="openLogin">ورود / ثبت‌نام</button>';
-
-   document.getElementById("openLogin").onclick=openLogin;
-
- }
-
-}
-
-/* =====================================================
-   LOGIN
-===================================================== */
-
-function openLogin(){
- document.getElementById("loginModal").classList.add("show");
-}
-
-function closeLogin(){
- document.getElementById("loginModal").classList.remove("show");
-}
-
-document.getElementById("closeLogin").onclick=closeLogin;
-
-document.getElementById("loginModal").onclick=function(e){
-
- if(e.target===this){
-   closeLogin();
- }
-
-};
-
-document.getElementById("loginForm").onsubmit=function(e){
-
- e.preventDefault();
-
- const email=document.getElementById("email").value.trim();
- const password=document.getElementById("password").value;
-
- if(!email || !password){
-
-   showToast("ایمیل و رمز عبور را وارد کنید");
-   return;
-
- }
-
- currentUser={
-   email:email,
-   name:email.split("@")[0]
- };
-
- saveUser();
-
- closeLogin();
-
- updateUserArea();
-
- renderAll();
-
- showToast("خوش آمدید "+currentUser.name);
-
-};
-
-/* =====================================================
-   VOTE
-===================================================== */
-
-function doVote(serverName){
-
- if(!currentUser){
-
-   showToast("برای رأی دادن ابتدا وارد شوید");
-   openLogin();
-
-   return null;
-
- }
-
- if(hasVoted(serverName)){
-
-   showToast("قبلاً رأی داده‌اید");
-   return null;
-
- }
-
- votes[serverName]=(votes[serverName]||0)+1;
-
- myVotes.push(serverName);
-
- saveVotes();
- saveMyVotes();
-
- return votes[serverName];
-
-}
-
-/* =====================================================
-   STATUS API
-===================================================== */
-
-function fetchTimeout(url,ms=7000){
-
- const controller=new AbortController();
-
- const timer=setTimeout(()=>{
-   controller.abort();
- },ms);
-
- return fetch(url,{
-   signal:controller.signal,
-   cache:"no-store"
- }).finally(()=>{
-   clearTimeout(timer);
- });
-
-}
-
-async function fetchServerStatus(server){
-
- const clean=server.ip
-   .split("/")[0]
-   .trim();
-
- const order=
-   server.type==="bedrock"
-   ? ["bedrock"]
-   : server.type==="java"
-   ? ["java"]
-   : ["java","bedrock"];
-
- for(const platform of order){
-
-   try{
-
-     const endpoint=
-       platform==="bedrock"
-       ? "https://api.mcsrvstat.us/bedrock/3/"+encodeURIComponent(clean)
-       : "https://api.mcsrvstat.us/3/"+encodeURIComponent(clean);
-
-     const response=await fetchTimeout(endpoint,7000);
-
-     if(!response.ok) continue;
-
-     const data=await response.json();
-
-     if(data && data.online){
-
-       return {
-         online:true,
-         platform:platform==="bedrock"?"Bedrock":"Java",
-         data:data
-       };
-
-     }
-
-   }catch(e){}
-
- }
-
- return {
-   online:false
- };
-
-}
-
-/* =====================================================
-   STATUS UI
-===================================================== */
-
-async function checkStatus(server,box,button){
-
- if(button) button.disabled=true;
-
- box.classList.add("show");
-
- box.innerHTML=
-   '<div class="s-row">'+
-   '<span class="k"><span class="dot pending"></span>در حال بررسی...</span>'+
-   '</div>';
-
- const result=await fetchServerStatus(server);
-
- if(!result.online){
-
-   box.innerHTML=
-     '<div class="s-row">'+
-     '<span class="k"><span class="dot off"></span>آفلاین یا در دسترس نیست</span>'+
-     '</div>';
-
-   statusCache[server.name]={
-     online:false,
-     server:server
-   };
-
-   updateScoreboard(server);
-
-   if(button) button.disabled=false;
-
-   updateOnlineStats();
-
-   return;
-
- }
-
- const d=result.data;
-
- const players=
-   d.players && d.players.online!==undefined
-   ? d.players.online+" / "+(d.players.max ?? "?")
-   : "?";
-
- const version=
-   typeof d.version==="string"
-   ? d.version
-   : d.version?.name || "?";
-
- const ip=
-   d.ip
-   ? d.ip+(d.port ? ":"+d.port:"")
-   : server.ip;
-
- statusCache[server.name]={
-   online:true,
-   platform:result.platform,
-   data:d,
-   players:players,
-   version:version,
-   ip:ip,
-   server:server
- };
-
- let html="";
-
- html+=
-   '<div class="s-row">'+
-   '<span class="k"><span class="dot on"></span>آنلاین</span>'+
-   '<span class="v">'+result.platform+'</span>'+
-   '</div>';
-
- html+=
-   '<div class="s-row">'+
-   '<span class="k">پلیر</span>'+
-   '<span class="v">'+escapeHTML(players)+'</span>'+
-   '</div>';
-
- html+=
-   '<div class="s-row">'+
-   '<span class="k">IP</span>'+
-   '<span class="v">'+escapeHTML(ip)+'</span>'+
-   '</div>';
-
- html+=
-   '<div class="s-row">'+
-   '<span class="k">نسخه</span>'+
-   '<span class="v">'+escapeHTML(version)+'</span>'+
-   '</div>';
-
- box.innerHTML=html;
-
- if(button) button.disabled=false;
-
- updateScoreboard(server);
-
- updateOnlineStats();
-
-}
-
-/* =====================================================
-   PLAYERS
-===================================================== */
-
-async function showPlayers(server,panel,button){
-
- if(panel.classList.contains("show")){
-
-   panel.classList.remove("show");
-
-   button.textContent="👥 پلیرها";
-
-   return;
-
- }
-
- button.disabled=true;
-
- panel.innerHTML=
-   '<div class="players-title">⏳ در حال دریافت لیست پلیرها...</div>';
-
- panel.classList.add("show");
-
- const result=await fetchServerStatus(server);
-
- button.disabled=false;
-
- if(!result.online){
-
-   panel.innerHTML=
-     '<div class="players-title">❌ سرور آفلاین است یا لیست پلیرها در دسترس نیست.</div>';
-
-   return;
-
- }
-
- const players=result.data.players?.list || [];
-
- if(!players.length){
-
-   panel.innerHTML=
-     '<div class="players-title">👥 لیست پلیرها توسط این سرور ارائه نشده است.</div>';
-
-   return;
-
- }
-
- let html='<div class="players-title">👥 پلیرها ('+players.length+')</div>';
-
- html+='<div class="players-list">';
-
- players.forEach(player=>{
-
-   const name=
-     typeof player==="string"
-     ? player
-     : player.name || "Unknown";
-
-   html+='<span class="player">'+escapeHTML(name)+'</span>';
-
- });
-
- html+='</div>';
-
- panel.innerHTML=html;
-
- button.textContent="▲ بستن پلیرها";
-
-}
-
-/* =====================================================
-   CARD
-===================================================== */
-
-function buildCard(server){
-
- const card=document.createElement("article");
-
- card.className="card";
-
- const voteCount=getVotes(server.name);
-
- const accessBadge=
-   server.access==="cracked"
-   ? '<span class="badge cracked">کرک</span>'
-   : server.access==="premium"
-   ? '<span class="badge premium">پرمیوم</span>'
-   : "";
-
- card.innerHTML=
-
-   '<div class="card-head">'+
-
-     '<img class="server-icon" '+
-       'loading="lazy" '+
-       'decoding="async" '+
-       'src="'+iconURL(server.ip)+'" '+
-       'alt="'+escapeHTML(server.name)+'" '+
-     '>'+
-
-     '<div>'+
-       '<div class="name">'+escapeHTML(server.name)+'</div>'+
-       '<div class="server-ip-small">'+escapeHTML(server.ip)+'</div>'+
-
-       '<div class="badges">'+
-
-         '<span class="badge type">'+
-           typeLabel(server.type)+
-         '</span>'+
-
-         accessBadge+
-
-         '<span class="badge votes vote-badge">'+
-           '🗳️ '+toFa(voteCount)+
-         '</span>'+
-
-       '</div>'+
-     '</div>'+
-
-   '</div>'+
-
-   '<div class="ip-box">'+
-     '<span>'+escapeHTML(server.ip)+'</span>'+
-     '<span class="ip-copy">📋 کپی</span>'+
-   '</div>'+
-
-   '<div class="modes">'+
-     escapeHTML(server.modes)+
-   '</div>'+
-
-   '<div class="btns">'+
-
-     '<button class="btn status">'+
-       '📡 وضعیت'+
-     '</button>'+
-
-     '<button class="btn players">'+
-       '👥 پلیرها'+
-     '</button>'+
-
-     '<button class="btn vote">'+
-       '🗳️ رأی'+
-     '</button>'+
-
-   '</div>'+
-
-   '<div class="status-box"></div>'+
-
-   '<div class="players-panel"></div>';
-
- const icon=card.querySelector(".server-icon");
-
- icon.onerror=function(){
-
-   icon.style.display="none";
-
-   const fallback=document.createElement("div");
-
-   fallback.className="server-icon fallback";
-
-   fallback.textContent=
-     server.name
-       .replace(/[^A-Za-z]/g,"")
-       .slice(0,2)
-       .toUpperCase() || "MC";
-
-   icon.parentNode.insertBefore(fallback,icon);
-
- };
-
- card.querySelector(".ip-box").onclick=()=>{
-   copyIP(server.ip);
- };
-
- const statusButton=card.querySelector(".status");
- const statusBox=card.querySelector(".status-box");
-
- statusButton.onclick=()=>{
-   checkStatus(server,statusBox,statusButton);
- };
-
- const playersButton=card.querySelector(".players");
- const playersPanel=card.querySelector(".players-panel");
-
- playersButton.onclick=()=>{
-   showPlayers(server,playersPanel,playersButton);
- };
-
- const voteButton=card.querySelector(".vote");
- const voteBadge=card.querySelector(".vote-badge");
-
- if(hasVoted(server.name)){
-
-   voteButton.textContent="✅ رأی داده شد";
-   voteButton.disabled=true;
-
- }
-
- voteButton.onclick=function(){
-
-   const result=doVote(server.name);
-
-   if(result===null) return;
-
-   voteBadge.textContent="🗳️ "+toFa(result);
-
-   voteButton.textContent="✅ رأی داده شد";
-
-   voteButton.disabled=true;
-
-   renderTop();
-
-   showToast("به "+server.name+" رأی دادید");
-
- };
-
- card._check=()=>{
-   return checkStatus(server,statusBox,null);
- };
-
- return card;
-
-}
-
-/* =====================================================
-   FILTER
-===================================================== */
-
-function matches(category,server){
-
- const s=state[category];
-
- if(
-   s.search &&
-   !server.name.toLowerCase().includes(s.search.toLowerCase()) &&
-   !server.ip.toLowerCase().includes(s.search.toLowerCase())
- ){
-   return false;
- }
-
- if(category==="iran"){
-
-   if(s.filter==="java" && server.type==="bedrock"){
-     return false;
-   }
-
-   if(s.filter==="bedrock" && server.type==="java"){
-     return false;
-   }
-
- }else{
-
-   if(s.filter!=="all" && server.access!==s.filter){
-     return false;
-   }
-
- }
-
- return true;
-
-}
-
-/* =====================================================
-   LAND ANIMATION
-===================================================== */
-
-let observer=null;
-
-function land(){
-
- if(observer){
-   observer.disconnect();
- }
-
- const elements=document.querySelectorAll(
-   ".card:not(.landed),.rank-row:not(.landed)"
- );
-
- if(!elements.length) return;
-
- observer=new IntersectionObserver(entries=>{
-
-   entries.forEach(entry=>{
-
-     if(!entry.isIntersecting) return;
-
-     const el=entry.target;
-
-     const index=Array.from(elements).indexOf(el);
-
-     setTimeout(()=>{
-       el.classList.add("landed");
-     },Math.max(0,index)*45);
-
-     observer.unobserve(el);
-
-   });
-
- },{
-   threshold:.05,
-   rootMargin:"0px 0px -20px 0px"
- });
-
- elements.forEach(el=>observer.observe(el));
-
-}
-
-/* =====================================================
-   RENDER LIST
-===================================================== */
-
-function renderList(category){
-
- const list=document.getElementById("list-"+category);
- const count=document.getElementById("count-"+category);
-
- list.innerHTML="";
-
- const filtered=SERVERS[category].filter(
-   server=>matches(category,server)
- );
-
- count.textContent=
-   toFa(filtered.length)+" سرور";
-
- if(!filtered.length){
-
-   list.innerHTML=
-     '<div class="empty">'+
-     '🔎 سروری با این مشخصات پیدا نشد.'+
-     '<br>'+
-     'فیلتر یا عبارت جستجو را تغییر بده.'+
-     '</div>';
-
-   return;
-
- }
-
- filtered.forEach(server=>{
-   list.appendChild(buildCard(server));
- });
-
- requestAnimationFrame(()=>{
-   setTimeout(land,20);
- });
-
-}
-
-/* =====================================================
-   TOP
-===================================================== */
-
-function renderTop(){
-
- const list=document.getElementById("list-top");
-
- list.innerHTML="";
-
- const all=getAllServers();
-
- const sorted=all.slice().sort(
-   (a,b)=>getVotes(b.name)-getVotes(a.name)
- );
-
- if(!sorted.some(server=>getVotes(server.name)>0)){
-
-   list.innerHTML=
-     '<div class="empty">'+
-     '🏆 هنوز رأیی ثبت نشده.<br>'+
-     'وارد شو و اولین رأی را ثبت کن!'+
-     '</div>';
-
-   return;
-
- }
-
- sorted
-   .filter(server=>getVotes(server.name)>0)
-   .slice(0,20)
-   .forEach((server,index)=>{
-
-     const row=document.createElement("div");
-
-     row.className="rank-row";
-
-     row.innerHTML=
-
-       '<div class="rank-num">'+
-         toFa(index+1)+
-       '</div>'+
-
-       '<img class="rank-icon" '+
-         'loading="lazy" '+
-         'src="'+iconURL(server.ip)+'" '+
-         'alt="">'+
-
-       '<div class="rank-name">'+
-         escapeHTML(server.name)+
-       '</div>'+
-
-       '<div class="rank-votes">'+
-         '🗳️ '+toFa(getVotes(server.name))+
-       '</div>';
-
-     list.appendChild(row);
-
-   });
-
- requestAnimationFrame(()=>{
-   setTimeout(land,20);
- });
-
-}
-
-/* =====================================================
-   STATS
-===================================================== */
-
-function paintStats(){
-
- document.getElementById("stat-total").textContent=
-   toFa(getAllServers().length);
-
- document.getElementById("stat-iran").textContent=
-   toFa(SERVERS.iran.length);
-
- document.getElementById("stat-foreign").textContent=
-   toFa(SERVERS.foreign.length);
-
-}
-
-function updateOnlineStats(){
-
- const checked=Object.keys(statusCache).length;
-
- const online=
-   Object.values(statusCache)
-   .filter(x=>x.online)
-   .length;
-
- document.getElementById("stat-online").textContent=
-   toFa(online)+"/"+toFa(checked);
-
-}
-
-/* =====================================================
-   SCOREBOARD
-===================================================== */
-
-function setupScoreServers(){
-
- const select=document.getElementById("scoreServer");
-
- select.innerHTML="";
-
- getAllServers().forEach(server=>{
-
-   const option=document.createElement("option");
-
-   option.value=server.name;
-
-   option.textContent=server.name+" — "+server.ip;
-
-   select.appendChild(option);
-
- });
-
- select.onchange=function(){
-
-   const server=getAllServers()
-     .find(s=>s.name===this.value);
-
-   if(server){
-     updateScoreboard(server);
-   }
-
- };
-
- if(getAllServers().length){
-
-   updateScoreboard(getAllServers()[0]);
-
- }
-
-}
-
-function updateScoreboard(server){
-
- const cached=statusCache[server.name];
-
- document.getElementById("sc-name").textContent=
-   server.name;
-
- document.getElementById("sc-ip").textContent=
-   server.ip;
-
- if(!cached){
-
-   document.getElementById("sc-status").textContent=
-     "NOT CHECKED";
-
-   document.getElementById("sc-players").textContent=
-     "---";
-
-   document.getElementById("sc-version").textContent=
-     "---";
-
-   document.getElementById("sc-platform").textContent=
-     "---";
-
-   document.getElementById("sc-player-list").innerHTML=
-     '<span class="player">برای دریافت اطلاعات، وضعیت سرور را بررسی کنید.</span>';
-
-   return;
-
- }
-
- if(!cached.online){
-
-   document.getElementById("sc-status").textContent=
-     "OFFLINE";
-
-   document.getElementById("sc-players").textContent=
-     "0";
-
-   document.getElementById("sc-version").textContent=
-     "---";
-
-   document.getElementById("sc-platform").textContent=
-     "---";
-
-   document.getElementById("sc-player-list").innerHTML=
-     '<span class="player">سرور آفلاین است.</span>';
-
-   return;
-
- }
-
- const d=cached.data;
-
- document.getElementById("sc-status").textContent=
-   "ONLINE";
-
- document.getElementById("sc-players").textContent=
-   cached.players;
-
- document.getElementById("sc-version").textContent=
-   cached.version;
-
- document.getElementById("sc-platform").textContent=
-   cached.platform;
-
- const list=document.getElementById("sc-player-list");
-
- list.innerHTML="";
-
- const players=d.players?.list || [];
-
- if(!players.length){
-
-   list.innerHTML=
-     '<span class="player">لیست پلیرها منتشر نشده</span>';
-
- }else{
-
-   players.forEach(player=>{
-
-     const name=
-       typeof player==="string"
-       ? player
-       : player.name || "Unknown";
-
-     const span=document.createElement("span");
-
-     span.className="player";
-
-     span.textContent=name;
-
-     list.appendChild(span);
-
-   });
-
- }
-
-}
-
-document.getElementById("copyScore").onclick=function(){
-
- const name=document.getElementById("sc-name").textContent;
- const ip=document.getElementById("sc-ip").textContent;
- const status=document.getElementById("sc-status").textContent;
- const players=document.getElementById("sc-players").textContent;
- const version=document.getElementById("sc-version").textContent;
- const platform=document.getElementById("sc-platform").textContent;
-
- const playerNames=
-   Array.from(
-     document.querySelectorAll("#sc-player-list .player")
-   )
-   .map(x=>x.textContent)
-   .join(", ");
-
- const text=
-`╔════════════════════╗
-      CRAFT RADAR
-╚════════════════════╝
-
-🖥 Server: ${name}
-🌐 IP: ${ip}
-📡 Status: ${status}
-👥 Players: ${players}
-⚙ Version: ${version}
-💻 Platform: ${platform}
-👤 Player List:
-${playerNames || "None"}
-
-Powered by CraftRadar`;
-
- copyText(text);
-
-};
-
-/* =====================================================
-   QUEUE
-===================================================== */
-
-async function runQueue(tasks,concurrency=3){
-
- let index=0;
-
- async function worker(){
-
-   while(index<tasks.length){
-
-     const task=tasks[index++];
-
-     try{
-       await task();
-     }catch(e){}
-
-   }
-
- }
-
- const workers=[];
-
- for(
-   let i=0;
-   i<Math.min(concurrency,tasks.length);
-   i++
- ){
-   workers.push(worker());
- }
-
- await Promise.all(workers);
-
-}
-
-/* =====================================================
-   CHECK ALL
-===================================================== */
-
-function setupCheckAll(category){
-
- const button=document.getElementById("checkall-"+category);
-
- button.onclick=async function(){
-
-   button.disabled=true;
-
-   button.textContent="⏳ در حال بررسی...";
-
-   const cards=Array.from(
-     document.querySelectorAll("#list-"+category+" .card")
-   );
-
-   await runQueue(
-     cards.map(card=>()=>card._check()),
-     3
-   );
-
-   button.disabled=false;
-
-   button.textContent="📡 بررسی همه";
-
- };
-
-}
-
-/* =====================================================
-   TABS
-===================================================== */
-
-function setupTabs(){
-
- document.querySelectorAll(".tab").forEach(tab=>{
-
-   tab.onclick=function(){
-
-     const target=this.dataset.tab;
-
-     document.querySelectorAll(".tab")
-       .forEach(t=>t.classList.remove("active"));
-
-     this.classList.add("active");
-
-     document.querySelectorAll(".section")
-       .forEach(s=>s.classList.remove("active"));
-
-     document.getElementById("sec-"+target)
-       .classList.add("active");
-
-     if(target==="top"){
-       renderTop();
-     }
-
-     if(target==="score"){
-       setupScoreServers();
-     }
-
-     requestAnimationFrame(()=>{
-       setTimeout(land,30);
-     });
-
-   };
-
- });
-
-}
-
-/* =====================================================
-   TOOLBAR
-===================================================== */
-
-function setupToolbar(category){
-
- const search=document.getElementById(
-   "search-"+category
- );
-
- search.oninput=function(){
-
-   state[category].search=this.value;
-
-   renderList(category);
-
- };
-
- document.querySelectorAll(
-   "#filter-"+category+" .chip"
- ).forEach(chip=>{
-
-   chip.onclick=function(){
-
-     document.querySelectorAll(
-       "#filter-"+category+" .chip"
-     ).forEach(c=>c.classList.remove("active"));
-
-     this.classList.add("active");
-
-     state[category].filter=
-       this.dataset.val;
-
-     renderList(category);
-
-   };
-
- });
-
- setupCheckAll(category);
-
-}
-
-/* =====================================================
-   RENDER ALL
-===================================================== */
-
-function renderAll(){
-
- renderList("iran");
-
- renderList("foreign");
-
- renderTop();
-
- updateOnlineStats();
-
-}
-
-/* =====================================================
-   START
-===================================================== */
-
-loadStorage();
-
-paintStats();
-
-updateUserArea();
-
-setupTabs();
-
-setupToolbar("iran");
-
-setupToolbar("foreign");
-
-setupScoreServers();
-
-renderAll();
+  "use strict";
+
+  /* =========================================================
+     DATA
+  ========================================================= */
+
+  const SERVERS = {
+
+    iran: [
+      {
+        name:"GunMax",
+        ip:"play.gunmax.org",
+        type:"java",
+        modes:"Survival, Roleplay, SkyMine, BedWars"
+      },
+      {
+        name:"GameUp",
+        ip:"mc.gameup.ir",
+        type:"java",
+        modes:"Survival, SkyBlock, BedWars, Creative, Economy, Factions"
+      },
+      {
+        name:"Xcraft",
+        ip:"play.xcraft.ir",
+        type:"java",
+        modes:"Survival, SMP, SkyBlock, Practice, Parkour, SkyMine, Creative, BedWars"
+      },
+      {
+        name:"RexoCraft",
+        ip:"play.rexocraft.com",
+        type:"java",
+        modes:"BedWars, Survival, SkyMine, SkyBlock, ThePit, Arcade"
+      },
+      {
+        name:"TrexMine",
+        ip:"play.trexmine.com",
+        type:"java",
+        modes:"Survival, SkyBlock, BedWars, PvP, Minigames"
+      },
+      {
+        name:"MagicPixel",
+        ip:"play.magicpixel.ir",
+        type:"java",
+        modes:"Roleplay, RPG, SkyMine, SMP"
+      },
+      {
+        name:"InfinityStar",
+        ip:"play.infinitystar.ir",
+        type:"java",
+        modes:"Roleplay, Survival, SMP"
+      },
+      {
+        name:"HorizonNetwork",
+        ip:"play.horizonnetwork.ir",
+        type:"java",
+        modes:"SkyMine, SMP, ThePit, Survival"
+      },
+      {
+        name:"LunarProCraft",
+        ip:"play.lunarprocraft.ir",
+        type:"java",
+        modes:"OneBlock, Minigames, BedWars"
+      },
+      {
+        name:"ArianCraft",
+        ip:"play.svariancraft.ir",
+        type:"java",
+        modes:"BedWars, OneBlock, SkyBlock, Survival, Practice, Parkour"
+      },
+      {
+        name:"SUSIS MC",
+        ip:"play.susismc.ir",
+        type:"java",
+        modes:"Survival, SMP, Anarchy, Zombie"
+      },
+      {
+        name:"VoidShot",
+        ip:"play.voidshot.ir",
+        type:"java",
+        modes:"Roleplay, BedWars, SkyBlock, Survival"
+      },
+      {
+        name:"PaladinGuard",
+        ip:"java.paladinguard.ir",
+        type:"both",
+        modes:"Survival, Roleplay, SMP, Bedrock"
+      },
+      {
+        name:"PandaSMP",
+        ip:"play.pandasmp.ir",
+        type:"java",
+        modes:"Lifesteal, SMP, Anarchy"
+      },
+      {
+        name:"ColdGame",
+        ip:"play.coldgame.ir",
+        type:"java",
+        modes:"Survival, SlimeFun, SkyMine, Practice"
+      },
+      {
+        name:"RubyLand",
+        ip:"play.mcbe.ir",
+        type:"bedrock",
+        modes:"Bedrock Survival, Economy, Roleplay"
+      }
+    ],
+
+    foreign: [
+      {
+        name:"Hypixel",
+        ip:"mc.hypixel.net",
+        type:"java",
+        access:"premium",
+        modes:"BedWars, SkyBlock, SkyWars, Murder Mystery"
+      },
+      {
+        name:"Wynncraft",
+        ip:"play.wynncraft.com",
+        type:"java",
+        access:"premium",
+        modes:"MMORPG, Quest, Level up"
+      },
+      {
+        name:"CubeCraft Games",
+        ip:"play.cubecraft.net",
+        type:"both",
+        access:"premium",
+        modes:"SkyWars, EggWars, Lucky Islands"
+      },
+      {
+        name:"Purple Prison",
+        ip:"play.purpleprison.org",
+        type:"java",
+        access:"cracked",
+        modes:"Prison, Economy, Mining"
+      },
+      {
+        name:"6b6t",
+        ip:"play.6b6t.org",
+        type:"java",
+        access:"cracked",
+        modes:"Anarchy, Survival, PvP"
+      },
+      {
+        name:"Pika Network",
+        ip:"play.pika-network.net",
+        type:"both",
+        access:"cracked",
+        modes:"BedWars, SkyBlock, Factions, Lifesteal, Prison"
+      },
+      {
+        name:"JartexNetwork",
+        ip:"play.jartexnetwork.com",
+        type:"java",
+        access:"cracked",
+        modes:"BedWars, SkyWars, Survival, Prison, SkyBlock"
+      },
+      {
+        name:"MineBerry",
+        ip:"mc.mineberry.org",
+        type:"java",
+        access:"cracked",
+        modes:"Survival, Anarchy, Economy, Factions, KitPvP"
+      },
+      {
+        name:"HylexMC",
+        ip:"play.hylexmc.net",
+        type:"java",
+        access:"cracked",
+        modes:"BedWars, Lifesteal, OneBlock, Parkour, PvP"
+      },
+      {
+        name:"Twerion",
+        ip:"twerion.net",
+        type:"java",
+        access:"cracked",
+        modes:"BedWars, SkyBlock, PvP, Minigames, CityBuild"
+      },
+      {
+        name:"AppleMC",
+        ip:"play.applemc.fun",
+        type:"java",
+        access:"cracked",
+        modes:"Survival, BedWars, Earth, Lifesteal, Economy"
+      },
+      {
+        name:"UltimisMC",
+        ip:"play.ultimismc.com",
+        type:"java",
+        access:"cracked",
+        modes:"Survival, BedWars, Lifesteal, OneBlock, Parkour"
+      },
+      {
+        name:"LifestealSMP",
+        ip:"play.lifestealsmp.com",
+        type:"java",
+        access:"cracked",
+        modes:"Survival, Lifesteal, Earth, Factions, PvP"
+      },
+      {
+        name:"OneBlocky",
+        ip:"play.oneblocky.com",
+        type:"java",
+        access:"cracked",
+        modes:"OneBlock, SkyBlock, Survival, Economy"
+      }
+    ]
+
+  };
+
+  const AVATAR_COLORS = [
+    "#6fdc4a",
+    "#00e8ff",
+    "#ffc94a",
+    "#ff5a4a",
+    "#b98ce0",
+    "#7a9cff",
+    "#ff8a4a"
+  ];
+
+  /* =========================================================
+     STATE
+  ========================================================= */
+
+  let currentUser = null;
+  let votes = {};
+  let myVotes = [];
+
+  const state = {
+    iran:{search:"",filter:"all"},
+    foreign:{search:"",filter:"all"}
+  };
+
+  let onlineStat = {
+    online:0,
+    checked:0
+  };
+
+  /* =========================================================
+     HELPERS
+  ========================================================= */
+
+  function toFa(value){
+    return String(value).replace(/[0-9]/g,d=>"۰۱۲۳۴۵۶۷۸۹"[d]);
+  }
+
+  function escapeHTML(value){
+    return String(value)
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;")
+      .replace(/'/g,"&#039;");
+  }
+
+  function cleanIP(ip){
+    return ip.split("/")[0].trim();
+  }
+
+  function typeLabel(type){
+    if(type==="java") return "Java";
+    if(type==="bedrock") return "Bedrock";
+    return "Java + Bedrock";
+  }
+
+  function getVotes(name){
+    return Number(votes[name] || 0);
+  }
+
+  function hasVoted(name){
+    return myVotes.indexOf(name)!==-1;
+  }
+
+  function avatarLetters(name){
+    const letters = name.replace(/[^A-Za-z]/g,"").slice(0,2).toUpperCase();
+    return letters || "MC";
+  }
+
+  function avatarColor(name){
+    let sum=0;
+    for(let i=0;i<name.length;i++){
+      sum += name.charCodeAt(i);
+    }
+    return AVATAR_COLORS[sum % AVATAR_COLORS.length];
+  }
+
+  /*
+    آدرس لوگوی واقعی سرور از mcsrvstat.us
+    این تصویر برای هر IP متفاوت است.
+  */
+  function serverIconUrl(ip){
+    return "https://api.mcsrvstat.us/icon/" + encodeURIComponent(cleanIP(ip));
+  }
+
+  /*
+    اگر API لوگو نداشت، یک SVG جایگزین می‌سازیم.
+    بنابراین کارت هیچ‌وقت بدون تصویر نمی‌ماند.
+  */
+  function fallbackIcon(name){
+    const color = avatarColor(name);
+    const letters = avatarLetters(name);
+
+    const svg =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128">'+
+      '<defs>'+
+      '<linearGradient id="g" x1="0" y1="0" x2="1" y2="1">'+
+      '<stop offset="0" stop-color="'+color+'"/>'+
+      '<stop offset="1" stop-color="#07100e"/>'+
+      '</linearGradient>'+
+      '</defs>'+
+      '<rect width="128" height="128" rx="24" fill="#07100e"/>'+
+      '<rect x="5" y="5" width="118" height="118" rx="20" fill="url(#g)" opacity=".85"/>'+
+      '<path d="M20 80L42 58L58 72L78 42L108 80V104H20Z" fill="#06100c" opacity=".65"/>'+
+      '<text x="64" y="70" text-anchor="middle" font-family="Arial" font-size="31" font-weight="bold" fill="#ffffff">'+
+      letters+
+      '</text>'+
+      '<circle cx="99" cy="25" r="5" fill="#9aff75"/>'+
+      '</svg>';
+
+    return "data:image/svg+xml;charset=UTF-8,"+encodeURIComponent(svg);
+  }
+
+  function showToast(message){
+    const toast = document.getElementById("toast");
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    clearTimeout(toast._timer);
+
+    toast._timer = setTimeout(()=>{
+      toast.classList.remove("show");
+    },2200);
+  }
+
+  async function copyText(text){
+    try{
+      await navigator.clipboard.writeText(text);
+      showToast("کپی شد: "+text);
+    }catch(e){
+      const area = document.createElement("textarea");
+      area.value = text;
+      document.body.appendChild(area);
+      area.select();
+      document.execCommand("copy");
+      area.remove();
+      showToast("کپی شد: "+text);
+    }
+  }
+
+  function copyIP(ip){
+    copyText(ip);
+  }
+
+  /* =========================================================
+     STORAGE
+  ========================================================= */
+
+  function loadAll(){
+    try{
+      const user = localStorage.getItem("cr_user");
+      if(user) currentUser = JSON.parse(user);
+    }catch(e){}
+
+    try{
+      const storedVotes = localStorage.getItem("cr_votes");
+      if(storedVotes) votes = JSON.parse(storedVotes);
+    }catch(e){}
+
+    try{
+      const storedMyVotes = localStorage.getItem("cr_myvotes");
+      if(storedMyVotes) myVotes = JSON.parse(storedMyVotes);
+    }catch(e){}
+  }
+
+  function saveUser(){
+    localStorage.setItem("cr_user",JSON.stringify(currentUser));
+  }
+
+  function saveVotes(){
+    localStorage.setItem("cr_votes",JSON.stringify(votes));
+  }
+
+  function saveMyVotes(){
+    localStorage.setItem("cr_myvotes",JSON.stringify(myVotes));
+  }
+
+  /* =========================================================
+     LOGIN
+  ========================================================= */
+
+  function openLogin(){
+    document.getElementById("loginModal").classList.add("show");
+  }
+
+  function closeLogin(){
+    document.getElementById("loginModal").classList.remove("show");
+  }
+
+  function updateUserArea(){
+    const area = document.getElementById("userArea");
+
+    if(currentUser){
+      const displayName = currentUser.name || currentUser.email.split("@")[0];
+
+      area.innerHTML =
+        '<span class="user-badge">👤 '+escapeHTML(displayName)+'</span>'+
+        '<button class="btn-logout" id="logoutBtn">خروج</button>';
+
+      document.getElementById("logoutBtn").onclick = function(){
+        currentUser = null;
+        localStorage.removeItem("cr_user");
+        updateUserArea();
+        showToast("از حساب خارج شدید");
+        renderAll();
+      };
+
+    }else{
+      area.innerHTML = '<button class="btn-login" id="openLogin">ورود / ثبت‌نام</button>';
+      document.getElementById("openLogin").onclick = openLogin;
+    }
+  }
+
+  function doVote(name){
+    if(!currentUser){
+      showToast("برای رأی دادن ابتدا وارد شوید");
+      openLogin();
+      return null;
+    }
+
+    if(hasVoted(name)){
+      showToast("قبلاً به این سرور رأی داده‌اید");
+      return null;
+    }
+
+    votes[name] = getVotes(name)+1;
+    myVotes.push(name);
+
+    saveVotes();
+    saveMyVotes();
+
+    return votes[name];
+  }
+
+  window.fakeSocial = function(provider){
+    currentUser = {
+      email:provider.toLowerCase()+"@guest.local",
+      name:provider
+    };
+
+    saveUser();
+    closeLogin();
+    updateUserArea();
+    showToast("ورود با "+provider+" انجام شد");
+    renderAll();
+  };
+
+  /* =========================================================
+     STATUS API
+  ========================================================= */
+
+  function fetchWithTimeout(url,ms){
+    const controller = new AbortController();
+    const timer = setTimeout(()=>controller.abort(),ms);
+
+    return fetch(url,{signal:controller.signal})
+      .finally(()=>clearTimeout(timer));
+  }
+
+  function resetOnlineStats(){
+    onlineStat = {
+      online:0,
+      checked:0
+    };
+
+    document.getElementById("stat-online").textContent = "۰/۰";
+  }
+
+  function bumpOnline(isOnline){
+    onlineStat.checked++;
+
+    if(isOnline) onlineStat.online++;
+
+    document.getElementById("stat-online").textContent =
+      toFa(onlineStat.online)+"/"+toFa(onlineStat.checked);
+  }
+
+  async function getServerStatus(server){
+    const clean = cleanIP(server.ip);
+
+    const order =
+      server.type==="bedrock"
+      ? ["bedrock"]
+      : server.type==="java"
+        ? ["java"]
+        : ["java","bedrock"];
+
+    for(let i=0;i<order.length;i++){
+
+      const endpoint =
+        order[i]==="bedrock"
+        ? "https://api.mcsrvstat.us/bedrock/3/"+encodeURIComponent(clean)
+        : "https://api.mcsrvstat.us/3/"+encodeURIComponent(clean);
+
+      try{
+        const response = await fetchWithTimeout(endpoint,7000);
+
+        if(!response.ok) continue;
+
+        const data = await response.json();
+
+        if(data && data.online){
+          return {
+            proto:order[i]==="bedrock" ? "Bedrock" : "Java",
+            data:data
+          };
+        }
+
+      }catch(e){}
+    }
+
+    return null;
+  }
+
+  function statusLoading(box){
+    box.classList.add("show");
+    box.innerHTML =
+      '<div class="s-row">'+
+      '<span class="k"><span class="dot pending"></span>در حال بررسی...</span>'+
+      '</div>';
+  }
+
+  function playersHTML(data){
+    if(!data.players || !data.players.list || !data.players.list.length){
+      return "";
+    }
+
+    const list = data.players.list
+      .slice(0,100)
+      .map(player=>'<span>'+escapeHTML(player)+'</span>')
+      .join("");
+
+    return (
+      '<div class="players-toggle" data-open="0">'+
+      'مشاهده پلیرها ('+data.players.list.length+') ▾'+
+      '</div>'+
+      '<div class="players-list">'+list+'</div>'
+    );
+  }
+
+  async function checkStatus(server,box,button){
+
+    if(button) button.disabled = true;
+
+    statusLoading(box);
+
+    const result = await getServerStatus(server);
+
+    if(!result){
+
+      box.innerHTML =
+        '<div class="s-row">'+
+        '<span class="k"><span class="dot off"></span>آفلاین یا در دسترس نیست</span>'+
+        '</div>';
+
+      if(button) button.disabled = false;
+
+      bumpOnline(false);
+      return;
+    }
+
+    const data = result.data;
+
+    const onlinePlayers =
+      data.players && data.players.online!==undefined
+      ? data.players.online
+      : "?";
+
+    const maxPlayers =
+      data.players && data.players.max!==undefined
+      ? data.players.max
+      : "?";
+
+    let resolvedIP = data.ip || cleanIP(server.ip);
+
+    if(data.port){
+      resolvedIP += ":"+data.port;
+    }
+
+    let version = "?";
+
+    if(typeof data.version==="string"){
+      version = data.version;
+    }else if(data.version && data.version.name){
+      version = data.version.name;
+    }
+
+    box.innerHTML =
+      '<div class="s-row">'+
+      '<span class="k"><span class="dot on"></span>آنلاین ('+result.proto+')</span>'+
+      '</div>'+
+      '<div class="s-row">'+
+      '<span class="k">پلیرها</span>'+
+      '<span class="v">'+onlinePlayers+" / "+maxPlayers+'</span>'+
+      '</div>'+
+      '<div class="s-row">'+
+      '<span class="k">آی‌پی واقعی</span>'+
+      '<span class="v">'+escapeHTML(resolvedIP)+'</span>'+
+      '</div>'+
+      '<div class="s-row">'+
+      '<span class="k">نسخه</span>'+
+      '<span class="v">'+escapeHTML(version)+'</span>'+
+      '</div>'+
+      playersHTML(data);
+
+    const toggle = box.querySelector(".players-toggle");
+
+    if(toggle){
+      toggle.onclick = function(){
+        const list = box.querySelector(".players-list");
+        const isOpen = this.dataset.open==="1";
+
+        if(isOpen){
+          list.classList.remove("show");
+          this.dataset.open="0";
+          this.textContent =
+            "مشاهده پلیرها ("+data.players.list.length+") ▾";
+        }else{
+          list.classList.add("show");
+          this.dataset.open="1";
+          this.textContent="بستن لیست پلیرها ▴";
+        }
+      };
+    }
+
+    if(button) button.disabled = false;
+
+    bumpOnline(true);
+  }
+
+  async function runQueue(tasks,concurrency){
+    let index = 0;
+
+    async function worker(){
+      while(index < tasks.length){
+        const current = index++;
+        try{
+          await tasks[current]();
+        }catch(e){}
+      }
+    }
+
+    const workers = [];
+
+    for(let i=0;i<concurrency && i<tasks.length;i++){
+      workers.push(worker());
+    }
+
+    await Promise.all(workers);
+  }
+
+  /* =========================================================
+     FILTERS
+  ========================================================= */
+
+  function matches(category,server){
+    const st = state[category];
+
+    const search = st.search.toLowerCase().trim();
+
+    if(search){
+      const target = (server.name+" "+server.ip+" "+server.modes).toLowerCase();
+
+      if(!target.includes(search)){
+        return false;
+      }
+    }
+
+    if(category==="iran"){
+
+      if(st.filter==="java" && server.type==="bedrock") return false;
+      if(st.filter==="bedrock" && server.type==="java") return false;
+
+      if(st.filter!=="all" &&
+         ["survival","bedwars","skyblock","smp"].includes(st.filter)){
+
+        if(!server.modes.toLowerCase().includes(st.filter)){
+          return false;
+        }
+      }
+
+    }else{
+
+      if(st.filter==="cracked" && server.access!=="cracked") return false;
+      if(st.filter==="premium" && server.access!=="premium") return false;
+
+      if(st.filter!=="all" &&
+         ["survival","bedwars","skyblock"].includes(st.filter)){
+
+        if(!server.modes.toLowerCase().includes(st.filter)){
+          return false;
+        }
+      }
+
+    }
+
+    return true;
+  }
+
+  /* =========================================================
+     CARD
+  ========================================================= */
+
+  function buildCard(category,server){
+
+    const card = document.createElement("article");
+    card.className = "card";
+
+    let badges =
+      '<span class="badge type">'+typeLabel(server.type)+'</span>';
+
+    if(server.access==="cracked"){
+      badges += '<span class="badge cracked">🔓 کرک</span>';
+    }
+
+    if(server.access==="premium"){
+      badges += '<span class="badge premium">⭐ پرمیوم</span>';
+    }
+
+    badges +=
+      '<span class="badge votes votes-badge">🗳️ '+toFa(getVotes(server.name))+'</span>';
+
+    const icon = serverIconUrl(server.ip);
+    const fallback = fallbackIcon(server.name);
+
+    card.innerHTML =
+      '<div class="card-head">'+
+
+        '<img '+
+          'class="server-avatar loading" '+
+          'src="'+icon+'" '+
+          'alt="'+escapeHTML(server.name)+' logo" '+
+          'loading="eager" '+
+          'decoding="async" '+
+          'onload="this.classList.remove(\'loading\')" '+
+          'onerror="this.onerror=null;this.src=\''+fallback+'\';this.classList.remove(\'loading\')">'+
+
+        '<div class="server-main">'+
+          '<div class="server-name">'+escapeHTML(server.name)+'</div>'+
+          '<div class="badges">'+badges+'</div>'+
+        '</div>'+
+
+      '</div>'+
+
+      '<div class="ip-box">'+
+        '<span class="ip-text">'+escapeHTML(server.ip)+'</span>'+
+        '<span class="copy-hint">📋 کپی</span>'+
+      '</div>'+
+
+      '<div class="modes">'+
+        '<strong>حالت‌ها:</strong> '+escapeHTML(server.modes)+
+      '</div>'+
+
+      '<div class="btns">'+
+        '<button class="btn status">📡 وضعیت</button>'+
+        '<button class="btn score">📊 اطلاعات</button>'+
+        '<button class="btn vote">🗳️ رأی</button>'+
+      '</div>'+
+
+      '<div class="status-box"></div>';
+
+    const ipBox = card.querySelector(".ip-box");
+    ipBox.onclick = ()=>copyIP(server.ip);
+
+    const statusButton = card.querySelector(".status");
+    const statusBox = card.querySelector(".status-box");
+
+    statusButton.onclick = ()=>{
+      checkStatus(server,statusBox,statusButton);
+    };
+
+    card._check = ()=>{
+      return checkStatus(server,statusBox,null);
+    };
+
+    const scoreButton = card.querySelector(".score");
+
+    scoreButton.onclick = ()=>{
+      openServerInfo(server);
+    };
+
+    const voteButton = card.querySelector(".vote");
+    const voteBadge = card.querySelector(".votes-badge");
+
+    if(hasVoted(server.name)){
+      voteButton.textContent = "✅ رأی دادید";
+      voteButton.disabled = true;
+    }
+
+    voteButton.onclick = function(){
+
+      const newCount = doVote(server.name);
+
+      if(newCount===null) return;
+
+      voteBadge.textContent = "🗳️ "+toFa(newCount);
+      voteButton.textContent = "✅ رأی دادید";
+      voteButton.disabled = true;
+
+      showToast("رأی شما به "+server.name+" ثبت شد!");
+    };
+
+    return card;
+  }
+
+  /* =========================================================
+     RENDER
+  ========================================================= */
+
+  function landElements(){
+
+    const elements = document.querySelectorAll(
+      ".card:not(.landed), .rank-row:not(.landed)"
+    );
+
+    elements.forEach((element,index)=>{
+      setTimeout(()=>{
+        element.classList.add("landed");
+      },Math.min(index*35,350));
+    });
+  }
+
+  function renderList(category){
+
+    const list = document.getElementById("list-"+category);
+
+    const filtered = SERVERS[category].filter(server=>{
+      return matches(category,server);
+    });
+
+    list.innerHTML = "";
+
+    const countText = toFa(filtered.length)+" سرور";
+
+    document.getElementById("count-"+category).textContent = countText;
+    document.getElementById("count-"+category+"-bottom").textContent = countText;
+
+    if(!filtered.length){
+      list.innerHTML =
+        '<div class="empty">'+
+        '🔎 چیزی پیدا نشد.<br>'+
+        'فیلتر یا عبارت جستجو را تغییر دهید.'+
+        '</div>';
+      return;
+    }
+
+    filtered.forEach(server=>{
+      list.appendChild(buildCard(category,server));
+    });
+
+    requestAnimationFrame(()=>{
+      setTimeout(landElements,20);
+    });
+  }
+
+  function renderTop(){
+
+    const list = document.getElementById("list-top");
+
+    const all = SERVERS.iran.concat(SERVERS.foreign);
+
+    const sorted = all.slice().sort((a,b)=>{
+      return getVotes(b.name)-getVotes(a.name);
+    });
+
+    list.innerHTML = "";
+
+    const voted = sorted.filter(server=>getVotes(server.name)>0);
+
+    if(!voted.length){
+      list.innerHTML =
+        '<div class="empty">'+
+        '🏆 هنوز رأیی ثبت نشده.<br>'+
+        'اول وارد شوید و به سرور موردعلاقه‌تان رأی دهید 🚀'+
+        '</div>';
+      return;
+    }
+
+    sorted.slice(0,12).forEach((server,index)=>{
+
+      const row = document.createElement("div");
+      row.className = "rank-row";
+
+      row.innerHTML =
+        '<div class="rank-num">'+toFa(index+1)+'</div>'+
+        '<div class="rank-info">'+
+          '<div class="rank-name">'+escapeHTML(server.name)+'</div>'+
+          '<div class="rank-ip">'+escapeHTML(server.ip)+'</div>'+
+        '</div>'+
+        '<div class="rank-votes">🗳️ '+toFa(getVotes(server.name))+'</div>';
+
+      list.appendChild(row);
+    });
+
+    requestAnimationFrame(()=>{
+      setTimeout(landElements,20);
+    });
+  }
+
+  function renderAll(){
+    renderList("iran");
+    renderList("foreign");
+    renderTop();
+  }
+
+  function paintStats(){
+    document.getElementById("stat-total").textContent =
+      toFa(SERVERS.iran.length+SERVERS.foreign.length);
+
+    document.getElementById("stat-iran").textContent =
+      toFa(SERVERS.iran.length);
+
+    document.getElementById("stat-foreign").textContent =
+      toFa(SERVERS.foreign.length);
+  }
+
+  /* =========================================================
+     SERVER INFO MODAL
+  ========================================================= */
+
+  function openServerInfo(server){
+
+    const modal = document.getElementById("infoModal");
+    const content = document.getElementById("infoContent");
+
+    const fallback = fallbackIcon(server.name);
+
+    content.innerHTML =
+      '<div class="server-info-head">'+
+        '<img class="info-avatar" src="'+serverIconUrl(server.ip)+'" '+
+          'onerror="this.onerror=null;this.src=\''+fallback+'\'" '+
+          'alt="">'+
+        '<div>'+
+          '<div class="info-name">'+escapeHTML(server.name)+'</div>'+
+          '<div class="info-ip">'+escapeHTML(server.ip)+'</div>'+
+        '</div>'+
+      '</div>'+
+
+      '<div class="info-block">'+
+        '<div class="info-block-title">🎮 حالت‌های بازی</div>'+
+        '<div class="modes" style="margin:0">'+escapeHTML(server.modes)+'</div>'+
+      '</div>'+
+
+      '<div class="info-block">'+
+        '<div class="info-block-title">⚙️ مشخصات</div>'+
+        '<div class="s-row">'+
+          '<span class="k">پلتفرم</span>'+
+          '<span class="v">'+typeLabel(server.type)+'</span>'+
+        '</div>'+
+        '<div class="s-row">'+
+          '<span class="k">دسترسی</span>'+
+          '<span class="v">'+
+          (server.access==="cracked" ? "Cracked" :
+           server.access==="premium" ? "Premium" : "عمومی")+
+          '</span>'+
+        '</div>'+
+        '<div class="s-row">'+
+          '<span class="k">رأی‌ها</span>'+
+          '<span class="v">'+toFa(getVotes(server.name))+'</span>'+
+        '</div>'+
+      '</div>'+
+
+      '<button class="info-copy-btn" id="copyInfoIP">📋 کپی IP سرور</button>';
+
+    document.getElementById("copyInfoIP").onclick = ()=>{
+      copyIP(server.ip);
+    };
+
+    modal.classList.add("show");
+  }
+
+  function closeInfo(){
+    document.getElementById("infoModal").classList.remove("show");
+  }
+
+  /* =========================================================
+     TABS
+  ========================================================= */
+
+  function setupTabs(){
+
+    document.querySelectorAll(".tab").forEach(tab=>{
+
+      tab.onclick = function(){
+
+        const target = this.dataset.tab;
+
+        document.querySelectorAll(".tab").forEach(item=>{
+          item.classList.remove("active");
+        });
+
+        this.classList.add("active");
+
+        document.querySelectorAll(".section").forEach(section=>{
+          section.classList.remove("active");
+        });
+
+        document.getElementById("sec-"+target).classList.add("active");
+
+        if(target==="top"){
+          renderTop();
+        }else{
+          requestAnimationFrame(()=>{
+            setTimeout(landElements,30);
+          });
+        }
+      };
+
+    });
+
+  }
+
+  /* =========================================================
+     TOOLBAR
+  ========================================================= */
+
+  function setupToolbar(category){
+
+    document.getElementById("search-"+category).oninput = function(){
+      state[category].search = this.value;
+      renderList(category);
+    };
+
+    document.querySelectorAll("#filter-"+category+" .chip").forEach(chip=>{
+
+      chip.onclick = function(){
+
+        document.querySelectorAll("#filter-"+category+" .chip").forEach(item=>{
+          item.classList.remove("active");
+        });
+
+        this.classList.add("active");
+        state[category].filter = this.dataset.val;
+
+        renderList(category);
+      };
+
+    });
+
+    document.getElementById("refresh-"+category).onclick = function(){
+
+      state[category].search = "";
+      state[category].filter = "all";
+
+      document.getElementById("search-"+category).value = "";
+
+      document.querySelectorAll("#filter-"+category+" .chip").forEach((chip,index)=>{
+        chip.classList.toggle("active",index===0);
+      });
+
+      renderList(category);
+      showToast("فیلترها بازنشانی شدند");
+    };
+
+    document.getElementById("checkall-"+category).onclick = async function(){
+
+      const button = this;
+
+      button.disabled = true;
+      button.textContent = "⏳ در حال بررسی...";
+
+      const cards = Array.from(
+        document.getElementById("list-"+category).querySelectorAll(".card")
+      );
+
+      await runQueue(
+        cards.map(card=>()=>card._check()),
+        3
+      );
+
+      button.disabled = false;
+      button.textContent = "📡 بررسی همه";
+    };
+
+  }
+
+  /* =========================================================
+     EVENTS
+  ========================================================= */
+
+  document.getElementById("openLogin").onclick = openLogin;
+  document.getElementById("closeLogin").onclick = closeLogin;
+  document.getElementById("closeInfo").onclick = closeInfo;
+
+  document.getElementById("loginModal").onclick = function(e){
+    if(e.target===this) closeLogin();
+  };
+
+  document.getElementById("infoModal").onclick = function(e){
+    if(e.target===this) closeInfo();
+  };
+
+  document.getElementById("loginForm").onsubmit = function(e){
+
+    e.preventDefault();
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    if(!email || !password){
+      showToast("ایمیل و رمز عبور را وارد کنید");
+      return;
+    }
+
+    currentUser = {
+      email:email,
+      name:email.split("@")[0]
+    };
+
+    saveUser();
+    closeLogin();
+    updateUserArea();
+
+    showToast("خوش آمدید "+currentUser.name);
+    renderAll();
+  };
+
+  /* =========================================================
+     BOOT
+  ========================================================= */
+
+  loadAll();
+  paintStats();
+  updateUserArea();
+  setupTabs();
+  setupToolbar("iran");
+  setupToolbar("foreign");
+  renderAll();
 
 })();
 </script>
