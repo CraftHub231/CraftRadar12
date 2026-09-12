@@ -3,63 +3,58 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#06100d">
+<meta name="theme-color" content="#08080c">
 <meta name="description" content="CraftRadar؛ رادار زنده سرورهای ماینکرفت">
 <title>CraftRadar | رادار سرورهای ماینکرفت</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#030807;--panel:#081411;--panel2:#0d1d17;--line:#123d32;
-  --cyan:#00eaff;--green:#79e34b;--gold:#ffd166;--red:#ff6470;
-  --purple:#b996ff;--text:#edfdf2;--muted:#7e9c8d;
-  --shadow:0 20px 70px #0009;--radius:22px
-}
+:root{--bg:#07070b;--panel:#101016;--panel2:#171722;--line:#292936;--cyan:#9b8cff;--green:#d7ff65;--gold:#ffca72;--red:#ff6b8a;--purple:#c7b8ff;--text:#f7f5ff;--muted:#9693a8;--orange:#ff9d5c;--shadow:0 24px 90px #000b;--radius:24px}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
   min-height:100vh;color:var(--text);font-family:Vazirmatn,Tahoma,sans-serif;
   background:
-  radial-gradient(900px 500px at 80% -10%,#00eaff13,transparent 70%),
-  radial-gradient(800px 500px at 0 40%,#79e34b0b,transparent 70%),var(--bg);
+  radial-gradient(900px 500px at 80% -10%,#9b8cff13,transparent 70%),
+  radial-gradient(800px 500px at 0 40%,#d7ff650b,transparent 70%),var(--bg);
   overflow-x:hidden
 }
-body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.16;background-image:linear-gradient(#00eaff08 1px,transparent 1px),linear-gradient(90deg,#00eaff08 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(#000,transparent 85%)}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.16;background-image:linear-gradient(#9b8cff08 1px,transparent 1px),linear-gradient(90deg,#9b8cff08 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(#000,transparent 85%)}
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
 a{color:inherit;text-decoration:none}
 .container{width:min(1440px,calc(100% - 36px));margin:auto}
-.topbar{height:76px;border-bottom:1px solid var(--line);background:#030807d9;backdrop-filter:blur(18px);position:sticky;top:0;z-index:30}
+.topbar{height:76px;border-bottom:1px solid var(--line);background:#07070bd9;backdrop-filter:blur(18px);position:sticky;top:0;z-index:30}
 .topbar-inner{height:100%;display:flex;align-items:center;justify-content:space-between;gap:20px}
 .brand{display:flex;align-items:center;gap:12px}
-.brand img{width:48px;height:48px;border-radius:15px;object-fit:cover;border:1px solid #00eaff55;background:#071714}
+.brand img{width:48px;height:48px;border-radius:15px;object-fit:cover;border:1px solid #9b8cff55;background:#11111a}
 .brand h1{font-size:24px;letter-spacing:-1px}
 .brand small{display:block;color:var(--cyan);font-family:"Press Start 2P";font-size:8px;direction:ltr;margin-top:5px}
 .top-actions{display:flex;align-items:center;gap:8px}
 .btn,.icon-btn,.nav-btn{
-  border:1px solid var(--line);background:#091914;color:var(--text);border-radius:14px;
+  border:1px solid var(--line);background:#14141d;color:var(--text);border-radius:14px;
   padding:11px 15px;transition:.2s
 }
-.btn:hover,.icon-btn:hover,.nav-btn:hover{border-color:var(--cyan);transform:translateY(-2px);box-shadow:0 0 24px #00eaff12}
-.btn.primary{background:linear-gradient(135deg,#00d8e8,#008fa2);border-color:#00eaff;color:#001012;font-weight:900}
+.btn:hover,.icon-btn:hover,.nav-btn:hover{border-color:var(--cyan);transform:translateY(-2px);box-shadow:0 0 24px #9b8cff12}
+.btn.primary{background:linear-gradient(135deg,#9b8cff,#5c4bc7);border-color:#9b8cff;color:#001012;font-weight:900}
 .btn.green{border-color:#477d35;background:#142817;color:#a9f887}
 .btn.danger{border-color:#74333d;color:#ff9ca4}
 .icon-btn{width:44px;height:44px;padding:0;display:grid;place-items:center;font-size:18px}
 .hero{padding:58px 0 28px;display:grid;grid-template-columns:1.15fr .85fr;gap:35px;align-items:center}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--green);border:1px solid #79e34b40;background:#79e34b0c;padding:8px 12px;border-radius:999px;font-size:12px;margin-bottom:18px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--green);border:1px solid #d7ff6540;background:#d7ff650c;padding:8px 12px;border-radius:999px;font-size:12px;margin-bottom:18px}
 .hero h2{font-size:clamp(32px,5vw,70px);line-height:1.18;letter-spacing:-3px;max-width:760px}
-.hero h2 span{color:var(--cyan);text-shadow:0 0 30px #00eaff33}
+.hero h2 span{color:var(--cyan);text-shadow:0 0 30px #9b8cff33}
 .hero p{color:var(--muted);line-height:2;font-size:15px;max-width:650px;margin:20px 0}
 .hero-actions{display:flex;gap:10px;flex-wrap:wrap}
 .radar{
   width:min(370px,80vw);aspect-ratio:1;margin:auto;border-radius:50%;position:relative;
-  border:2px solid #00eaff88;background:radial-gradient(circle,#00eaff18 1px,transparent 2px),radial-gradient(circle,#00eaff0c,transparent 68%);
-  background-size:24px 24px,100% 100%;box-shadow:0 0 70px #00eaff12,inset 0 0 60px #00eaff0b;overflow:hidden
+  border:2px solid #9b8cff88;background:radial-gradient(circle,#9b8cff18 1px,transparent 2px),radial-gradient(circle,#9b8cff0c,transparent 68%);
+  background-size:24px 24px,100% 100%;box-shadow:0 0 70px #9b8cff12,inset 0 0 60px #9b8cff0b;overflow:hidden
 }
-.radar:before,.radar:after{content:"";position:absolute;border:1px solid #00eaff55;border-radius:50%;inset:13%}
-.radar:after{inset:28%;border-color:#79e34b55}
-.radar .cross:before,.radar .cross:after{content:"";position:absolute;background:#00eaff3c}
+.radar:before,.radar:after{content:"";position:absolute;border:1px solid #9b8cff55;border-radius:50%;inset:13%}
+.radar:after{inset:28%;border-color:#d7ff6555}
+.radar .cross:before,.radar .cross:after{content:"";position:absolute;background:#9b8cff3c}
 .radar .cross:before{width:1px;height:100%;left:50%}.radar .cross:after{height:1px;width:100%;top:50%}
 .sweep{position:absolute;width:50%;height:50%;right:50%;bottom:50%;transform-origin:100% 100%;background:linear-gradient(45deg,transparent 45%,#00ff9d88);clip-path:polygon(100% 100%,0 0,100% 0);animation:spin 4s linear infinite}
 .radar-dot{position:absolute;width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 20px var(--green);animation:pulse 1.8s infinite}
@@ -67,48 +62,58 @@ a{color:inherit;text-decoration:none}
 .radar-center{position:absolute;width:14px;height:14px;border-radius:50%;background:var(--cyan);box-shadow:0 0 22px var(--cyan);left:50%;top:50%;transform:translate(-50%,-50%)}
 @keyframes spin{to{transform:rotate(360deg)}}@keyframes pulse{50%{transform:scale(1.8);opacity:.5}}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:10px 0 28px}
-.stat{padding:18px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,#0c1c16,#06100d);position:relative;overflow:hidden}
-.stat:after{content:"";position:absolute;inset:auto -30px -40px;height:80px;background:#00eaff0b;filter:blur(20px)}
+.stat{padding:18px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,#171722,#0b0b11);position:relative;overflow:hidden}
+.stat:after{content:"";position:absolute;inset:auto -30px -40px;height:80px;background:#9b8cff0b;filter:blur(20px)}
 .stat b{font-size:27px;display:block;color:var(--cyan)}.stat span{font-size:12px;color:var(--muted)}
 .layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:18px;align-items:start}
-.main-panel,.side-panel{border:1px solid var(--line);background:#07120fdd;border-radius:var(--radius);box-shadow:var(--shadow)}
+.main-panel,.side-panel{border:1px solid var(--line);background:#101016ee;border-radius:var(--radius);box-shadow:var(--shadow)}
 .main-panel{padding:20px}.side-panel{padding:18px;position:sticky;top:94px}
 .nav-tabs{display:flex;gap:8px;overflow:auto;padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:18px}
 .nav-btn{white-space:nowrap;color:var(--muted)}.nav-btn.active{color:#001114;background:var(--cyan);border-color:var(--cyan);font-weight:900}
 .section-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:16px}
 .section-head h3{font-size:24px}.section-head p{color:var(--muted);font-size:12px;margin-top:5px}
 .toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:18px}
-.search{flex:1;min-width:220px;background:#030b09;border:1px solid var(--line);color:var(--text);padding:13px 15px;border-radius:14px;outline:none}
-.search:focus{border-color:var(--cyan);box-shadow:0 0 0 3px #00eaff12}
+.search{flex:1;min-width:220px;background:#0a0a10;border:1px solid var(--line);color:var(--text);padding:13px 15px;border-radius:14px;outline:none}
+.search:focus{border-color:var(--cyan);box-shadow:0 0 0 3px #9b8cff12}
 .chips{display:flex;gap:7px;flex-wrap:wrap}
-.chip{border:1px solid var(--line);background:#071511;color:var(--muted);padding:9px 12px;border-radius:999px;font-size:12px}
-.chip.active{color:var(--cyan);border-color:var(--cyan);background:#00eaff0d}
+.chip{border:1px solid var(--line);background:#11111a;color:var(--muted);padding:9px 12px;border-radius:999px;font-size:12px}
+.chip.active{color:var(--cyan);border-color:var(--cyan);background:#9b8cff0d}
 .server-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.card{border:1px solid var(--line);border-radius:19px;background:linear-gradient(150deg,#0c1d17,#06100d);padding:15px;min-width:0;transition:.22s;position:relative;overflow:hidden}
-.card:hover{transform:translateY(-4px);border-color:#00eaff88;box-shadow:0 15px 35px #0006}
+.card{border:1px solid var(--line);border-radius:19px;background:linear-gradient(150deg,#0c1d17,#0b0b11);padding:15px;min-width:0;transition:.22s;position:relative;overflow:hidden}
+.card:hover{transform:translateY(-4px);border-color:#9b8cff88;box-shadow:0 15px 35px #0006}
 .card-top{display:flex;align-items:center;gap:10px}
-.server-icon{width:58px;height:58px;border-radius:15px;object-fit:cover;background:#10251c;border:1px solid #00eaff35;image-rendering:auto}
-.card-title{min-width:0;flex:1}.card-title h4{font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.card-title small{display:block;color:var(--muted);font-size:11px;margin-top:5px;direction:ltr;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.status{font-size:10px;border-radius:999px;padding:5px 8px;white-space:nowrap}.status.wait{color:var(--gold);background:#ffd16612}.status.online{color:#9dff80;background:#79e34b14}.status.offline{color:#ff9ca4;background:#ff647012}
-.badges{display:flex;gap:5px;flex-wrap:wrap;margin:13px 0}.badge{font-size:10px;padding:5px 8px;border-radius:8px;background:#00eaff0d;border:1px solid #00eaff25;color:#91dce3}.badge.green{color:#a9f887;border-color:#79e34b35;background:#79e34b0b}
+.server-icon{width:58px;height:58px;border-radius:15px;object-fit:cover;background:#10251c;border:1px solid #9b8cff35;image-rendering:auto}
+.card-title{min-width:0;flex:1}.ip-note{display:block;color:var(--green);font-size:10px;margin-top:4px;font-style:normal}.card-title h4{font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.card-title small{display:block;color:var(--muted);font-size:11px;margin-top:5px;direction:ltr;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.status{font-size:10px;border-radius:999px;padding:5px 8px;white-space:nowrap}.status.wait{color:var(--gold);background:#ffd16612}.status.online{color:#9dff80;background:#d7ff6514}.status.offline{color:#ff9ca4;background:#ff647012}
+.badges{display:flex;gap:5px;flex-wrap:wrap;margin:13px 0}.badge{font-size:10px;padding:5px 8px;border-radius:8px;background:#9b8cff0d;border:1px solid #9b8cff25;color:#91dce3}.badge.green{color:#a9f887;border-color:#d7ff6535;background:#d7ff650b}
 .players{display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:11px;margin:8px 0 12px}
 .players strong{color:var(--text);font-size:13px}
-.card-actions{display:grid;grid-template-columns:1fr 1fr 40px;gap:7px}.card-actions button{padding:9px 5px;font-size:11px;border-radius:11px;border:1px solid var(--line);background:#0a1b15;color:var(--text)}.card-actions button:hover{border-color:var(--cyan)}.fav.active{color:#ff5caa;border-color:#ff5caa55;background:#ff5caa10}
+.card-actions{display:grid;grid-template-columns:1fr 1fr 40px;gap:7px}.card-actions button{padding:9px 5px;font-size:11px;border-radius:11px;border:1px solid var(--line);background:#171722;color:var(--text)}.card-actions button:hover{border-color:var(--cyan)}.fav.active{color:#ff5caa;border-color:#ff5caa55;background:#ff5caa10}
 .empty{padding:50px 20px;text-align:center;border:1px dashed var(--line);border-radius:18px;color:var(--muted)}
 .side-title{font-size:17px;margin-bottom:13px}.side-block{border-bottom:1px solid var(--line);padding:15px 0}.side-block:last-child{border-bottom:0}.side-label{color:var(--muted);font-size:11px;margin-bottom:8px}
 .user-card{display:flex;align-items:center;gap:10px}.avatar{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,var(--cyan),#126b75);color:#001114;display:grid;place-items:center;font-weight:900}
 .user-card b{font-size:13px}.user-card small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
-.side-menu{display:grid;gap:7px}.side-menu button{display:flex;justify-content:space-between;align-items:center;border:1px solid transparent;background:transparent;color:var(--muted);padding:12px;border-radius:12px;text-align:right}.side-menu button:hover,.side-menu button.active{background:#00eaff0b;border-color:var(--line);color:var(--cyan)}
+.side-menu{display:grid;gap:7px}.side-menu button{display:flex;justify-content:space-between;align-items:center;border:1px solid transparent;background:transparent;color:var(--muted);padding:12px;border-radius:12px;text-align:right}.side-menu button:hover,.side-menu button.active{background:#9b8cff0b;border-color:var(--line);color:var(--cyan)}
 .footer{padding:40px 0;color:var(--muted);text-align:center;font-size:12px;line-height:2}
 .modal{position:fixed;inset:0;background:#000b;display:none;place-items:center;padding:18px;z-index:100;backdrop-filter:blur(10px)}.modal.open{display:grid}
-.modal-box{width:min(580px,100%);max-height:90vh;overflow:auto;border:1px solid #00eaff55;background:#071510;border-radius:24px;padding:24px;box-shadow:0 30px 100px #000}
+.modal-box{width:min(580px,100%);max-height:90vh;overflow:auto;border:1px solid #9b8cff55;background:#11111a;border-radius:24px;padding:24px;box-shadow:0 30px 100px #000}
 .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.modal-head h3{font-size:21px}.close{border:0;background:transparent;color:var(--muted);font-size:27px;cursor:pointer}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{display:grid;gap:6px;margin-bottom:11px}.field.full{grid-column:1/-1}.field label{font-size:11px;color:var(--muted)}.field input,.field textarea,.field select{width:100%;background:#030b09;border:1px solid var(--line);color:var(--text);border-radius:12px;padding:12px;outline:none}.field textarea{min-height:85px;resize:vertical}.field input:focus,.field textarea:focus{border-color:var(--cyan)}
-.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:15px}.toast{position:fixed;bottom:22px;left:22px;background:#10251c;border:1px solid #00eaff88;color:var(--text);padding:13px 17px;border-radius:13px;transform:translateY(100px);opacity:0;transition:.25s;z-index:200;font-size:12px}.toast.show{transform:translateY(0);opacity:1}
-.player-list{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}.player{padding:9px;border:1px solid var(--line);border-radius:10px;background:#030b09;font-size:11px;direction:ltr;text-align:left}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{display:grid;gap:6px;margin-bottom:11px}.field.full{grid-column:1/-1}.field label{font-size:11px;color:var(--muted)}.field input,.field textarea,.field select{width:100%;background:#0a0a10;border:1px solid var(--line);color:var(--text);border-radius:12px;padding:12px;outline:none}.field textarea{min-height:85px;resize:vertical}.field input:focus,.field textarea:focus{border-color:var(--cyan)}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:15px}.toast{position:fixed;bottom:22px;left:22px;background:#10251c;border:1px solid #9b8cff88;color:var(--text);padding:13px 17px;border-radius:13px;transform:translateY(100px);opacity:0;transition:.25s;z-index:200;font-size:12px}.toast.show{transform:translateY(0);opacity:1}
+.player-list{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}.player{padding:9px;border:1px solid var(--line);border-radius:10px;background:#0a0a10;font-size:11px;direction:ltr;text-align:left}
 .detail-grid{display:grid;grid-template-columns:110px 1fr;gap:8px;font-size:12px}.detail-grid span{color:var(--muted)}.detail-icon{width:90px;height:90px;border-radius:20px;border:1px solid var(--line)}
 @media(max-width:1100px){.server-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.layout{grid-template-columns:1fr}.side-panel{position:static}}
 @media(max-width:720px){.container{width:min(100% - 22px,600px)}.topbar{height:auto;padding:12px 0}.topbar-inner{align-items:flex-start}.brand h1{font-size:19px}.brand img{width:42px;height:42px}.brand small{font-size:6px}.top-actions .btn{padding:9px 10px;font-size:11px}.hero{grid-template-columns:1fr;padding-top:35px}.radar{width:240px}.hero h2{font-size:38px;letter-spacing:-2px}.stats{grid-template-columns:repeat(2,1fr)}.main-panel{padding:13px}.server-grid{grid-template-columns:1fr}.section-head{align-items:flex-start;flex-direction:column}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.player-list{grid-template-columns:1fr}}
+
+/* PREMIUM 1B DESIGN SYSTEM */
+body{background:radial-gradient(900px 500px at 10% -10%,#9b8cff18,transparent 65%),radial-gradient(700px 500px at 100% 30%,#ff9d5c10,transparent 65%),var(--bg)}
+body:before{opacity:.08;background-image:linear-gradient(#fff1 1px,transparent 1px),linear-gradient(90deg,#fff1 1px,transparent 1px);background-size:56px 56px}
+.topbar{background:#07070bd9;border-color:#292936}.hero{padding-top:76px}.hero h2{font-weight:900;text-shadow:0 10px 50px #000}.hero h2 span{color:var(--cyan);text-shadow:0 0 35px #9b8cff66}
+.btn,.icon-btn,.nav-btn{background:linear-gradient(145deg,#171722,#0d0d13);border-color:#303040;box-shadow:inset 0 1px #fff08}.btn:hover,.icon-btn:hover,.nav-btn:hover{border-color:#9b8cff;box-shadow:0 0 30px #9b8cff20}.btn.primary{background:linear-gradient(135deg,#b5a9ff,#6c59d8);color:#100d1d;border-color:#c7b8ff}
+.stat,.card,.main-panel,.side-panel{background:linear-gradient(145deg,#15151fdd,#0c0c12ee);border-color:#292936;backdrop-filter:blur(18px)}
+.stat b{color:var(--cyan)}.card{border-radius:22px}.card:hover{border-color:#9b8cffaa;box-shadow:0 20px 50px #0009,0 0 35px #9b8cff12}.server-icon{border-color:#9b8cff45;background:#171722}.badge{background:#9b8cff0d;border-color:#9b8cff28;color:#c7b8ff}.badge.green{color:#d7ff65;border-color:#d7ff6540;background:#d7ff650b}
+.nav-btn.active{background:linear-gradient(135deg,#b5a9ff,#6c59d8);color:#100d1d}.chip.active{color:#c7b8ff;border-color:#9b8cff;background:#9b8cff14}
+.radar{border-color:#9b8cff88;background:radial-gradient(circle,#9b8cff18 1px,transparent 2px),radial-gradient(circle,#9b8cff0c,transparent 68%);box-shadow:0 0 90px #9b8cff18,inset 0 0 60px #9b8cff0b}.radar:before{border-color:#9b8cff55}.radar:after{border-color:#d7ff6555}.radar .cross:before,.radar .cross:after{background:#9b8cff3c}.radar-center{background:#d7ff65;box-shadow:0 0 22px #d7ff65}.sweep{background:linear-gradient(45deg,transparent 45%,#d7ff6588)}
 </style>
 </head>
 <body>
@@ -239,25 +244,65 @@ a{color:inherit;text-decoration:none}
 </div>
 <div class="toast" id="toast"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 /* =========================================================
    CraftRadar Frontend
    برای دیتابیس آنلاین، مقادیر SUPABASE_URL و SUPABASE_ANON_KEY
    را در صورت نیاز در پایین فایل وارد کن.
 ========================================================= */
-const SUPABASE_URL = "";
-const SUPABASE_ANON_KEY = "";
+const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+const SUPABASE_ENABLED = !SUPABASE_URL.includes("YOUR_") && !SUPABASE_ANON_KEY.includes("YOUR_");
+const supabaseClient = SUPABASE_ENABLED ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+let cloudServers = [];
+async function loadCloudServers(){
+  if(!supabaseClient) return;
+  const {data,error}=await supabaseClient.from("servers").select("*").order("votes",{ascending:false});
+  if(error){console.warn("Supabase servers:",error.message);return}
+  cloudServers=(data||[]).map(x=>({...x,modes:Array.isArray(x.modes)?x.modes:String(x.modes||"").split(",").filter(Boolean)}));
+  const ids=new Set(servers.map(x=>x.id)); cloudServers.forEach(x=>{if(!ids.has(x.id)) servers.push(x)});
+  render();updateStats();checkAll(cloudServers);
+}
+async function pushCloudServer(server){
+  if(!supabaseClient) return;
+  const row={id:server.id,name:server.name,ip:server.ip,country:server.country,type:server.type,modes:server.modes,description:server.description,votes:server.votes||0};
+  const {error}=await supabaseClient.from("servers").insert(row); if(error) console.warn("Supabase insert:",error.message);
+}
 
 const seedServers = [
- {id:"gunmax",name:"GunMax",ip:"play.gunmax.org",country:"iran",type:"java",modes:["Survival","Roleplay","SkyMine","BedWars"],votes:94,description:"شبکه ایرانی با حالت‌های Survival، Roleplay و BedWars."},
- {id:"gameup",name:"GameUp",ip:"mc.gameup.ir",country:"iran",type:"java",modes:["Survival","SkyBlock","BedWars","Creative","Economy"],votes:88,description:"شبکه چندحالته ایرانی با جامعه فعال."},
- {id:"xcraft",name:"Xcraft",ip:"play.xcraft.ir",country:"iran",type:"java",modes:["Survival","SMP","SkyBlock","Practice","Parkour","BedWars"],votes:81,description:"سرور ایرانی چندسبکی برای بازیکنان مختلف."},
- {id:"rexocraft",name:"RexoCraft",ip:"play.rexocraft.com",country:"iran",type:"java",modes:["BedWars","Survival","SkyMine","SkyBlock","ThePit"],votes:76,description:"محیط رقابتی و مینی‌گیم‌های متنوع."},
- {id:"trexmine",name:"TrexMine",ip:"play.trexmine.com",country:"iran",type:"java",modes:["Survival","SkyBlock","BedWars","PvP","Minigames"],votes:72,description:"شبکه ماینکرفت با حالت‌های محبوب."},
- {id:"magicpixel",name:"MagicPixel",ip:"play.magicpixel.ir",country:"iran",type:"java",modes:["Roleplay","RPG","SkyMine","SMP"],votes:65,description:"تجربه نقش‌آفرینی و بقا."},
- {id:"hypixel",name:"Hypixel",ip:"mc.hypixel.net",country:"foreign",type:"java",modes:["BedWars","SkyBlock","SMP","Minigames"],votes:99,description:"یکی از شناخته‌شده‌ترین شبکه‌های ماینکرفت."},
- {id:"jartex",name:"JartexNetwork",ip:"play.jartexnetwork.com",country:"foreign",type:"java",modes:["BedWars","SkyBlock","Survival","Prison"],votes:91,description:"شبکه بزرگ با حالت‌های رقابتی."},
- {id:"minemen",name:"Minemen Club",ip:"play.minemen.club",country:"foreign",type:"java",modes:["Practice","BedWars","PvP"],votes:84,description:"مناسب تمرین PvP و رقابت."}
+ {id:"gunmax",name:"GunMax",ip:"play.gunmax.org",country:"iran",type:"java",modes:["Survival","Roleplay","SkyMine","BedWars"],votes:94,description:"شبکه ایرانی چندحالته."},
+ {id:"gameup",name:"GameUp",ip:"mc.gameup.ir",country:"iran",type:"java",modes:["Survival","SkyBlock","BedWars","Creative","Economy"],votes:88,description:"سرور ایرانی چندسبکی."},
+ {id:"xcraft",name:"Xcraft",ip:"play.xcraft.ir",country:"iran",type:"java",modes:["Survival","SMP","SkyBlock","Practice","Parkour","BedWars"],votes:81,description:"شبکه ایرانی با حالت‌های متنوع."},
+ {id:"rexocraft",name:"RexoCraft",ip:"play.rexocraft.com",country:"iran",type:"java",modes:["BedWars","Survival","SkyMine","SkyBlock","ThePit"],votes:76,description:"رقابتی و مینی‌گیم."},
+ {id:"trexmine",name:"TrexMine",ip:"play.trexmine.com",country:"iran",type:"java",modes:["Survival","SkyBlock","BedWars","PvP","Minigames"],votes:72,description:"شبکه ماینکرفت ایرانی."},
+ {id:"magicpixel",name:"MagicPixel",ip:"play.magicpixel.ir",country:"iran",type:"java",modes:["Roleplay","RPG","SkyMine","SMP"],votes:65,description:"نقش‌آفرینی و بقا."},
+ {id:"infinitystar",name:"InfinityStar",ip:"play.infinitystar.ir",country:"iran",type:"java",modes:["Roleplay","Survival","SMP"],votes:60,description:"جامعه بقا و نقش‌آفرینی."},
+ {id:"horizon",name:"HorizonNetwork",ip:"play.horizonnetwork.ir",country:"iran",type:"java",modes:["SkyMine","SMP","ThePit","Survival"],votes:58,description:"شبکه ایرانی چندحالته."},
+ {id:"lunarpro",name:"LunarProCraft",ip:"play.lunarprocraft.ir",country:"iran",type:"java",modes:["OneBlock","Minigames","BedWars"],votes:54,description:"وان‌بلاک و مینی‌گیم."},
+ {id:"arian",name:"ArianCraft",ip:"play.svariancraft.ir",country:"iran",type:"java",modes:["BedWars","OneBlock","SkyBlock","Survival","Practice"],votes:52,description:"شبکه ایرانی سرگرمی."},
+ {id:"susis",name:"SUSIS MC",ip:"play.susismc.ir",country:"iran",type:"java",modes:["Survival","SMP","Anarchy","Zombie"],votes:49,description:"بقا و انارکی."},
+ {id:"voidshot",name:"VoidShot",ip:"play.voidshot.ir",country:"iran",type:"java",modes:["Roleplay","BedWars","SkyBlock","Survival"],votes:46,description:"سرور رقابتی ایرانی."},
+ {id:"paladin",name:"PaladinGuard",ip:"java.paladinguard.ir",country:"iran",type:"both",modes:["Survival","Roleplay","SMP","Bedrock"],votes:44,description:"پشتیبانی جاوا و بدراک."},
+ {id:"panda",name:"PandaSMP",ip:"play.pandasmp.ir",country:"iran",type:"java",modes:["Lifesteal","SMP","Anarchy"],votes:41,description:"لایف‌استیل و SMP."},
+ {id:"coldgame",name:"ColdGame",ip:"play.coldgame.ir",country:"iran",type:"java",modes:["Survival","SlimeFun","SkyMine","Practice"],votes:39,description:"بقا و اسلایم‌فان."},
+ {id:"rubyland",name:"RubyLand",ip:"play.mcbe.ir",country:"iran",type:"bedrock",modes:["Bedrock Survival","Economy","Roleplay"],votes:37,description:"سرور بدراک ایرانی."},
+ {id:"hypixel",name:"Hypixel",ip:"mc.hypixel.net",country:"foreign",type:"java",modes:["BedWars","SkyBlock","SkyWars","Murder Mystery"],votes:99,description:"شبکه بزرگ مینی‌گیم."},
+ {id:"wynncraft",name:"Wynncraft",ip:"play.wynncraft.com",country:"foreign",type:"java",modes:["MMORPG","Quest","Leveling"],votes:97,description:"تجربه MMORPG ماینکرفتی."},
+ {id:"cubecraft",name:"CubeCraft Games",ip:"play.cubecraft.net",country:"foreign",type:"both",modes:["SkyWars","EggWars","Lucky Islands"],votes:95,description:"شبکه جاوا و بدراک."},
+ {id:"purple",name:"Purple Prison",ip:"play.purpleprison.org",country:"foreign",type:"java",modes:["Prison","Economy","Mining"],votes:90,description:"پرزن و اقتصاد."},
+ {id:"sixb",name:"6b6t",ip:"play.6b6t.org",country:"foreign",type:"java",modes:["Anarchy","Survival","PvP"],votes:88,description:"سرور انارکی."},
+ {id:"pika",name:"PikaNetwork",ip:"play.pika-network.net",country:"foreign",type:"both",modes:["BedWars","SkyBlock","Factions","Lifesteal","Prison"],votes:86,description:"شبکه کرک و پرمیوم."},
+ {id:"jartex",name:"JartexNetwork",ip:"play.jartexnetwork.com",country:"foreign",type:"java",modes:["BedWars","SkyWars","Survival","Prison","SkyBlock"],votes:84,description:"شبکه محبوب کرک."},
+ {id:"mineberry",name:"MineBerry",ip:"mc.mineberry.org",country:"foreign",type:"java",modes:["Survival","Anarchy","Economy","Factions","KitPvP"],votes:80,description:"بقا و اقتصاد."},
+ {id:"hylex",name:"HylexMC",ip:"play.hylexmc.net",country:"foreign",type:"java",modes:["BedWars","Lifesteal","OneBlock","Parkour","PvP"],votes:78,description:"مینی‌گیم و لایف‌استیل."},
+ {id:"twerion",name:"Twerion",ip:"twerion.net",country:"foreign",type:"java",modes:["BedWars","SkyBlock","PvP","Minigames","CityBuild"],votes:74,description:"شبکه مینی‌گیم."},
+ {id:"applemc",name:"AppleMC",ip:"play.applemc.fun",country:"foreign",type:"java",modes:["Survival","BedWars","Earth","Lifesteal","Economy"],votes:70,description:"بقا و لایف‌استیل."},
+ {id:"ultimis",name:"UltimisMC",ip:"play.ultimismc.com",country:"foreign",type:"java",modes:["Survival","BedWars","Lifesteal","OneBlock","Parkour"],votes:67,description:"شبکه چندحالته."},
+ {id:"lifesteal",name:"Lifesteal SMP",ip:"play.lifestealsmp.com",country:"foreign",type:"java",modes:["Survival","Lifesteal","Earth","Factions","PvP"],votes:63,description:"تمرکز روی لایف‌استیل."},
+ {id:"oneblocky",name:"OneBlocky",ip:"play.oneblocky.com",country:"foreign",type:"java",modes:["OneBlock","SkyBlock","Survival","Economy"],votes:60,description:"وان‌بلاک و اسکای‌بلاک."},
+ {id:"minemen",name:"Minemen Club",ip:"play.minemen.club",country:"foreign",type:"java",modes:["Practice","PvP","BedWars"],votes:57,description:"تمرین حرفه‌ای PvP."},
+ {id:"mccentral",name:"MineCentral",ip:"play.mccentral.org",country:"foreign",type:"java",modes:["Survival","SkyBlock","Prison","KitPvP"],votes:54,description:"شبکه چندحالته."}
 ];
 
 let servers = [...seedServers, ...JSON.parse(localStorage.getItem("cr_custom_servers") || "[]")];
@@ -314,7 +359,7 @@ function card(s){
   return `<article class="card">
     <div class="card-top">
       <img class="server-icon" loading="lazy" src="${iconUrl(s.ip)}" alt="${esc(s.name)}" onerror="this.src='https://api.dicebear.com/8.x/shapes/svg?seed=${encodeURIComponent(s.ip)}&backgroundColor=10251c'">
-      <div class="card-title"><h4>${esc(s.name)}</h4><small>${esc(s.ip)}</small></div>
+      <div class="card-title"><h4>${esc(s.name)}</h4><small>${esc(st.resolvedIp ? st.resolvedIp + (st.port && st.port!==25565 ? ":"+st.port : "") : s.ip)}</small><em class="ip-note">${st.resolvedIp ? "IP عددی شناسایی شد" : "دامنه سرور"}</em></div>
       ${statusHtml(s)}
     </div>
     <div class="badges">${modes}<span class="badge">${s.type==="java"?"Java":"Bedrock"}</span></div>
@@ -364,7 +409,7 @@ $("#saveServer").onclick=()=>{
   const name=$("#fName").value.trim(),ip=$("#fIp").value.trim();
   if(!name||!ip)return toast("نام و آی‌پی را وارد کن");
   const s={id:"custom_"+Date.now(),name,ip,country:$("#fCountry").value,type:$("#fType").value,modes:$("#fModes").value.split(",").map(x=>x.trim()).filter(Boolean),description:$("#fDesc").value.trim()||"سرور معرفی‌شده توسط جامعه CraftRadar",votes:0};
-  servers.push(s);save();closeModal("addModal");setView(s.country);toast("سرور با موفقیت به فهرست اضافه شد");checkServer(s)
+  servers.push(s);save();pushCloudServer(s);closeModal("addModal");setView(s.country);toast("سرور با موفقیت به فهرست اضافه شد");checkServer(s)
 };
 $$(".nav-btn,[data-view]").forEach(b=>b.onclick=()=>b.dataset.view&&setView(b.dataset.view));
 $$(".chip").forEach(b=>b.onclick=()=>{currentFilter=b.dataset.filter;$$(".chip").forEach(x=>x.classList.toggle("active",x===b));render();checkAll(filtered())});
@@ -375,7 +420,7 @@ $("#themeBtn").onclick=()=>{document.body.classList.toggle("light");toast("ظا�
 $$("[data-close]").forEach(b=>b.onclick=()=>closeModal(b.dataset.close));
 $$(".modal").forEach(m=>m.onclick=e=>{if(e.target===m)m.classList.remove("open")});
 
-updateUserUI();render();updateStats();checkAll(servers);
+updateUserUI();render();updateStats();checkAll(servers);loadCloudServers();
 </script>
 </body>
 </html>
