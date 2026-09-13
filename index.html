@@ -2,425 +2,376 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#08080c">
-<meta name="description" content="CraftRadar؛ رادار زنده سرورهای ماینکرفت">
-<title>CraftRadar | رادار سرورهای ماینکرفت</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+<meta name="theme-color" content="#050508">
+<meta name="description" content="CraftRadar — رادار زنده سرورهای ماینکرفت ایرانی + ریسورس‌پک و مود">
+<title>CraftRadar | رادار سرور + ریسورس‌پک</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#07070b;--panel:#101016;--panel2:#171722;--line:#292936;--cyan:#9b8cff;--green:#d7ff65;--gold:#ffca72;--red:#ff6b8a;--purple:#c7b8ff;--text:#f7f5ff;--muted:#9693a8;--orange:#ff9d5c;--shadow:0 24px 90px #000b;--radius:24px}
+:root{
+  --bg:#050508;--s1:#0c0c12;--s2:#12121a;--s3:#1a1a26;
+  --line:#2a2a3a;--line2:#3a3a52;
+  --cyan:#8b7cff;--cyan2:#a89bff;--green:#b8f55a;--gold:#ffc85a;
+  --red:#ff6b8a;--pink:#ff5caa;--text:#f4f2ff;--muted:#8e8ba3;
+  --r:20px;--shadow:0 20px 60px #000a;
+  --safe:env(safe-area-inset-bottom,0px);
+}
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{
-  min-height:100vh;color:var(--text);font-family:Vazirmatn,Tahoma,sans-serif;
-  background:
-  radial-gradient(900px 500px at 80% -10%,#9b8cff13,transparent 70%),
-  radial-gradient(800px 500px at 0 40%,#d7ff650b,transparent 70%),var(--bg);
-  overflow-x:hidden
+  min-height:100dvh;color:var(--text);font-family:Vazirmatn,Tahoma,sans-serif;
+  background:var(--bg);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 20% -10%,#8b7cff22,transparent),
+    radial-gradient(ellipse 60% 40% at 90% 20%,#b8f55a12,transparent),
+    radial-gradient(ellipse 50% 30% at 50% 100%,#ff5caa0c,transparent);
+  overflow-x:hidden;-webkit-tap-highlight-color:transparent;
 }
-body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.16;background-image:linear-gradient(#9b8cff08 1px,transparent 1px),linear-gradient(90deg,#9b8cff08 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(#000,transparent 85%)}
-button,input,textarea,select{font:inherit}
-button{cursor:pointer}
-a{color:inherit;text-decoration:none}
-.container{width:min(1440px,calc(100% - 36px));margin:auto}
-.topbar{height:76px;border-bottom:1px solid var(--line);background:#07070bd9;backdrop-filter:blur(18px);position:sticky;top:0;z-index:30}
-.topbar-inner{height:100%;display:flex;align-items:center;justify-content:space-between;gap:20px}
-.brand{display:flex;align-items:center;gap:12px}
-.brand img{width:48px;height:48px;border-radius:15px;object-fit:cover;border:1px solid #9b8cff55;background:#11111a}
-.brand h1{font-size:24px;letter-spacing:-1px}
-.brand small{display:block;color:var(--cyan);font-family:"Press Start 2P";font-size:8px;direction:ltr;margin-top:5px}
-.top-actions{display:flex;align-items:center;gap:8px}
-.btn,.icon-btn,.nav-btn{
-  border:1px solid var(--line);background:#14141d;color:var(--text);border-radius:14px;
-  padding:11px 15px;transition:.2s
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;opacity:.06;z-index:0;
+  background-image:linear-gradient(#fff1 1px,transparent 1px),linear-gradient(90deg,#fff1 1px,transparent 1px);
+  background-size:48px 48px;
 }
-.btn:hover,.icon-btn:hover,.nav-btn:hover{border-color:var(--cyan);transform:translateY(-2px);box-shadow:0 0 24px #9b8cff12}
-.btn.primary{background:linear-gradient(135deg,#9b8cff,#5c4bc7);border-color:#9b8cff;color:#001012;font-weight:900}
-.btn.green{border-color:#477d35;background:#142817;color:#a9f887}
-.btn.danger{border-color:#74333d;color:#ff9ca4}
-.icon-btn{width:44px;height:44px;padding:0;display:grid;place-items:center;font-size:18px}
-.hero{padding:58px 0 28px;display:grid;grid-template-columns:1.15fr .85fr;gap:35px;align-items:center}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--green);border:1px solid #d7ff6540;background:#d7ff650c;padding:8px 12px;border-radius:999px;font-size:12px;margin-bottom:18px}
-.hero h2{font-size:clamp(32px,5vw,70px);line-height:1.18;letter-spacing:-3px;max-width:760px}
-.hero h2 span{color:var(--cyan);text-shadow:0 0 30px #9b8cff33}
-.hero p{color:var(--muted);line-height:2;font-size:15px;max-width:650px;margin:20px 0}
-.hero-actions{display:flex;gap:10px;flex-wrap:wrap}
-.radar{
-  width:min(370px,80vw);aspect-ratio:1;margin:auto;border-radius:50%;position:relative;
-  border:2px solid #9b8cff88;background:radial-gradient(circle,#9b8cff18 1px,transparent 2px),radial-gradient(circle,#9b8cff0c,transparent 68%);
-  background-size:24px 24px,100% 100%;box-shadow:0 0 70px #9b8cff12,inset 0 0 60px #9b8cff0b;overflow:hidden
+.wrap{position:relative;z-index:1;width:min(1280px,calc(100% - 28px));margin:0 auto}
+/* TOP */
+.top{
+  position:sticky;top:0;z-index:40;height:68px;
+  background:#050508cc;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--line);
 }
-.radar:before,.radar:after{content:"";position:absolute;border:1px solid #9b8cff55;border-radius:50%;inset:13%}
-.radar:after{inset:28%;border-color:#d7ff6555}
-.radar .cross:before,.radar .cross:after{content:"";position:absolute;background:#9b8cff3c}
-.radar .cross:before{width:1px;height:100%;left:50%}.radar .cross:after{height:1px;width:100%;top:50%}
-.sweep{position:absolute;width:50%;height:50%;right:50%;bottom:50%;transform-origin:100% 100%;background:linear-gradient(45deg,transparent 45%,#00ff9d88);clip-path:polygon(100% 100%,0 0,100% 0);animation:spin 4s linear infinite}
-.radar-dot{position:absolute;width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 20px var(--green);animation:pulse 1.8s infinite}
-.d1{left:26%;top:27%}.d2{right:22%;top:43%;animation-delay:.4s}.d3{left:39%;bottom:19%;animation-delay:.8s}
-.radar-center{position:absolute;width:14px;height:14px;border-radius:50%;background:var(--cyan);box-shadow:0 0 22px var(--cyan);left:50%;top:50%;transform:translate(-50%,-50%)}
-@keyframes spin{to{transform:rotate(360deg)}}@keyframes pulse{50%{transform:scale(1.8);opacity:.5}}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:10px 0 28px}
-.stat{padding:18px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,#171722,#0b0b11);position:relative;overflow:hidden}
-.stat:after{content:"";position:absolute;inset:auto -30px -40px;height:80px;background:#9b8cff0b;filter:blur(20px)}
-.stat b{font-size:27px;display:block;color:var(--cyan)}.stat span{font-size:12px;color:var(--muted)}
-.layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:18px;align-items:start}
-.main-panel,.side-panel{border:1px solid var(--line);background:#101016ee;border-radius:var(--radius);box-shadow:var(--shadow)}
-.main-panel{padding:20px}.side-panel{padding:18px;position:sticky;top:94px}
-.nav-tabs{display:flex;gap:8px;overflow:auto;padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:18px}
-.nav-btn{white-space:nowrap;color:var(--muted)}.nav-btn.active{color:#001114;background:var(--cyan);border-color:var(--cyan);font-weight:900}
-.section-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:16px}
-.section-head h3{font-size:24px}.section-head p{color:var(--muted);font-size:12px;margin-top:5px}
-.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:18px}
-.search{flex:1;min-width:220px;background:#0a0a10;border:1px solid var(--line);color:var(--text);padding:13px 15px;border-radius:14px;outline:none}
-.search:focus{border-color:var(--cyan);box-shadow:0 0 0 3px #9b8cff12}
-.chips{display:flex;gap:7px;flex-wrap:wrap}
-.chip{border:1px solid var(--line);background:#11111a;color:var(--muted);padding:9px 12px;border-radius:999px;font-size:12px}
-.chip.active{color:var(--cyan);border-color:var(--cyan);background:#9b8cff0d}
-.server-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.card{border:1px solid var(--line);border-radius:19px;background:linear-gradient(150deg,#0c1d17,#0b0b11);padding:15px;min-width:0;transition:.22s;position:relative;overflow:hidden}
-.card:hover{transform:translateY(-4px);border-color:#9b8cff88;box-shadow:0 15px 35px #0006}
-.card-top{display:flex;align-items:center;gap:10px}
-.server-icon{width:58px;height:58px;border-radius:15px;object-fit:cover;background:#10251c;border:1px solid #9b8cff35;image-rendering:auto}
-.card-title{min-width:0;flex:1}.ip-note{display:block;color:var(--green);font-size:10px;margin-top:4px;font-style:normal}.card-title h4{font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.card-title small{display:block;color:var(--muted);font-size:11px;margin-top:5px;direction:ltr;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.status{font-size:10px;border-radius:999px;padding:5px 8px;white-space:nowrap}.status.wait{color:var(--gold);background:#ffd16612}.status.online{color:#9dff80;background:#d7ff6514}.status.offline{color:#ff9ca4;background:#ff647012}
-.badges{display:flex;gap:5px;flex-wrap:wrap;margin:13px 0}.badge{font-size:10px;padding:5px 8px;border-radius:8px;background:#9b8cff0d;border:1px solid #9b8cff25;color:#91dce3}.badge.green{color:#a9f887;border-color:#d7ff6535;background:#d7ff650b}
-.players{display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:11px;margin:8px 0 12px}
-.players strong{color:var(--text);font-size:13px}
-.card-actions{display:grid;grid-template-columns:1fr 1fr 40px;gap:7px}.card-actions button{padding:9px 5px;font-size:11px;border-radius:11px;border:1px solid var(--line);background:#171722;color:var(--text)}.card-actions button:hover{border-color:var(--cyan)}.fav.active{color:#ff5caa;border-color:#ff5caa55;background:#ff5caa10}
-.empty{padding:50px 20px;text-align:center;border:1px dashed var(--line);border-radius:18px;color:var(--muted)}
-.side-title{font-size:17px;margin-bottom:13px}.side-block{border-bottom:1px solid var(--line);padding:15px 0}.side-block:last-child{border-bottom:0}.side-label{color:var(--muted);font-size:11px;margin-bottom:8px}
-.user-card{display:flex;align-items:center;gap:10px}.avatar{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,var(--cyan),#126b75);color:#001114;display:grid;place-items:center;font-weight:900}
-.user-card b{font-size:13px}.user-card small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
-.side-menu{display:grid;gap:7px}.side-menu button{display:flex;justify-content:space-between;align-items:center;border:1px solid transparent;background:transparent;color:var(--muted);padding:12px;border-radius:12px;text-align:right}.side-menu button:hover,.side-menu button.active{background:#9b8cff0b;border-color:var(--line);color:var(--cyan)}
-.footer{padding:40px 0;color:var(--muted);text-align:center;font-size:12px;line-height:2}
-.modal{position:fixed;inset:0;background:#000b;display:none;place-items:center;padding:18px;z-index:100;backdrop-filter:blur(10px)}.modal.open{display:grid}
-.modal-box{width:min(580px,100%);max-height:90vh;overflow:auto;border:1px solid #9b8cff55;background:#11111a;border-radius:24px;padding:24px;box-shadow:0 30px 100px #000}
-.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.modal-head h3{font-size:21px}.close{border:0;background:transparent;color:var(--muted);font-size:27px;cursor:pointer}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{display:grid;gap:6px;margin-bottom:11px}.field.full{grid-column:1/-1}.field label{font-size:11px;color:var(--muted)}.field input,.field textarea,.field select{width:100%;background:#0a0a10;border:1px solid var(--line);color:var(--text);border-radius:12px;padding:12px;outline:none}.field textarea{min-height:85px;resize:vertical}.field input:focus,.field textarea:focus{border-color:var(--cyan)}
-.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:15px}.toast{position:fixed;bottom:22px;left:22px;background:#10251c;border:1px solid #9b8cff88;color:var(--text);padding:13px 17px;border-radius:13px;transform:translateY(100px);opacity:0;transition:.25s;z-index:200;font-size:12px}.toast.show{transform:translateY(0);opacity:1}
-.player-list{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}.player{padding:9px;border:1px solid var(--line);border-radius:10px;background:#0a0a10;font-size:11px;direction:ltr;text-align:left}
-.detail-grid{display:grid;grid-template-columns:110px 1fr;gap:8px;font-size:12px}.detail-grid span{color:var(--muted)}.detail-icon{width:90px;height:90px;border-radius:20px;border:1px solid var(--line)}
-@media(max-width:1100px){.server-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.layout{grid-template-columns:1fr}.side-panel{position:static}}
-@media(max-width:720px){.container{width:min(100% - 22px,600px)}.topbar{height:auto;padding:12px 0}.topbar-inner{align-items:flex-start}.brand h1{font-size:19px}.brand img{width:42px;height:42px}.brand small{font-size:6px}.top-actions .btn{padding:9px 10px;font-size:11px}.hero{grid-template-columns:1fr;padding-top:35px}.radar{width:240px}.hero h2{font-size:38px;letter-spacing:-2px}.stats{grid-template-columns:repeat(2,1fr)}.main-panel{padding:13px}.server-grid{grid-template-columns:1fr}.section-head{align-items:flex-start;flex-direction:column}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.player-list{grid-template-columns:1fr}}
-
-/* PREMIUM 1B DESIGN SYSTEM */
-body{background:radial-gradient(900px 500px at 10% -10%,#9b8cff18,transparent 65%),radial-gradient(700px 500px at 100% 30%,#ff9d5c10,transparent 65%),var(--bg)}
-body:before{opacity:.08;background-image:linear-gradient(#fff1 1px,transparent 1px),linear-gradient(90deg,#fff1 1px,transparent 1px);background-size:56px 56px}
-.topbar{background:#07070bd9;border-color:#292936}.hero{padding-top:76px}.hero h2{font-weight:900;text-shadow:0 10px 50px #000}.hero h2 span{color:var(--cyan);text-shadow:0 0 35px #9b8cff66}
-.btn,.icon-btn,.nav-btn{background:linear-gradient(145deg,#171722,#0d0d13);border-color:#303040;box-shadow:inset 0 1px #fff08}.btn:hover,.icon-btn:hover,.nav-btn:hover{border-color:#9b8cff;box-shadow:0 0 30px #9b8cff20}.btn.primary{background:linear-gradient(135deg,#b5a9ff,#6c59d8);color:#100d1d;border-color:#c7b8ff}
-.stat,.card,.main-panel,.side-panel{background:linear-gradient(145deg,#15151fdd,#0c0c12ee);border-color:#292936;backdrop-filter:blur(18px)}
-.stat b{color:var(--cyan)}.card{border-radius:22px}.card:hover{border-color:#9b8cffaa;box-shadow:0 20px 50px #0009,0 0 35px #9b8cff12}.server-icon{border-color:#9b8cff45;background:#171722}.badge{background:#9b8cff0d;border-color:#9b8cff28;color:#c7b8ff}.badge.green{color:#d7ff65;border-color:#d7ff6540;background:#d7ff650b}
-.nav-btn.active{background:linear-gradient(135deg,#b5a9ff,#6c59d8);color:#100d1d}.chip.active{color:#c7b8ff;border-color:#9b8cff;background:#9b8cff14}
-.radar{border-color:#9b8cff88;background:radial-gradient(circle,#9b8cff18 1px,transparent 2px),radial-gradient(circle,#9b8cff0c,transparent 68%);box-shadow:0 0 90px #9b8cff18,inset 0 0 60px #9b8cff0b}.radar:before{border-color:#9b8cff55}.radar:after{border-color:#d7ff6555}.radar .cross:before,.radar .cross:after{background:#9b8cff3c}.radar-center{background:#d7ff65;box-shadow:0 0 22px #d7ff65}.sweep{background:linear-gradient(45deg,transparent 45%,#d7ff6588)}
+.top-in{height:100%;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;min-width:0}
+.logo-mark{
+  width:42px;height:42px;border-radius:12px;flex-shrink:0;
+  background:linear-gradient(135deg,#8b7cff,#5c4bc7);
+  display:grid;place-items:center;font-size:18px;box-shadow:0 0 24px #8b7cff44;
+}
+.logo h1{font-size:20px;font-weight:800;letter-spacing:-.5px}
+.logo small{display:block;font-family:"Press Start 2P";font-size:7px;color:var(--cyan);direction:ltr;margin-top:3px}
+.top-btns{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.btn{
+  border:1px solid var(--line);background:var(--s2);color:var(--text);
+  border-radius:12px;padding:10px 14px;font-size:13px;font-weight:600;
+  transition:.2s;cursor:pointer;white-space:nowrap;
+}
+.btn:hover{border-color:var(--cyan);box-shadow:0 0 20px #8b7cff22}
+.btn.pri{
+  background:linear-gradient(135deg,#9b8cff,#6c59d8);border-color:transparent;
+  color:#0e0b1a;font-weight:800;
+}
+.btn.ghost{background:transparent}
+.icon-btn{width:40px;height:40px;padding:0;display:grid;place-items:center;border-radius:11px;font-size:16px}
+/* HERO */
+.hero{padding:48px 0 32px;display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center}
+.pill{
+  display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;
+  color:var(--green);background:#b8f55a12;border:1px solid #b8f55a33;
+  padding:6px 12px;border-radius:999px;margin-bottom:16px;
+}
+.hero h2{font-size:clamp(28px,4.5vw,52px);font-weight:900;line-height:1.2;letter-spacing:-1.5px;max-width:560px}
+.hero h2 em{font-style:normal;background:linear-gradient(90deg,#a89bff,#b8f55a);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{color:var(--muted);line-height:1.9;font-size:15px;margin:16px 0 24px;max-width:520px}
+.hero-acts{display:flex;flex-wrap:wrap;gap:10px}
+.radar-box{
+  width:min(300px,75vw);aspect-ratio:1;margin:0 auto;border-radius:50%;position:relative;
+  border:2px solid #8b7cff66;
+  background:radial-gradient(circle,#8b7cff15 1px,transparent 2px),radial-gradient(circle at 50% 50%,#8b7cff18,transparent 65%);
+  background-size:20px 20px,100% 100%;
+  box-shadow:0 0 80px #8b7cff25,inset 0 0 40px #8b7cff10;
+}
+.radar-box::before,.radar-box::after{content:"";position:absolute;border:1px solid #8b7cff44;border-radius:50%}
+.radar-box::before{inset:14%}.radar-box::after{inset:30%;border-color:#b8f55a44}
+.r-cross::before,.r-cross::after{content:"";position:absolute;background:#8b7cff33}
+.r-cross::before{width:1px;height:100%;left:50%}.r-cross::after{height:1px;width:100%;top:50%}
+.sweep{
+  position:absolute;width:50%;height:50%;right:50%;bottom:50%;transform-origin:100% 100%;
+  background:linear-gradient(45deg,transparent 40%,#b8f55a88);clip-path:polygon(100% 100%,0 0,100% 0);
+  animation:spin 3.5s linear infinite;
+}
+.rdot{position:absolute;width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 16px var(--green);animation:pulse 1.6s infinite}
+.rd1{left:28%;top:24%}.rd2{right:20%;top:40%;animation-delay:.3s}.rd3{left:42%;bottom:22%;animation-delay:.7s}
+.rcenter{position:absolute;width:12px;height:12px;border-radius:50%;background:var(--cyan);left:50%;top:50%;transform:translate(-50%,-50%);box-shadow:0 0 18px var(--cyan)}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes pulse{50%{transform:scale(1.7);opacity:.45}}
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
+.stat{
+  background:linear-gradient(160deg,var(--s2),var(--s1));border:1px solid var(--line);
+  border-radius:16px;padding:16px 14px;position:relative;overflow:hidden;
+}
+.stat::after{content:"";position:absolute;bottom:-20px;left:-10px;width:80px;height:60px;background:#8b7cff15;filter:blur(24px)}
+.stat b{display:block;font-size:24px;font-weight:800;color:var(--cyan2)}
+.stat span{font-size:11px;color:var(--muted)}
+/* TABS MAIN */
+.main-tabs{display:flex;gap:8px;margin-bottom:20px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.mtab{
+  flex-shrink:0;padding:11px 18px;border-radius:12px;border:1px solid var(--line);
+  background:var(--s1);color:var(--muted);font-weight:600;font-size:13px;cursor:pointer;transition:.2s;
+}
+.mtab.active{background:linear-gradient(135deg,#9b8cff,#6c59d8);color:#100d1d;border-color:transparent;font-weight:800}
+.mtab:hover:not(.active){border-color:var(--cyan);color:var(--text)}
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:1fr 300px;gap:18px;align-items:start}
+.panel{
+  background:linear-gradient(165deg,#12121add,#0a0a10ee);border:1px solid var(--line);
+  border-radius:var(--r);padding:18px;box-shadow:var(--shadow);
+}
+.side{position:sticky;top:84px}
+.sub-tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.stab{flex-shrink:0;padding:8px 14px;border-radius:10px;border:1px solid transparent;background:transparent;color:var(--muted);font-size:12px;font-weight:600;cursor:pointer}
+.stab.active{background:#8b7cff18;color:var(--cyan2);border-color:#8b7cff44}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.sec-head h3{font-size:20px;font-weight:800}
+.sec-head p{font-size:12px;color:var(--muted);margin-top:4px}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.search{
+  flex:1;min-width:160px;background:var(--s1);border:1px solid var(--line);color:var(--text);
+  padding:11px 14px;border-radius:12px;outline:none;font-size:13px;
+}
+.search:focus{border-color:var(--cyan);box-shadow:0 0 0 3px #8b7cff18}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.chip{
+  padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--s1);
+  color:var(--muted);font-size:11px;font-weight:600;cursor:pointer;
+}
+.chip.active{color:var(--cyan2);border-color:var(--cyan);background:#8b7cff14}
+/* SERVER GRID */
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.scard{
+  background:linear-gradient(155deg,#14141e,#0c0c12);border:1px solid var(--line);
+  border-radius:16px;padding:14px;transition:.22s;position:relative;overflow:hidden;
+}
+.scard:hover{border-color:#8b7cff88;transform:translateY(-3px);box-shadow:0 12px 32px #0008,0 0 24px #8b7cff15}
+.scard-top{display:flex;gap:10px;align-items:center}
+.sicon{
+  width:52px;height:52px;border-radius:13px;object-fit:cover;flex-shrink:0;
+  background:#1a1a28;border:1px solid #8b7cff33;
+}
+.sinfo{min-width:0;flex:1}
+.sinfo h4{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sip{
+  display:block;direction:ltr;text-align:right;font-family:ui-monospace,monospace;
+  font-size:11px;color:var(--green);margin-top:3px;cursor:pointer;user-select:all;
+}
+.sip:hover{color:var(--cyan2)}
+.smeta{font-size:10px;color:var(--muted);margin-top:2px}
+.badge-st{
+  font-size:10px;padding:4px 8px;border-radius:999px;font-weight:700;flex-shrink:0;
+}
+.badge-st.on{background:#b8f55a18;color:#c8ff7a}
+.badge-st.off{background:#ff6b8a18;color:#ff9aab}
+.badge-st.wait{background:#ffc85a18;color:var(--gold)}
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin:10px 0}
+.tag{font-size:10px;padding:3px 8px;border-radius:6px;background:#8b7cff12;border:1px solid #8b7cff28;color:#b5a9ff}
+.tag.g{background:#b8f55a10;border-color:#b8f55a30;color:#c8ff7a}
+.plr{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:10px}
+.plr strong{color:var(--text);font-size:12px}
+.sacts{display:grid;grid-template-columns:1fr 1fr 38px;gap:6px}
+.sacts button{
+  padding:8px 4px;font-size:11px;border-radius:10px;border:1px solid var(--line);
+  background:var(--s2);color:var(--text);cursor:pointer;font-weight:600;
+}
+.sacts button:hover{border-color:var(--cyan)}
+.fav-btn.active{color:var(--pink);border-color:#ff5caa55;background:#ff5caa12}
+.empty{text-align:center;padding:40px 16px;color:var(--muted);border:1px dashed var(--line);border-radius:14px;grid-column:1/-1}
+/* RESOURCE SECTION */
+.rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.rcard{
+  background:linear-gradient(160deg,#151520,#0d0d14);border:1px solid var(--line);
+  border-radius:16px;overflow:hidden;transition:.2s;display:flex;flex-direction:column;
+}
+.rcard:hover{border-color:#8b7cff77;box-shadow:0 10px 30px #0007}
+.rthumb{
+  height:120px;background:linear-gradient(135deg,#1a1a2e,#12121c);
+  display:grid;place-items:center;font-size:42px;border-bottom:1px solid var(--line);
+  position:relative;overflow:hidden;
+}
+.rthumb img{width:100%;height:100%;object-fit:cover}
+.rbody{padding:14px;flex:1;display:flex;flex-direction:column}
+.rbody h4{font-size:15px;font-weight:800;margin-bottom:4px}
+.rbody .rdesc{font-size:12px;color:var(--muted);line-height:1.7;flex:1;margin-bottom:10px}
+.rvers{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}
+.rver{font-size:10px;padding:3px 8px;border-radius:6px;background:#1a1a28;border:1px solid var(--line);color:var(--muted)}
+.rlinks{display:flex;flex-wrap:wrap;gap:6px}
+.rlinks a,.rlinks button{
+  font-size:11px;padding:8px 12px;border-radius:9px;border:1px solid var(--line);
+  background:var(--s2);color:var(--text);text-decoration:none;font-weight:600;cursor:pointer;
+}
+.rlinks a.pri,.rlinks button.pri{
+  background:linear-gradient(135deg,#9b8cff,#6c59d8);border:none;color:#100d1d;
+}
+.rlinks a:hover{border-color:var(--cyan)}
+.cat-label{font-size:11px;color:var(--cyan2);font-weight:700;margin-bottom:6px;letter-spacing:.3px}
+/* SIDE */
+.side-block{padding:14px 0;border-bottom:1px solid var(--line)}
+.side-block:last-child{border-bottom:0}
+.side-label{font-size:11px;color:var(--muted);margin-bottom:8px}
+.user-row{display:flex;align-items:center;gap:10px}
+.av{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--cyan),#3d8b7a);display:grid;place-items:center;font-weight:900;color:#0a0a10;flex-shrink:0}
+.smenu{display:grid;gap:4px}
+.smenu button{
+  display:flex;justify-content:space-between;align-items:center;width:100%;
+  padding:10px 12px;border-radius:10px;border:1px solid transparent;background:transparent;
+  color:var(--muted);font-size:13px;cursor:pointer;text-align:right;
+}
+.smenu button:hover,.smenu button.active{background:#8b7cff12;color:var(--cyan2);border-color:var(--line)}
+/* FOOTER */
+.foot{padding:36px 0 calc(36px + var(--safe));text-align:center;font-size:12px;color:var(--muted);line-height:1.9}
+/* MODAL */
+.modal{position:fixed;inset:0;background:#000c;display:none;place-items:center;padding:16px;z-index:100;backdrop-filter:blur(12px);overflow-y:auto}
+.modal.open{display:grid}
+.mbox{
+  width:min(540px,100%);max-height:90dvh;overflow:auto;background:#111118;
+  border:1px solid #8b7cff55;border-radius:20px;padding:22px;box-shadow:0 30px 80px #000;
+}
+.mhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.mhead h3{font-size:18px;font-weight:800}
+.close{background:none;border:none;color:var(--muted);font-size:26px;cursor:pointer;line-height:1;padding:4px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px}
+.field input,.field select,.field textarea{
+  width:100%;background:var(--s1);border:1px solid var(--line);color:var(--text);
+  border-radius:11px;padding:11px 12px;outline:none;font-size:13px;
+}
+.field textarea{min-height:70px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--cyan)}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.full{grid-column:1/-1}
+.macts{display:flex;gap:8px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}
+.toast{
+  position:fixed;bottom:calc(18px + var(--safe));left:50%;transform:translateX(-50%) translateY(100px);
+  background:#142818;border:1px solid #8b7cff66;color:var(--text);padding:12px 18px;
+  border-radius:12px;font-size:12px;z-index:200;opacity:0;transition:.25s;max-width:90vw;text-align:center;pointer-events:none;
+}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+/* MOBILE */
+@media(max-width:980px){
+  .layout{grid-template-columns:1fr}.side{position:static}
+  .hero{grid-template-columns:1fr;text-align:center;gap:28px;padding:32px 0 24px}
+  .hero h2,.hero p{margin-left:auto;margin-right:auto}
+  .hero-acts{justify-content:center}
+  .stats{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:640px){
+  .wrap{width:calc(100% - 20px)}
+  .top{height:auto;padding:10px 0}
+  .logo h1{font-size:17px}.logo-mark{width:36px;height:36px;font-size:15px}
+  .top-btns .btn:not(.pri){display:none}
+  .stats{gap:8px}.stat{padding:12px}.stat b{font-size:20px}
+  .sgrid{grid-template-columns:1fr}
+  .rgrid{grid-template-columns:1fr}
+  .fgrid{grid-template-columns:1fr}
+  .tools{flex-direction:column}.search{width:100%}
+  .mbox{padding:16px;border-radius:16px}
+}
+@media(hover:none){
+  .scard:hover,.rcard:hover{transform:none;box-shadow:none}
+}
 </style>
 </head>
 <body>
-
-<header class="topbar">
-  <div class="container topbar-inner">
-    <a class="brand" href="#">
-      <img src="logo.png" alt="CraftRadar" onerror="this.src='https://api.dicebear.com/8.x/shapes/svg?seed=CraftRadar&backgroundColor=06100d'">
-      <div><h1>CraftRadar</h1><small>MINECRAFT SERVER RADAR</small></div>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="logo" href="#" onclick="scrollTo(0,0);return false">
+      <div class="logo-mark">◈</div>
+      <div><h1>CraftRadar</h1><small>SERVER + PACKS</small></div>
     </a>
-    <div class="top-actions">
-      <button class="icon-btn" id="themeBtn" title="تغییر ظاهر">◐</button>
-      <button class="btn" id="loginBtn">ورود / ثبت‌نام</button>
-      <button class="btn primary" id="addServerBtn">＋ افزودن سرور</button>
+    <div class="top-btns">
+      <button class="btn icon-btn" id="themeBtn" title="تم">◐</button>
+      <button class="btn" id="loginBtn">ورود</button>
+      <button class="btn pri" id="addServerBtn">＋ سرور</button>
     </div>
   </div>
 </header>
 
-<main class="container">
+<main class="wrap">
   <section class="hero">
     <div>
-      <div class="eyebrow">● سیستم زنده بررسی سرورها فعال است</div>
-      <h2>سرور بعدی تو،<br><span>اینجا پیدا می‌شود.</span></h2>
-      <p>رادار حرفه‌ای سرورهای ماینکرفت؛ وضعیت آنلاین، تعداد پلیرها، آی‌پی، مودها، علاقه‌مندی‌ها و تالار برترین‌های جامعه گیمرها.</p>
-      <div class="hero-actions">
-        <button class="btn primary" onclick="document.getElementById('servers').scrollIntoView({behavior:'smooth'})">مشاهده سرورها ↓</button>
-        <button class="btn" id="quickAdd">سرور خودت را معرفی کن</button>
+      <div class="pill">● رادار زنده فعال است</div>
+      <h2>سرور بعدی‌ت رو<br><em>اینجا پیدا کن.</em></h2>
+      <p>رادار حرفه‌ای سرورهای ایرانی و خارجی ماینکرفت + بخش کامل ریسورس‌پک، شیدر و مود (Fabric · OptiFine · Sodium · Iris) با لینک دانلود رسمی.</p>
+      <div class="hero-acts">
+        <button class="btn pri" onclick="document.getElementById('mainArea').scrollIntoView({behavior:'smooth'})">مشاهده سرورها</button>
+        <button class="btn" onclick="switchMain('packs')">ریسورس‌پک و مود</button>
       </div>
     </div>
-    <div class="radar"><div class="cross"></div><div class="sweep"></div><i class="radar-dot d1"></i><i class="radar-dot d2"></i><i class="radar-dot d3"></i><i class="radar-center"></i></div>
+    <div class="radar-box" aria-hidden="true">
+      <div class="r-cross"></div><div class="sweep"></div>
+      <i class="rdot rd1"></i><i class="rdot rd2"></i><i class="rdot rd3"></i>
+      <i class="rcenter"></i>
+    </div>
   </section>
 
   <section class="stats">
     <div class="stat"><b id="totalStat">۰</b><span>کل سرورها</span></div>
     <div class="stat"><b id="iranStat">۰</b><span>سرور ایرانی</span></div>
-    <div class="stat"><b id="onlineStat">۰</b><span>سرور آنلاین</span></div>
-    <div class="stat"><b id="playersStat">۰</b><span>پلیرهای آنلاین</span></div>
+    <div class="stat"><b id="onlineStat">۰</b><span>آنلاین</span></div>
+    <div class="stat"><b id="playersStat">۰</b><span>پلیر آنلاین</span></div>
   </section>
 
-  <section class="layout" id="servers">
-    <div class="main-panel">
-      <nav class="nav-tabs">
-        <button class="nav-btn active" data-view="iran">🇮🇷 سرورهای ایرانی</button>
-        <button class="nav-btn" data-view="foreign">🌍 سرورهای خارجی</button>
-        <button class="nav-btn" data-view="favorites">❤️ علاقه‌مندی‌ها</button>
-        <button class="nav-btn" data-view="top">🏆 برترین‌ها</button>
-      </nav>
+  <div class="main-tabs" id="mainTabs">
+    <button class="mtab active" data-main="servers">🇮🇷 سرورها</button>
+    <button class="mtab" data-main="packs">📦 ریسورس‌پک و مود</button>
+  </div>
 
-      <div class="section-head">
-        <div><h3 id="sectionTitle">سرورهای ایرانی</h3><p id="sectionDesc">سرورهای ثبت‌شده و قابل بررسی جامعه CraftRadar</p></div>
-        <button class="btn" id="refreshAll">↻ بروزرسانی</button>
-      </div>
-
-      <div class="toolbar">
-        <input class="search" id="searchInput" placeholder="جستجوی نام، آی‌پی یا مود سرور...">
-        <button class="btn" id="sortBtn">مرتب‌سازی: محبوب‌ترین</button>
-      </div>
-      <div class="chips" id="chips">
-        <button class="chip active" data-filter="all">همه</button>
-        <button class="chip" data-filter="java">Java</button>
-        <button class="chip" data-filter="bedrock">Bedrock</button>
-        <button class="chip" data-filter="survival">Survival</button>
-        <button class="chip" data-filter="bedwars">BedWars</button>
-        <button class="chip" data-filter="skyblock">SkyBlock</button>
-        <button class="chip" data-filter="smp">SMP</button>
-      </div>
-      <div style="height:16px"></div>
-      <div class="server-grid" id="serverGrid"></div>
-    </div>
-
-    <aside class="side-panel">
-      <h3 class="side-title">پنل کاربری</h3>
-      <div class="side-block" id="userBox">
-        <div class="user-card"><div class="avatar">م</div><div><b>مهمان CraftRadar</b><small>برای ذخیره و رأی دادن وارد شوید</small></div></div>
-        <button class="btn" style="width:100%;margin-top:12px" id="sideLogin">ورود به حساب</button>
-      </div>
-      <div class="side-block">
-        <div class="side-label">دسترسی سریع</div>
-        <div class="side-menu">
-          <button data-view="iran">سرورهای ایرانی <span>🇮🇷</span></button>
-          <button data-view="favorites">ذخیره‌شده‌های من <span>❤️</span></button>
-          <button id="sideAdd">افزودن سرور <span>＋</span></button>
-          <button data-view="top">برترین‌های هفته <span>🏆</span></button>
+  <div id="mainArea">
+    <!-- SERVERS PANEL -->
+    <div id="viewServers" class="layout">
+      <div class="panel">
+        <div class="sub-tabs">
+          <button class="stab active" data-view="iran">ایرانی</button>
+          <button class="stab" data-view="foreign">خارجی</button>
+          <button class="stab" data-view="favorites">علاقه‌مندی</button>
+          <button class="stab" data-view="top">برترین</button>
         </div>
+        <div class="sec-head">
+          <div><h3 id="secTitle">سرورهای ایرانی</h3><p id="secDesc">آی‌پی قابل کپی · آیکون · وضعیت زنده</p></div>
+          <button class="btn" id="refreshAll">↻ بروزرسانی</button>
+        </div>
+        <div class="tools">
+          <input class="search" id="searchInput" placeholder="جستجو نام، آی‌پی، مود..." enterkeyhint="search">
+          <button class="btn" id="sortBtn">مرتب: محبوب</button>
+        </div>
+        <div class="chips" id="chips">
+          <button class="chip active" data-filter="all">همه</button>
+          <button class="chip" data-filter="java">Java</button>
+          <button class="chip" data-filter="bedrock">Bedrock</button>
+          <button class="chip" data-filter="survival">Survival</button>
+          <button class="chip" data-filter="bedwars">BedWars</button>
+          <button class="chip" data-filter="skyblock">SkyBlock</button>
+          <button class="chip" data-filter="roleplay">RolePlay</button>
+          <button class="chip" data-filter="smp">SMP</button>
+        </div>
+        <div class="sgrid" id="serverGrid"></div>
       </div>
-      <div class="side-block">
-        <div class="side-label">وضعیت سرویس</div>
-        <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">بررسی آنلاین</span><b style="color:var(--green)">● فعال</b></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;margin-top:9px"><span style="color:var(--muted)">آخرین بروزرسانی</span><b id="lastUpdate">—</b></div>
-      </div>
-    </aside>
-  </section>
-</main>
-
-<footer class="footer container">◆ CraftRadar — ساخته‌شده برای جامعه ماینکرفت ◆<br>اطلاعات وضعیت سرورها از سرویس بررسی Minecraft دریافت می‌شود. برای اشتراک‌گذاری واقعی اطلاعات میان همه کاربران، اتصال دیتابیس آنلاین لازم است.</footer>
-
-<div class="modal" id="loginModal">
-  <div class="modal-box">
-    <div class="modal-head"><h3>ورود به CraftRadar</h3><button class="close" data-close="loginModal">×</button></div>
-    <div class="field"><label>نام کاربری</label><input id="loginName" placeholder="مثلاً AmoAshy"></div>
-    <div class="field"><label>ایمیل</label><input id="loginEmail" type="email" placeholder="you@example.com"></div>
-    <div class="modal-actions"><button class="btn" data-close="loginModal">انصراف</button><button class="btn primary" id="doLogin">ورود / ساخت حساب</button></div>
-    <p style="font-size:11px;color:var(--muted);margin-top:15px;line-height:1.9">در این نسخه دمو، حساب روی همین مرورگر ذخیره می‌شود. برای حساب واقعی و مشترک بین دستگاه‌ها باید Supabase یا Firebase وصل شود.</p>
-  </div>
-</div>
-
-<div class="modal" id="addModal">
-  <div class="modal-box">
-    <div class="modal-head"><h3>افزودن سرور جدید</h3><button class="close" data-close="addModal">×</button></div>
-    <div class="form-grid">
-      <div class="field"><label>نام سرور *</label><input id="fName" placeholder="نام سرور"></div>
-      <div class="field"><label>آی‌پی یا دامنه *</label><input id="fIp" placeholder="play.example.ir" dir="ltr"></div>
-      <div class="field"><label>نوع</label><select id="fType"><option value="java">Java</option><option value="bedrock">Bedrock</option></select></div>
-      <div class="field"><label>کشور</label><select id="fCountry"><option value="iran">ایران 🇮🇷</option><option value="foreign">خارجی 🌍</option></select></div>
-      <div class="field full"><label>مودها، با کاما جدا کنید</label><input id="fModes" placeholder="Survival, BedWars, SkyBlock"></div>
-      <div class="field full"><label>توضیحات</label><textarea id="fDesc" placeholder="توضیح کوتاه درباره سرور"></textarea></div>
+      <aside class="panel side">
+        <div class="side-block" id="userBox">
+          <div class="user-row"><div class="av">م</div><div><b style="font-size:13px">مهمان</b><br><small style="color:var(--muted);font-size:11px">ورود برای ذخیره</small></div></div>
+          <button class="btn" style="width:100%;margin-top:10px" id="sideLogin">ورود</button>
+        </div>
+        <div class="side-block">
+          <div class="side-label">دسترسی سریع</div>
+          <div class="smenu">
+            <button data-view="iran">سرور ایرانی <span>🇮🇷</span></button>
+            <button data-view="favorites">علاقه‌مندی‌ها <span>♥</span></button>
+            <button id="sideAdd">افزودن سرور <span>＋</span></button>
+            <button onclick="switchMain('packs')">ریسورس‌پک <span>📦</span></button>
+          </div>
+        </div>
+        <div class="side-block">
+          <div class="side-label">وضعیت</div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--muted)">بررسی</span><b style="color:var(--green)">● فعال</b></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-top:8px"><span style="color:var(--muted)">آخرین آپدیت</span><b id="lastUpdate">—</b></div>
+        </div>
+        <div class="side-block">
+          <div class="side-label">نکته</div>
+          <p style="font-size:11px;color:var(--muted);line-height:1.8">روی آی‌پی کلیک کن تا کپی بشه. سرورهای ایرانی پینگ بهتری دارن.</p>
+        </div>
+      </aside>
     </div>
-    <div class="modal-actions"><button class="btn" data-close="addModal">انصراف</button><button class="btn primary" id="saveServer">ثبت سرور</button></div>
-    <p style="font-size:11px;color:var(--muted);margin-top:15px;line-height:1.9">ثبت این نسخه در localStorage انجام می‌شود. برای اینکه سرور افزوده‌شده برای همه بازیکنان نمایش داده شود، بخش تنظیمات Supabase پایین فایل را تکمیل کن.</p>
-  </div>
-</div>
 
-<div class="modal" id="infoModal">
-  <div class="modal-box">
-    <div class="modal-head"><h3 id="infoTitle">اطلاعات سرور</h3><button class="close" data-close="infoModal">×</button></div>
-    <div id="infoBody"></div>
-  </div>
-</div>
-<div class="toast" id="toast"></div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-/* =========================================================
-   CraftRadar Frontend
-   برای دیتابیس آنلاین، مقادیر SUPABASE_URL و SUPABASE_ANON_KEY
-   را در صورت نیاز در پایین فایل وارد کن.
-========================================================= */
-const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
-const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
-const SUPABASE_ENABLED = !SUPABASE_URL.includes("YOUR_") && !SUPABASE_ANON_KEY.includes("YOUR_");
-const supabaseClient = SUPABASE_ENABLED ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
-let cloudServers = [];
-async function loadCloudServers(){
-  if(!supabaseClient) return;
-  const {data,error}=await supabaseClient.from("servers").select("*").order("votes",{ascending:false});
-  if(error){console.warn("Supabase servers:",error.message);return}
-  cloudServers=(data||[]).map(x=>({...x,modes:Array.isArray(x.modes)?x.modes:String(x.modes||"").split(",").filter(Boolean)}));
-  const ids=new Set(servers.map(x=>x.id)); cloudServers.forEach(x=>{if(!ids.has(x.id)) servers.push(x)});
-  render();updateStats();checkAll(cloudServers);
-}
-async function pushCloudServer(server){
-  if(!supabaseClient) return;
-  const row={id:server.id,name:server.name,ip:server.ip,country:server.country,type:server.type,modes:server.modes,description:server.description,votes:server.votes||0};
-  const {error}=await supabaseClient.from("servers").insert(row); if(error) console.warn("Supabase insert:",error.message);
-}
-
-const seedServers = [
- {id:"gunmax",name:"GunMax",ip:"play.gunmax.org",country:"iran",type:"java",modes:["Survival","Roleplay","SkyMine","BedWars"],votes:94,description:"شبکه ایرانی چندحالته."},
- {id:"gameup",name:"GameUp",ip:"mc.gameup.ir",country:"iran",type:"java",modes:["Survival","SkyBlock","BedWars","Creative","Economy"],votes:88,description:"سرور ایرانی چندسبکی."},
- {id:"xcraft",name:"Xcraft",ip:"play.xcraft.ir",country:"iran",type:"java",modes:["Survival","SMP","SkyBlock","Practice","Parkour","BedWars"],votes:81,description:"شبکه ایرانی با حالت‌های متنوع."},
- {id:"rexocraft",name:"RexoCraft",ip:"play.rexocraft.com",country:"iran",type:"java",modes:["BedWars","Survival","SkyMine","SkyBlock","ThePit"],votes:76,description:"رقابتی و مینی‌گیم."},
- {id:"trexmine",name:"TrexMine",ip:"play.trexmine.com",country:"iran",type:"java",modes:["Survival","SkyBlock","BedWars","PvP","Minigames"],votes:72,description:"شبکه ماینکرفت ایرانی."},
- {id:"magicpixel",name:"MagicPixel",ip:"play.magicpixel.ir",country:"iran",type:"java",modes:["Roleplay","RPG","SkyMine","SMP"],votes:65,description:"نقش‌آفرینی و بقا."},
- {id:"infinitystar",name:"InfinityStar",ip:"play.infinitystar.ir",country:"iran",type:"java",modes:["Roleplay","Survival","SMP"],votes:60,description:"جامعه بقا و نقش‌آفرینی."},
- {id:"horizon",name:"HorizonNetwork",ip:"play.horizonnetwork.ir",country:"iran",type:"java",modes:["SkyMine","SMP","ThePit","Survival"],votes:58,description:"شبکه ایرانی چندحالته."},
- {id:"lunarpro",name:"LunarProCraft",ip:"play.lunarprocraft.ir",country:"iran",type:"java",modes:["OneBlock","Minigames","BedWars"],votes:54,description:"وان‌بلاک و مینی‌گیم."},
- {id:"arian",name:"ArianCraft",ip:"play.svariancraft.ir",country:"iran",type:"java",modes:["BedWars","OneBlock","SkyBlock","Survival","Practice"],votes:52,description:"شبکه ایرانی سرگرمی."},
- {id:"susis",name:"SUSIS MC",ip:"play.susismc.ir",country:"iran",type:"java",modes:["Survival","SMP","Anarchy","Zombie"],votes:49,description:"بقا و انارکی."},
- {id:"voidshot",name:"VoidShot",ip:"play.voidshot.ir",country:"iran",type:"java",modes:["Roleplay","BedWars","SkyBlock","Survival"],votes:46,description:"سرور رقابتی ایرانی."},
- {id:"paladin",name:"PaladinGuard",ip:"java.paladinguard.ir",country:"iran",type:"both",modes:["Survival","Roleplay","SMP","Bedrock"],votes:44,description:"پشتیبانی جاوا و بدراک."},
- {id:"panda",name:"PandaSMP",ip:"play.pandasmp.ir",country:"iran",type:"java",modes:["Lifesteal","SMP","Anarchy"],votes:41,description:"لایف‌استیل و SMP."},
- {id:"coldgame",name:"ColdGame",ip:"play.coldgame.ir",country:"iran",type:"java",modes:["Survival","SlimeFun","SkyMine","Practice"],votes:39,description:"بقا و اسلایم‌فان."},
- {id:"rubyland",name:"RubyLand",ip:"play.mcbe.ir",country:"iran",type:"bedrock",modes:["Bedrock Survival","Economy","Roleplay"],votes:37,description:"سرور بدراک ایرانی."},
- {id:"hypixel",name:"Hypixel",ip:"mc.hypixel.net",country:"foreign",type:"java",modes:["BedWars","SkyBlock","SkyWars","Murder Mystery"],votes:99,description:"شبکه بزرگ مینی‌گیم."},
- {id:"wynncraft",name:"Wynncraft",ip:"play.wynncraft.com",country:"foreign",type:"java",modes:["MMORPG","Quest","Leveling"],votes:97,description:"تجربه MMORPG ماینکرفتی."},
- {id:"cubecraft",name:"CubeCraft Games",ip:"play.cubecraft.net",country:"foreign",type:"both",modes:["SkyWars","EggWars","Lucky Islands"],votes:95,description:"شبکه جاوا و بدراک."},
- {id:"purple",name:"Purple Prison",ip:"play.purpleprison.org",country:"foreign",type:"java",modes:["Prison","Economy","Mining"],votes:90,description:"پرزن و اقتصاد."},
- {id:"sixb",name:"6b6t",ip:"play.6b6t.org",country:"foreign",type:"java",modes:["Anarchy","Survival","PvP"],votes:88,description:"سرور انارکی."},
- {id:"pika",name:"PikaNetwork",ip:"play.pika-network.net",country:"foreign",type:"both",modes:["BedWars","SkyBlock","Factions","Lifesteal","Prison"],votes:86,description:"شبکه کرک و پرمیوم."},
- {id:"jartex",name:"JartexNetwork",ip:"play.jartexnetwork.com",country:"foreign",type:"java",modes:["BedWars","SkyWars","Survival","Prison","SkyBlock"],votes:84,description:"شبکه محبوب کرک."},
- {id:"mineberry",name:"MineBerry",ip:"mc.mineberry.org",country:"foreign",type:"java",modes:["Survival","Anarchy","Economy","Factions","KitPvP"],votes:80,description:"بقا و اقتصاد."},
- {id:"hylex",name:"HylexMC",ip:"play.hylexmc.net",country:"foreign",type:"java",modes:["BedWars","Lifesteal","OneBlock","Parkour","PvP"],votes:78,description:"مینی‌گیم و لایف‌استیل."},
- {id:"twerion",name:"Twerion",ip:"twerion.net",country:"foreign",type:"java",modes:["BedWars","SkyBlock","PvP","Minigames","CityBuild"],votes:74,description:"شبکه مینی‌گیم."},
- {id:"applemc",name:"AppleMC",ip:"play.applemc.fun",country:"foreign",type:"java",modes:["Survival","BedWars","Earth","Lifesteal","Economy"],votes:70,description:"بقا و لایف‌استیل."},
- {id:"ultimis",name:"UltimisMC",ip:"play.ultimismc.com",country:"foreign",type:"java",modes:["Survival","BedWars","Lifesteal","OneBlock","Parkour"],votes:67,description:"شبکه چندحالته."},
- {id:"lifesteal",name:"Lifesteal SMP",ip:"play.lifestealsmp.com",country:"foreign",type:"java",modes:["Survival","Lifesteal","Earth","Factions","PvP"],votes:63,description:"تمرکز روی لایف‌استیل."},
- {id:"oneblocky",name:"OneBlocky",ip:"play.oneblocky.com",country:"foreign",type:"java",modes:["OneBlock","SkyBlock","Survival","Economy"],votes:60,description:"وان‌بلاک و اسکای‌بلاک."},
- {id:"minemen",name:"Minemen Club",ip:"play.minemen.club",country:"foreign",type:"java",modes:["Practice","PvP","BedWars"],votes:57,description:"تمرین حرفه‌ای PvP."},
- {id:"mccentral",name:"MineCentral",ip:"play.mccentral.org",country:"foreign",type:"java",modes:["Survival","SkyBlock","Prison","KitPvP"],votes:54,description:"شبکه چندحالته."}
-];
-
-let servers = [...seedServers, ...JSON.parse(localStorage.getItem("cr_custom_servers") || "[]")];
-let favorites = JSON.parse(localStorage.getItem("cr_favorites") || "[]");
-let statuses = {};
-let currentView = "iran";
-let currentFilter = "all";
-let sortMode = "votes";
-let currentUser = JSON.parse(localStorage.getItem("cr_user") || "null");
-
-const $ = s => document.querySelector(s);
-const $$ = s => [...document.querySelectorAll(s)];
-const fa = n => Number(n || 0).toLocaleString("fa-IR");
-const esc = s => String(s ?? "").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
-function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.classList.remove("show"),2800)}
-function save(){localStorage.setItem("cr_custom_servers",JSON.stringify(servers.filter(s=>!seedServers.some(x=>x.id===s.id))));localStorage.setItem("cr_favorites",JSON.stringify(favorites))}
-function iconUrl(ip){return `https://api.mcstatus.io/v2/icon/${encodeURIComponent(ip)}`}
-function statusUrl(ip){return `https://api.mcstatus.io/v2/status/java/${encodeURIComponent(ip)}`}
-
-async function checkServer(s){
-  statuses[s.id]={state:"wait",players:0,max:0,version:"",motd:"",sample:[]}; render();
-  try{
-    const ctrl=new AbortController();const timer=setTimeout(()=>ctrl.abort(),9000);
-    const r=await fetch(statusUrl(s.ip),{signal:ctrl.signal});clearTimeout(timer);
-    if(!r.ok) throw new Error("offline");
-    const d=await r.json();
-    const online=!!d.online;
-    statuses[s.id]={state:online?"online":"offline",players:d.players?.online||0,max:d.players?.max||0,version:d.version?.name_clean||d.version?.name||"",motd:d.motd?.clean||"",sample:(d.players?.list||[]).map(x=>x.name_clean||x.name).filter(Boolean)};
-  }catch(e){statuses[s.id]={state:"offline",players:0,max:0,version:"",motd:"",sample:[]}}
-  render(); updateStats();
-}
-function checkAll(list){list.forEach((s,i)=>setTimeout(()=>checkServer(s),i*130))}
-function statusHtml(s){
-  const st=statuses[s.id];
-  if(!st||st.state==="wait")return `<span class="status wait">در حال بررسی</span>`;
-  return st.state==="online"?`<span class="status online">● آنلاین</span>`:`<span class="status offline">● آفلاین</span>`;
-}
-function filtered(){
-  const q=$("#searchInput").value.trim().toLowerCase();
-  let list=servers.filter(s=>{
-    const viewOk=currentView==="iran"?s.country==="iran":currentView==="foreign"?s.country==="foreign":currentView==="favorites"?favorites.includes(s.id):true;
-    const filterOk=currentFilter==="all"||s.type===currentFilter||s.modes.some(m=>m.toLowerCase()===currentFilter);
-    const qOk=!q||[s.name,s.ip,s.description,...s.modes].join(" ").toLowerCase().includes(q);
-    return viewOk&&filterOk&&qOk;
-  });
-  if(currentView==="top"||sortMode==="votes")list.sort((a,b)=>b.votes-a.votes);
-  if(sortMode==="online")list.sort((a,b)=>(statuses[b.id]?.players||0)-(statuses[a.id]?.players||0));
-  return list;
-}
-function card(s){
-  const st=statuses[s.id]||{};const fav=favorites.includes(s.id);
-  const players=st.state==="online"?`${fa(st.players)} / ${fa(st.max)}`:"—";
-  const modes=s.modes.slice(0,4).map((m,i)=>`<span class="badge ${i===0?"green":""}">${esc(m)}</span>`).join("");
-  return `<article class="card">
-    <div class="card-top">
-      <img class="server-icon" loading="lazy" src="${iconUrl(s.ip)}" alt="${esc(s.name)}" onerror="this.src='https://api.dicebear.com/8.x/shapes/svg?seed=${encodeURIComponent(s.ip)}&backgroundColor=10251c'">
-      <div class="card-title"><h4>${esc(s.name)}</h4><small>${esc(st.resolvedIp ? st.resolvedIp + (st.port && st.port!==25565 ? ":"+st.port : "") : s.ip)}</small><em class="ip-note">${st.resolvedIp ? "IP عددی شناسایی شد" : "دامنه سرور"}</em></div>
-      ${statusHtml(s)}
-    </div>
-    <div class="badges">${modes}<span class="badge">${s.type==="java"?"Java":"Bedrock"}</span></div>
-    <div class="players"><span>👥 بازیکنان آنلاین</span><strong>${players}</strong></div>
-    <div class="card-actions">
-      <button onclick="showInfo('${s.id}')">جزئیات</button>
-      <button onclick="copyIp('${esc(s.ip)}')">کپی IP</button>
-      <button class="fav ${fav?"active":""}" onclick="toggleFav('${s.id}')" title="علاقه‌مندی">${fav?"♥":"♡"}</button>
-    </div>
-  </article>`;
-}
-function render(){
-  const list=filtered();$("#serverGrid").innerHTML=list.length?list.map(card).join(""):`<div class="empty" style="grid-column:1/-1">سروری با این مشخصات پیدا نشد.<br><button class="btn" style="margin-top:14px" onclick="openModal('addModal')">افزودن سرور جدید</button></div>`;
-  const titles={iran:"سرورهای ایرانی",foreign:"سرورهای خارجی",favorites:"علاقه‌مندی‌های من",top:"تالار برترین‌ها"};
-  $("#sectionTitle").textContent=titles[currentView]||"سرورها";
-  $("#sectionDesc").textContent=currentView==="top"?"سرورهایی که بیشترین امتیاز جامعه را دریافت کرده‌اند.":"سرورهای ثبت‌شده و قابل بررسی جامعه CraftRadar";
-  $$(".nav-btn").forEach(b=>b.classList.toggle("active",b.dataset.view===currentView));
-}
-function updateStats(){
-  const all=servers;const online=all.filter(s=>statuses[s.id]?.state==="online");
-  $("#totalStat").textContent=fa(all.length);$("#iranStat").textContent=fa(all.filter(s=>s.country==="iran").length);
-  $("#onlineStat").textContent=fa(online.length);$("#playersStat").textContent=fa(online.reduce((n,s)=>n+(statuses[s.id]?.players||0),0));
-  $("#lastUpdate").textContent=new Date().toLocaleTimeString("fa-IR",{hour:"2-digit",minute:"2-digit"});
-}
-function setView(v){currentView=v;currentFilter="all";$$(".chip").forEach(c=>c.classList.toggle("active",c.dataset.filter==="all"));render();checkAll(filtered())}
-function toggleFav(id){if(!currentUser){toast("برای ذخیره علاقه‌مندی ابتدا وارد شوید");openModal("loginModal");return}favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];save();render();toast(favorites.includes(id)?"به علاقه‌مندی‌ها اضافه شد":"از علاقه‌مندی‌ها حذف شد")}
-function copyIp(ip){navigator.clipboard?.writeText(ip);toast("آی‌پی کپی شد: "+ip)}
-function openModal(id){$("#"+id).classList.add("open")}
-function closeModal(id){$("#"+id).classList.remove("open")}
-function showInfo(id){
-  const s=servers.find(x=>x.id===id);if(!s)return;const st=statuses[id]||{};
-  $("#infoTitle").textContent=s.name;
-  $("#infoBody").innerHTML=`<div style="display:flex;gap:15px;align-items:center;margin-bottom:18px"><img class="detail-icon" src="${iconUrl(s.ip)}" onerror="this.style.display='none'"><div><h3>${esc(s.name)}</h3><p style="color:var(--muted);direction:ltr;margin-top:5px">${esc(s.ip)}</p>${statusHtml(s)}</div></div>
-  <div class="detail-grid"><span>نوع</span><b>${s.type==="java"?"Java":"Bedrock"}</b><span>کشور</span><b>${s.country==="iran"?"ایران 🇮🇷":"خارجی 🌍"}</b><span>بازیکنان</span><b>${st.state==="online"?fa(st.players)+" / "+fa(st.max):"بررسی نشده"}</b><span>نسخه</span><b>${esc(st.version||"—")}</b><span>توضیحات</span><b>${esc(s.description||"بدون توضیح")}</b></div>
-  <div class="badges" style="margin-top:18px">${s.modes.map(m=>`<span class="badge green">${esc(m)}</span>`).join("")}</div>
-  ${st.sample?.length?`<h4 style="margin-top:18px">پلیرهای قابل نمایش</h4><div class="player-list">${st.sample.map(p=>`<div class="player">${esc(p)}</div>`).join("")}</div>`:""}
-  <div class="modal-actions"><button class="btn primary" onclick="copyIp('${esc(s.ip)}')">کپی آی‌پی</button></div>`;
-  openModal("infoModal");if(!statuses[id])checkServer(s);
-}
-function updateUserUI(){
-  if(currentUser){$("#loginBtn").textContent=currentUser.name;$("#userBox").innerHTML=`<div class="user-card"><div class="avatar">${esc(currentUser.name[0]||"م")}</div><div><b>${esc(currentUser.name)}</b><small>${esc(currentUser.email||"حساب محلی")}</small></div></div><button class="btn danger" style="width:100%;margin-top:12px" id="logoutBtn">خروج از حساب</button>`;$("#logoutBtn").onclick=()=>{currentUser=null;localStorage.removeItem("cr_user");updateUserUI();toast("از حساب خارج شدید")}}
-  else{$("#loginBtn").textContent="ورود / ثبت‌نام";$("#userBox").innerHTML=`<div class="user-card"><div class="avatar">م</div><div><b>مهمان CraftRadar</b><small>برای ذخیره و رأی دادن وارد شوید</small></div></div><button class="btn" style="width:100%;margin-top:12px" id="sideLogin">ورود به حساب</button>`;$("#sideLogin").onclick=()=>openModal("loginModal")}
-}
-$("#loginBtn").onclick=()=>openModal("loginModal");$("#sideLogin").onclick=()=>openModal("loginModal");$("#addServerBtn").onclick=()=>openModal("addModal");$("#quickAdd").onclick=()=>openModal("addModal");$("#sideAdd").onclick=()=>openModal("addModal");
-$("#doLogin").onclick=()=>{const name=$("#loginName").value.trim()||"بازیکن";const email=$("#loginEmail").value.trim();currentUser={name,email};localStorage.setItem("cr_user",JSON.stringify(currentUser));updateUserUI();closeModal("loginModal");toast("خوش آمدی "+name)};
-$("#saveServer").onclick=()=>{
-  const name=$("#fName").value.trim(),ip=$("#fIp").value.trim();
-  if(!name||!ip)return toast("نام و آی‌پی را وارد کن");
-  const s={id:"custom_"+Date.now(),name,ip,country:$("#fCountry").value,type:$("#fType").value,modes:$("#fModes").value.split(",").map(x=>x.trim()).filter(Boolean),description:$("#fDesc").value.trim()||"سرور معرفی‌شده توسط جامعه CraftRadar",votes:0};
-  servers.push(s);save();pushCloudServer(s);closeModal("addModal");setView(s.country);toast("سرور با موفقیت به فهرست اضافه شد");checkServer(s)
-};
-$$(".nav-btn,[data-view]").forEach(b=>b.onclick=()=>b.dataset.view&&setView(b.dataset.view));
-$$(".chip").forEach(b=>b.onclick=()=>{currentFilter=b.dataset.filter;$$(".chip").forEach(x=>x.classList.toggle("active",x===b));render();checkAll(filtered())});
-$("#searchInput").oninput=()=>render();
-$("#sortBtn").onclick=()=>{sortMode=sortMode==="votes"?"online":"votes";$("#sortBtn").textContent="مرتب‌سازی: "+(sortMode==="votes"?"محبوب‌ترین":"بیشترین پلیر");render()};
-$("#refreshAll").onclick=()=>{checkAll(filtered());toast("بررسی سرورها شروع شد")};
-$("#themeBtn").onclick=()=>{document.body.classList.toggle("light");toast("ظاهر پنل آماده شخصی‌سازی است")};
-$$("[data-close]").forEach(b=>b.onclick=()=>closeModal(b.dataset.close));
-$$(".modal").forEach(m=>m.onclick=e=>{if(e.target===m)m.classList.remove("open")});
-
-updateUserUI();render();updateStats();checkAll(servers);loadCloudServers();
-</script>
-</body>
-</html>
+    <!-- PACKS PANEL -->
+    <div id="viewPacks" class="panel" style="display:none">
+      <div class="sec-head">
+        <di
